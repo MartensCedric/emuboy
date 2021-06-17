@@ -30,7 +30,7 @@ INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(gameboy src/main.cpp)
+add_library(gameboy src/main.cpp src/CPU.cpp include/CPU.h)
 
 TARGET_LINK_LIBRARIES(gameboy LINK_PUBLIC ${Boost_LIBRARIES})
 
