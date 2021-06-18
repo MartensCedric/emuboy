@@ -15,19 +15,16 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(cpu_util src/util/safety.cpp)
-
 ADD_LIBRARY(cpu src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp)
 
 TARGET_LINK_LIBRARIES(cpu ${Boost_LIBRARIES})
-TARGET_LINK_LIBRARIES(cpu cpu_util)
 
 add_executable(gameboy src/main.cpp)
 
 TARGET_LINK_LIBRARIES(gameboy cpu)
 
-#add_executable(safety_test test/safety_test.cpp)
-#
-#target_link_libraries(safety_test gameboy_lib)
-#target_include_directories(safety_test PRIVATE ${BOOST_INCLUDE_DIRS})
-#add_test(NAME test_safety COMMAND safety_test)
+add_executable(safety_test test/safety_test.cpp)
+
+target_link_libraries(safety_test cpu)
+target_include_directories(safety_test PRIVATE ${BOOST_INCLUDE_DIRS})
+add_test(NAME test_safety COMMAND safety_test)
