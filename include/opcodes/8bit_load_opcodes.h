@@ -1,0 +1,8 @@
+//
+// Created by cedric on 2021-06-17.
+//
+
+#ifndef GAMEBOY_8BIT_LOAD_OPCODES_H
+#define GAMEBOY_8BIT_LOAD_OPCODES_H
+
+#endif //GAMEBOY_8BIT_LOAD_OPCODES_H
