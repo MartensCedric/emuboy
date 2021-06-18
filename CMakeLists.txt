@@ -1,30 +1,36 @@
-cmake_minimum_required(VERSION 3.17)
-project(gameboy)
-enable_testing()
+CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
+PROJECT(EMUBOY)
+ENABLE_TESTING()
 
-FIND_PACKAGE(Boost 1.65.1 COMPONENTS unit_test_framework REQUIRED)
+FIND_PACKAGE(Boost 1.65.1 COMPONENTS UNIT_TEST_FRAMEWORK REQUIRED)
 
-if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost Not found")
-endif()
-set(CMAKE_CXX_STANDARD 20)
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
+IF(NOT BOOST_FOUND)
+    MESSAGE(FATAL_ERROR "BOOST NOT FOUND")
+ENDIF()
+SET(CMAKE_CXX_STANDARD 20)
+
+FUNCTION(ADD_BOOST_TEST NAME SRC)
+
+    ADD_EXECUTABLE(${NAME} ${SRC})
+
+    TARGET_LINK_LIBRARIES(${NAME} CPU)
+    TARGET_INCLUDE_DIRECTORIES(${NAME} PRIVATE ${BOOST_INCLUDE_DIRS})
+    ADD_TEST(NAME ${NAME} COMMAND ${NAME})
+
+ENDFUNCTION()
+
+INCLUDE_DIRECTORIES(${BOOST_INCLUDE_DIR})
 
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(cpu src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp)
+ADD_LIBRARY(CPU src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp)
 
-TARGET_LINK_LIBRARIES(cpu ${Boost_LIBRARIES})
+TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
-add_executable(gameboy src/main.cpp)
+ADD_EXECUTABLE(EMUBOY src/main.cpp)
 
-TARGET_LINK_LIBRARIES(gameboy cpu)
-
-add_executable(safety_test test/safety_test.cpp)
-
-target_link_libraries(safety_test cpu)
-target_include_directories(safety_test PRIVATE ${BOOST_INCLUDE_DIRS})
-add_test(NAME test_safety COMMAND safety_test)
+TARGET_LINK_LIBRARIES(EMUBOY CPU)
+ADD_BOOST_TEST(TEST_SAFETY test/safety_test.cpp)

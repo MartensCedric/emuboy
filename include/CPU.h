@@ -2,8 +2,8 @@
 // Created by cedric on 2021-06-16.
 //
 
-#ifndef GAMEBOY_CPU_H
-#define GAMEBOY_CPU_H
+#ifndef EMUBOY_CPU_H
+#define EMUBOY_CPU_H
 #include <cstdint>
 #include <cstddef>
 
@@ -30,4 +30,4 @@ class CPU {
 };
 
 
-#endif //GAMEBOY_CPU_H
+#endif //EMUBOY_CPU_H
