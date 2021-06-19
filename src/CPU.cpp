@@ -48,3 +48,7 @@ CPU::~CPU() {
     free(this->memory);
     free(this->registers);
 }
+
+uint8_t CPU::get_first_opcode_byte() {
+    return this->memory[this->get_program_counter()];
+}
