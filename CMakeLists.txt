@@ -2,7 +2,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 PROJECT(EMUBOY)
 ENABLE_TESTING()
 
-FIND_PACKAGE(Boost 1.65.1 COMPONENTS UNIT_TEST_FRAMEWORK REQUIRED)
+FIND_PACKAGE(Boost 1.65.1 REQUIRED)
 
 IF(NOT BOOST_FOUND)
     MESSAGE(FATAL_ERROR "BOOST NOT FOUND")
@@ -26,7 +26,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(CPU src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp src/util/opcode_parsing.cpp)
+ADD_LIBRARY(CPU src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing.cpp)
 
 TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
@@ -34,4 +34,4 @@ ADD_EXECUTABLE(EMUBOY src/main.cpp)
 
 TARGET_LINK_LIBRARIES(EMUBOY CPU)
 ADD_BOOST_TEST(TEST_SAFETY test/safety_test.cpp)
-ADD_BOOST_TEST(TEST_OPCODE_PARSING test/opcode_parsing_test.cpp)
+ADD_BOOST_TEST(TEST_OPCODE_PARSING_MATH test/opcode_parsing_math_test.cpp)

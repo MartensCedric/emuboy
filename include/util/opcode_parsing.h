@@ -4,11 +4,18 @@
 
 #ifndef EMUBOY_OPCODE_PARSING_H
 #define EMUBOY_OPCODE_PARSING_H
-#include "CPU.h"
 
-uint8_t swap_nibble(uint8_t value);
-bool byte_in_range(uint8_t value, uint8_t lower, uint8_t upper);
-bool byte_in_range_vertical(uint8_t value, uint8_t lower, uint8_t upper);
-bool next_is_8bit_lsm(CPU* cpu);
+#include "CPU.h"
+/**
+ * Categories taken from this website: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+ */
+
+bool next_is_misc(const CPU* cpu);
+bool next_is_jump_calls(const CPU* cpu);
+bool next_is_8bit_lsm(const CPU* cpu);
+bool next_is_16bit_lsm(const CPU* cpu);
+bool next_is_8bit_arithmetic(const CPU* cpu);
+bool next_is_16bit_arithmetic(const CPU* cpu);
+bool next_is_8bit_rotation_shifts(const CPU* cpu);
 
 #endif //EMUBOY_OPCODE_PARSING_H

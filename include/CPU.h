@@ -21,9 +21,9 @@ class CPU {
 
     public:
         CPU();
-        uint16_t get_stack_pointer();
-        uint16_t get_program_counter();
-        uint8_t get_first_opcode_byte();
+        uint16_t get_stack_pointer() const;
+        uint16_t get_program_counter() const;
+        uint8_t get_first_opcode_byte() const;
         void fetch_cycle();
         ~CPU();
 };

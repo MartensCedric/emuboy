@@ -18,12 +18,16 @@ CPU::CPU() {
     this->program_counter = 0x100;
 }
 
-uint16_t CPU::get_program_counter() {
+uint16_t CPU::get_program_counter() const {
     return this->program_counter;
 }
 
-uint16_t CPU::get_stack_pointer() {
+uint16_t CPU::get_stack_pointer() const {
     return this->stack_pointer;
+}
+
+uint8_t CPU::get_first_opcode_byte() const{
+    return this->memory[this->get_program_counter()];
 }
 
 void CPU::fetch_cycle() {
@@ -47,8 +51,4 @@ void CPU::process_opcode() {
 CPU::~CPU() {
     free(this->memory);
     free(this->registers);
-}
-
-uint8_t CPU::get_first_opcode_byte() {
-    return this->memory[this->get_program_counter()];
 }

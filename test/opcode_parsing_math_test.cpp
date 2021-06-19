@@ -2,7 +2,7 @@
 #define BOOST_TEST_MODULE OpcodeParsingTest
 #include <boost/test/included/unit_test.hpp>
 #include <exception>
-#include "opcode_parsing.h"
+#include "opcode_parsing_math.h"
 
 BOOST_AUTO_TEST_SUITE(OpcodeParsingTest)
 
@@ -33,6 +33,10 @@ BOOST_AUTO_TEST_SUITE(OpcodeParsingTest)
     BOOST_AUTO_TEST_CASE(validateByteInRangeVertical)
     {
         BOOST_CHECK(byte_in_range_vertical(0x16, 0x06, 0x36));
-        BOOST_CHECK(!byte_in_range(0x17, 0x06, 0x36));
+        BOOST_CHECK(!byte_in_range_vertical(0x17, 0x06, 0x36));
+        BOOST_CHECK(!byte_in_range_vertical(0x18, 0x06, 0x36));
+        BOOST_CHECK(!byte_in_range_vertical(0x19, 0x06, 0x36));
+        BOOST_CHECK(byte_in_range_vertical(0x26, 0x06, 0x36));
+        BOOST_CHECK(byte_in_range_vertical(0x36, 0x06, 0x36));
     }
 BOOST_AUTO_TEST_SUITE_END()
