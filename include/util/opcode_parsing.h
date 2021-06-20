@@ -7,5 +7,5 @@
 
 #include "CPU.h"
 #include "opcode_parsing_categories.h"
-void call_8bit_lsm(const CPU* cpu);
+void call_8bit_lsm(CPU* cpu);
 #endif //EMUBOY_OPCODE_PARSING_H

@@ -7,13 +7,7 @@
 
 void call_8bit_lsm(CPU* cpu)
 {
-    // todo: Find a better way to do this, and not make it look like fetches
     uint8_t first_byte = cpu->fetch();
-    cpu->increment_pc();
-    uint8_t second_byte = cpu->fetch();
-    cpu->increment_pc();
-    uint8_t third_byte = cpu->fetch();
-
 
     /**
      *
@@ -23,9 +17,14 @@ void call_8bit_lsm(CPU* cpu)
      * reg[3]: E 1E 0001 1110
      * reg[4] H 26 0010 0100
      * reg[5] L 2E 0010 1110
+     * reg[6] A 36 0011 0100
      *
      */
 
-    if(byte_in_range_vertical(first_byte, 0x06, 0x26))
-        cpu->load_immediate(((second_byte & 0xF0) * 2) + ((second_byte & 0x02) >> 1), third_byte);
+    if(byte_in_range_vertical(first_byte, 0x06, 0x26) ||
+        byte_in_range_vertical(first_byte, 0x0E, 0x36))
+        cpu->load_immediate(((cpu->fetch() & 0xF0) * 2) + ((cpu->fetch() & 0x02) >> 1), cpu->fetch_next());
+
+    if(byte_in_range(first_byte, 0x78, 0x7D))
+        cpu->load_register_indirect(REGISTER_A_INDEX, first_byte - 0x78);
 }

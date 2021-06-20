@@ -15,6 +15,7 @@ FUNCTION(ADD_BOOST_TEST NAME SRC)
 
     TARGET_LINK_LIBRARIES(${NAME} CPU)
     TARGET_INCLUDE_DIRECTORIES(${NAME} PRIVATE ${BOOST_INCLUDE_DIRS})
+    TARGET_LINK_LIBRARIES(${NAME} TEST_UTIL)
     ADD_TEST(NAME ${NAME} COMMAND ${NAME})
 
 ENDFUNCTION()
@@ -27,11 +28,15 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
 ADD_LIBRARY(CPU src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp)
-
 TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
 ADD_EXECUTABLE(EMUBOY src/main.cpp)
-
 TARGET_LINK_LIBRARIES(EMUBOY CPU)
+
+ADD_LIBRARY(TEST_UTIL test/util/testing_utilities.cpp)
+TARGET_INCLUDE_DIRECTORIES(TEST_UTIL PRIVATE test/util)
+TARGET_LINK_LIBRARIES(TEST_UTIL CPU)
+
 ADD_BOOST_TEST(TEST_SAFETY test/safety_test.cpp)
 ADD_BOOST_TEST(TEST_OPCODE_PARSING_MATH test/opcode_parsing_math_test.cpp)
+ADD_BOOST_TEST(TEST_8BIT_LSM_OPCODES test/8bit_lsm_opcodes_test.cpp)

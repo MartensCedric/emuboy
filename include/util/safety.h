@@ -14,5 +14,14 @@ T validate_argument(T value, T mask)
     return value;
 }
 
+template <typename T>
+T validate_leq_than(T value, T target)
+{
+    if(value > target)
+        throw std::runtime_error("Value larger than target!");
+
+    return value;
+}
+
 
 #endif //EMUBOY_SAFETY_H

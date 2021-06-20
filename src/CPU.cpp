@@ -8,11 +8,11 @@
 #include <stdexcept>
 #include <ios>
 #include <sstream>
+#include <util/opcode_parsing.h>
 #include "safety.h"
+#include "opcode_parsing_categories.h"
 
 CPU::CPU() {
-    memset(this->memory, 0, NUM_MEMORY_BYTES);
-    memset(this->registers, 0, NUM_REGISTERS);
     this->stack_pointer = NUM_MEMORY_BYTES - 1;
     this->program_counter = 0x100;
 }
@@ -29,27 +29,28 @@ uint8_t CPU::fetch() const{
     return this->memory[this->get_program_counter()];
 }
 
-void CPU::fetch_cycle() {
+uint8_t CPU::fetch_next() {
+    this->increment_pc();
+    return this->fetch();
+}
 
+void CPU::fetch_cycle() {
+    this->process_opcode();
 }
 
 void CPU::process_opcode() {
-
-    const uint8_t first_byte = this->memory[this->program_counter];
-    switch (first_byte) {
-        case 0xCE:
-            break;
-        default:
-            std::stringstream ss("Could not find opcode: 0x");
-            ss << std::hex << first_byte;
-            throw std::runtime_error(ss.str());
+    if(next_is_8bit_lsm(this))
+    {
+        call_8bit_lsm(this);
+        return;
     }
+
+    throw std::runtime_error("Could not find opcode!");
 }
 
 
 CPU::~CPU() {
-    free(this->memory);
-    free(this->registers);
+
 }
 
 void CPU::jump_to_address(uint16_t address) {
@@ -65,21 +66,31 @@ void CPU::increment_pc(uint16_t bytes_to_increment) {
 }
 
 void CPU::load_immediate(uint8_t reg_x, uint8_t immediate_value) {
-    validate_argument<uint8_t>(reg_x, 0x8);
+    validate_leq_than<uint8_t>(reg_x, 0x08);
     this->registers[reg_x] = immediate_value;
 }
 
 void CPU::load_register_indirect(uint8_t reg_x, uint8_t reg_y) {
-    validate_argument<uint8_t>(reg_x, 0x8);
+    validate_leq_than<uint8_t>(reg_x, 0x08);
+    validate_leq_than<uint8_t>(reg_y, 0x08);
     this->registers[reg_x] = this->registers[reg_y];
 }
 
 void CPU::load_memory_indirect(uint8_t reg_x, uint16_t memory_address) {
-    validate_argument<uint8_t>(reg_x, 0x8);
+    validate_leq_than<uint8_t>(reg_x, 0x08);
     this->registers[reg_x] = this->memory[memory_address];
 }
 
 void CPU::store_memory_indirect(uint16_t memory_address, uint8_t reg_x) {
-    validate_argument<uint8_t>(reg_x, 0x8);
+    validate_leq_than<uint8_t>(reg_x, 0x08);
     this->memory[memory_address] = this->registers[reg_x];
 }
+
+void CPU::store_memory_immediate(uint16_t memory_address, uint8_t value) {
+    this->memory[memory_address] = value;
+}
+
+const uint8_t* CPU::get_registers() const {
+    return this->registers.get();
+}
+
