@@ -13,6 +13,8 @@
 #include "opcode_parsing_categories.h"
 
 CPU::CPU() {
+    memset(this->memory, 0, NUM_MEMORY_BYTES);
+    memset(this->registers, 0, NUM_REGISTERS);
     this->stack_pointer = NUM_MEMORY_BYTES - 1;
     this->program_counter = 0x100;
 }
@@ -50,7 +52,8 @@ void CPU::process_opcode() {
 
 
 CPU::~CPU() {
-
+    delete[] memory;
+    delete[] registers;
 }
 
 void CPU::jump_to_address(uint16_t address) {
@@ -91,6 +94,6 @@ void CPU::store_memory_immediate(uint16_t memory_address, uint8_t value) {
 }
 
 const uint8_t* CPU::get_registers() const {
-    return this->registers.get();
+    return this->registers;
 }
 

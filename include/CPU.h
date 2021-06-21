@@ -8,12 +8,12 @@
 #include <cstddef>
 #include <boost/scoped_array.hpp>
 
-#define REGISTER_A_INDEX 6
+#define REGISTER_A_INDEX 7
 #define REGISTER_B_INDEX 0
 #define REGISTER_C_INDEX 1
 #define REGISTER_D_INDEX 2
 #define REGISTER_E_INDEX 3
-#define REGISTER_F_INDEX 7
+#define REGISTER_F_INDEX 6
 #define REGISTER_H_INDEX 4
 #define REGISTER_L_INDEX 5
 
@@ -24,8 +24,8 @@ class CPU {
 
         uint16_t stack_pointer;
         uint16_t program_counter;
-        boost::scoped_array<uint8_t> memory { new uint8_t [NUM_MEMORY_BYTES] };
-        boost::scoped_array<uint8_t> registers { new uint8_t [NUM_REGISTERS] };  // B, C, D, E, H, L, A, F
+        uint8_t* memory = new uint8_t [NUM_MEMORY_BYTES];
+        uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, A, F
 
         void process_opcode();
 
