@@ -4,6 +4,7 @@
 
 #include <stdexcept>
 #include <algorithm>
+#include <iostream>
 #include "opcode_parsing_math.h"
 
 uint8_t swap_nibble(uint8_t value)
@@ -36,7 +37,7 @@ bool byte_in_range_matrix(uint8_t value, uint8_t lower, uint8_t upper)
     uint8_t iterations = 1 + ((upper & 0xF0) >> 4) - ((lower & 0xF0) >> 4);
 
     for(uint8_t i = 0; i < iterations; i++)
-        if(byte_in_range(value, lower + (i << 4), lower + (i << 4) + (upper & 0xF)))
+        if(byte_in_range(value, lower + (i << 4), lower + (i << 4) + (upper & 0xF) - (lower & 0xF)))
             return true;
 
     return false;

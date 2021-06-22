@@ -42,7 +42,9 @@ BOOST_AUTO_TEST_SUITE(OpcodeParsingTest)
 
     BOOST_AUTO_TEST_CASE(validateByteInRangeMatrix)
     {
+        BOOST_CHECK(byte_in_range_matrix(0x50, 0x40, 0x65));
         BOOST_CHECK(byte_in_range_matrix(0x51, 0x40, 0x65));
+        BOOST_CHECK(!byte_in_range_matrix(0x50, 0x48, 0x6D));
         BOOST_CHECK(!byte_in_range_matrix(0x57, 0x40, 0x65));
         BOOST_CHECK(byte_in_range_matrix(0x01, 0x00, 0x33));
         BOOST_CHECK(!byte_in_range_matrix(0x19, 0x00, 0x33));

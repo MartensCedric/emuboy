@@ -10,18 +10,6 @@
 #include "CPU.h"
 #include "util/testing_utilities.h"
 
-//struct ManagedCPU {
-//    ManagedCPU() = default;
-//    ~ManagedCPU() {
-//        delete cpu;
-//    }
-//
-//    CPU* get_cpu() const { return cpu; }
-//
-//    CPU* cpu = new CPU();
-//};
-
-
 BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
 
     BOOST_AUTO_TEST_CASE(validate0x06)
@@ -71,6 +59,151 @@ BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
         CPU cpu;
         run_next_opcode(&cpu, { 0x3E, 0x45});
         BOOST_CHECK(cpu.get_registers()[REGISTER_A_INDEX] == 0x45);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x40)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_B_INDEX, 5);
+        run_next_opcode(&cpu, { 0x40 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 5);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x41)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_C_INDEX, 0xE1);
+        run_next_opcode(&cpu, { 0x41 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0xE1);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x42)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_D_INDEX, 0x31);
+        run_next_opcode(&cpu, { 0x42 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x31);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x43)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_E_INDEX, 0x19);
+        run_next_opcode(&cpu, { 0x43 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x19);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x44)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_H_INDEX, 0x72);
+        run_next_opcode(&cpu, { 0x44 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x72);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x45)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_L_INDEX, 0xAE);
+        run_next_opcode(&cpu, { 0x45 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0xAE);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x50)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_B_INDEX, 5);
+        run_next_opcode(&cpu, { 0x50 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 5);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x51)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_C_INDEX, 0xE1);
+        run_next_opcode(&cpu, { 0x51 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0xE1);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x52)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_D_INDEX, 0x31);
+        run_next_opcode(&cpu, { 0x52 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x31);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x53)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_E_INDEX, 0x19);
+        run_next_opcode(&cpu, { 0x53 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x19);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x54)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_H_INDEX, 0x72);
+        run_next_opcode(&cpu, { 0x54 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x72);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x55)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_L_INDEX, 0xAE);
+        run_next_opcode(&cpu, { 0x55 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0xAE);
+    }
+
+
+    BOOST_AUTO_TEST_CASE(validate0x60)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_B_INDEX, 5);
+        run_next_opcode(&cpu, { 0x60 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 5);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x61)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_C_INDEX, 0xE1);
+        run_next_opcode(&cpu, { 0x61 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0xE1);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x62)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_D_INDEX, 0x31);
+        run_next_opcode(&cpu, { 0x62 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x31);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x63)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_E_INDEX, 0x19);
+        run_next_opcode(&cpu, { 0x63 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x19);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x64)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_H_INDEX, 0x72);
+        run_next_opcode(&cpu, { 0x64 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x72);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x65)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_L_INDEX, 0xAE);
+        run_next_opcode(&cpu, { 0x65 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0xAE);
     }
 
 BOOST_AUTO_TEST_SUITE_END()
