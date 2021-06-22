@@ -17,6 +17,11 @@
 #define REGISTER_H_INDEX 4
 #define REGISTER_L_INDEX 5
 
+#define REGISTER_AF_INDEX 0
+#define REGISTER_BC_INDEX 1
+#define REGISTER_DE_INDEX 2
+#define REGISTER_HL_INDEX 3
+
 class CPU {
     private:
         const static size_t NUM_REGISTERS = 8;
@@ -34,6 +39,7 @@ class CPU {
         uint16_t get_stack_pointer() const;
         uint16_t get_program_counter() const;
         const uint8_t* get_registers() const;
+        uint16_t get_16bit_register(uint8_t index) const;
         uint8_t fetch() const;
         uint8_t fetch_next();
         void jump_to_address(uint16_t address);

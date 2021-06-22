@@ -97,3 +97,20 @@ const uint8_t* CPU::get_registers() const {
     return this->registers;
 }
 
+uint16_t CPU::get_16bit_register(uint8_t index) const {
+    switch (index) {
+        case REGISTER_AF_INDEX:
+            return (((uint16_t)this->registers[REGISTER_A_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_F_INDEX]);
+        case REGISTER_BC_INDEX:
+            return (((uint16_t)this->registers[REGISTER_B_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_C_INDEX]);
+        case REGISTER_DE_INDEX:
+            return (((uint16_t)this->registers[REGISTER_D_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_E_INDEX]);
+        case REGISTER_HL_INDEX:
+            return (((uint16_t)this->registers[REGISTER_L_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_L_INDEX]);
+        default:
+            throw std::runtime_error("16bit register index out of bounds!");
+    }
+}
+
+
+
