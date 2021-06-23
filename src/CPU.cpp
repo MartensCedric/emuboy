@@ -106,7 +106,7 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
         case REGISTER_DE_INDEX:
             return (((uint16_t)this->registers[REGISTER_D_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_E_INDEX]);
         case REGISTER_HL_INDEX:
-            return (((uint16_t)this->registers[REGISTER_L_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_L_INDEX]);
+            return (((uint16_t)this->registers[REGISTER_H_INDEX]) << 8) + ((uint16_t)this->registers[REGISTER_L_INDEX]);
         default:
             throw std::runtime_error("16bit register index out of bounds!");
     }

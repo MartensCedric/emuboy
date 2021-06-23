@@ -30,7 +30,7 @@ class CPU {
         uint16_t stack_pointer;
         uint16_t program_counter;
         uint8_t* memory = new uint8_t [NUM_MEMORY_BYTES];
-        uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, A, F
+        uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, F, A
 
         void process_opcode();
 
