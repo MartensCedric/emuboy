@@ -12,12 +12,35 @@
 
 BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
 
+    BOOST_AUTO_TEST_CASE(validate0x02)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_B_INDEX, 0x4F);
+        cpu.load_immediate(REGISTER_C_INDEX, 0x23);
+        cpu.load_immediate(REGISTER_A_INDEX, 0x22);
+        run_next_opcode(&cpu, { 0x02});
+        cpu.load_memory_indirect(REGISTER_H_INDEX, 0x4F23);
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x22);
+    }
+
     BOOST_AUTO_TEST_CASE(validate0x06)
     {
         CPU cpu;
         run_next_opcode(&cpu, { 0x06, 0x78});
         BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x78);
     }
+
+    BOOST_AUTO_TEST_CASE(validate0x12)
+    {
+        CPU cpu;
+        cpu.load_immediate(REGISTER_D_INDEX, 0x62);
+        cpu.load_immediate(REGISTER_E_INDEX, 0x1F);
+        cpu.load_immediate(REGISTER_A_INDEX, 0x8F);
+        run_next_opcode(&cpu, { 0x12});
+        cpu.load_memory_indirect(REGISTER_H_INDEX, 0x621F);
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x8F);
+    }
+
 
     BOOST_AUTO_TEST_CASE(validate0x16)
     {
