@@ -68,9 +68,9 @@ void CPU::increment_pc(uint16_t bytes_to_increment) {
     this->program_counter += bytes_to_increment;
 }
 
-void CPU::load_immediate(uint8_t reg_x, uint8_t immediate_value) {
+void CPU::load_register_immediate(uint8_t reg_x, uint8_t value) {
     validate_leq_than<uint8_t>(reg_x, 0x08);
-    this->registers[reg_x] = immediate_value;
+    this->registers[reg_x] = value;
 }
 
 void CPU::load_register_indirect(uint8_t reg_x, uint8_t reg_y) {

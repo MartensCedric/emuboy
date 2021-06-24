@@ -11,14 +11,25 @@
  * https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
  */
 
-void call_8bit_lsm(CPU* cpu)
-{
+void call_8bit_lsm(CPU* cpu) {
     uint8_t first_byte = cpu->fetch();
 
-    if(byte_in_range_vertical(first_byte, 0x02, 0x12))
-    {
+    if (byte_in_range_vertical(first_byte, 0x02, 0x12)) {
         const uint8_t reg_x = 1 + ((first_byte & 0xF0) >> 4);
         cpu->store_memory_indirect(cpu->get_16bit_register(reg_x), REGISTER_A_INDEX);
+    }
+    else if(byte_in_range_vertical(first_byte, 0x22, 0x32))
+    {
+        uint16_t memory_address = cpu->get_16bit_register(REGISTER_HL_INDEX);
+        cpu->store_memory_indirect(memory_address, REGISTER_A_INDEX);
+
+        if(first_byte == 0x22)
+            memory_address++;
+        else
+            memory_address--;
+
+        cpu->load_register_immediate(REGISTER_H_INDEX, memory_address & 0xF0);
+        cpu->load_register_immediate(REGISTER_L_INDEX, memory_address & 0x0F);
     }
     else if(byte_in_range_matrix(first_byte, 0x40, 0x65))
     {
@@ -55,8 +66,8 @@ void call_8bit_lsm(CPU* cpu)
     else if(byte_in_range_vertical(first_byte, 0x06, 0x26) ||
         byte_in_range_vertical(first_byte, 0x0E, 0x3E))
     {
-        const uint8_t reg_x = (((cpu->fetch() & 0xF0) >> 4) * 2) + ((cpu->fetch() & 0x08) >> 3);
-        cpu->load_immediate(reg_x, cpu->fetch_next());
+        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+        cpu->load_register_immediate(reg_x, cpu->fetch_next());
     }
     else if(byte_in_range(first_byte, 0x70, 0x75))
     {
@@ -66,6 +77,10 @@ void call_8bit_lsm(CPU* cpu)
     else if(first_byte == 0x77)
     {
         cpu->store_memory_indirect(cpu->get_16bit_register(REGISTER_HL_INDEX), REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0x36)
+    {
+        cpu->store_memory_immediate(cpu->get_16bit_register(REGISTER_HL_INDEX), cpu->fetch_next());
     }
     else if(byte_in_range(first_byte, 0x78, 0x7D))
         cpu->load_register_indirect(REGISTER_A_INDEX, first_byte - 0x78);
