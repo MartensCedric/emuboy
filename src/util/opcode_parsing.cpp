@@ -18,6 +18,19 @@ void call_8bit_lsm(CPU* cpu) {
         const uint8_t reg_x = 1 + ((first_byte & 0xF0) >> 4);
         cpu->store_memory_indirect(cpu->get_16bit_register(reg_x), REGISTER_A_INDEX);
     }
+    else if(byte_in_range_vertical(first_byte, 0x2A, 0x3A))
+    {
+        uint16_t memory_address = cpu->get_16bit_register(REGISTER_HL_INDEX);
+        cpu->load_memory_indirect(REGISTER_A_INDEX, memory_address);
+
+        if(first_byte == 0x2A)
+            memory_address++;
+        else
+            memory_address--;
+
+        cpu->load_register_immediate(REGISTER_H_INDEX, memory_address & 0xF0);
+        cpu->load_register_immediate(REGISTER_L_INDEX, memory_address & 0x0F);
+    }
     else if(byte_in_range_vertical(first_byte, 0x22, 0x32))
     {
         uint16_t memory_address = cpu->get_16bit_register(REGISTER_HL_INDEX);
@@ -30,6 +43,11 @@ void call_8bit_lsm(CPU* cpu) {
 
         cpu->load_register_immediate(REGISTER_H_INDEX, memory_address & 0xF0);
         cpu->load_register_immediate(REGISTER_L_INDEX, memory_address & 0x0F);
+    }
+    else if(byte_in_range_vertical(first_byte, 0x0A, 0x1A))
+    {
+        const uint8_t reg_x = first_byte == 0x0A ? REGISTER_BC_INDEX : REGISTER_DE_INDEX;
+        cpu->load_memory_indirect(REGISTER_A_INDEX, cpu->get_16bit_register(reg_x));
     }
     else if(byte_in_range_matrix(first_byte, 0x40, 0x65))
     {
