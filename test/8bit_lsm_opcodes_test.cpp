@@ -204,7 +204,7 @@ BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
         CPU cpu;
         cpu.load_register_immediate(REGISTER_B_INDEX, 5);
         run_next_opcode(&cpu, { 0x50 });
-        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 5);
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x05);
     }
 
     BOOST_AUTO_TEST_CASE(validate0x51)
@@ -257,12 +257,68 @@ BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
         BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x5F);
     }
 
+    BOOST_AUTO_TEST_CASE(validate0x57)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0x2B);
+        run_next_opcode(&cpu, { 0x57 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_D_INDEX] == 0x2B);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x58)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x7C);
+        run_next_opcode(&cpu, { 0x58 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0x7C);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x59)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_C_INDEX, 0xE8);
+        run_next_opcode(&cpu, { 0x59 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0xE8);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x5A)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_D_INDEX, 0xBB);
+        run_next_opcode(&cpu, { 0x5A });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0xBB);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x5B)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_E_INDEX, 0xC3);
+        run_next_opcode(&cpu, { 0x5B });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0xC3);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x5C)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_H_INDEX, 0xCE);
+        run_next_opcode(&cpu, { 0x5C });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0xCE);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x5D)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_L_INDEX, 0xFD);
+        run_next_opcode(&cpu, { 0x5D });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_E_INDEX] == 0xFD);
+    }
+
     BOOST_AUTO_TEST_CASE(validate0x60)
     {
         CPU cpu;
         cpu.load_register_immediate(REGISTER_B_INDEX, 5);
         run_next_opcode(&cpu, { 0x60 });
-        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 5);
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x05);
     }
 
     BOOST_AUTO_TEST_CASE(validate0x61)
@@ -315,5 +371,60 @@ BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
         BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x7A);
     }
 
+    BOOST_AUTO_TEST_CASE(validate0x67)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0x2B);
+        run_next_opcode(&cpu, { 0x67 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_H_INDEX] == 0x2B);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x68)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x7C);
+        run_next_opcode(&cpu, { 0x68 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0x7C);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x69)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_C_INDEX, 0xE8);
+        run_next_opcode(&cpu, { 0x69 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xE8);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x6A)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_D_INDEX, 0xBB);
+        run_next_opcode(&cpu, { 0x6A });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xBB);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x6B)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_E_INDEX, 0xC3);
+        run_next_opcode(&cpu, { 0x6B });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xC3);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x6C)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_H_INDEX, 0xCE);
+        run_next_opcode(&cpu, { 0x6C });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xCE);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x6D)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_L_INDEX, 0xFD);
+        run_next_opcode(&cpu, { 0x6D });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xFD);
+    }
 
 BOOST_AUTO_TEST_SUITE_END()
