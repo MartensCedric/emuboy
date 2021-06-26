@@ -44,10 +44,15 @@ void CPU::process_opcode() {
     if(next_is_8bit_lsm(this))
     {
         call_8bit_lsm(this);
-        return;
     }
-
-    throw std::runtime_error("Could not find opcode!");
+    else if(next_is_8bit_arithmetic(this))
+    {
+        call_8bit_arithmetic(this);
+    }
+    else
+    {
+        throw std::runtime_error("Could not find opcode!");
+    }
 }
 
 
@@ -110,6 +115,26 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
         default:
             throw std::runtime_error("16bit register index out of bounds!");
     }
+}
+
+void CPU::setZeroFlag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0x7F;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
+}
+
+void CPU::setSubtractFlag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xBF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 6);
+}
+
+void CPU::setCarryFlag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xDF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 5);
+}
+
+void CPU::setHalfCarryFlag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xEF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
 }
 
 

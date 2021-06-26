@@ -103,3 +103,95 @@ void call_8bit_lsm(CPU* cpu) {
     else if(byte_in_range(first_byte, 0x78, 0x7D))
         cpu->load_register_indirect(REGISTER_A_INDEX, first_byte - 0x78);
 }
+
+void call_misc(CPU* cpu)
+{
+
+}
+void call_jump_calls(CPU* cpu)
+{
+
+}
+void call_16bit_lsm(CPU* cpu)
+{
+
+}
+void call_8bit_arithmetic(CPU* cpu)
+{
+    uint8_t first_byte = cpu->fetch();
+
+    if(byte_in_range(first_byte, 0x80, 0x85))
+    {
+        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
+        uint8_t value_to_add = cpu->get_registers()[first_byte & 0xF];
+
+        uint8_t new_value = original_value + value_to_add;
+        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+
+        cpu->setZeroFlag(new_value == 0);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(new_value < original_value);
+        cpu->setHalfCarryFlag(((original_value & 0xF) + (new_value & 0xF)) < (original_value & 0xF));
+    }
+    else if(byte_in_range(first_byte, 0x90, 0x95))
+    {
+        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
+        uint8_t value_to_subtract = cpu->get_registers()[first_byte & 0xF];
+
+        uint8_t new_value = original_value - value_to_subtract;
+        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+
+        cpu->setZeroFlag(new_value == 0);
+        cpu->setSubtractFlag(true);
+        cpu->setCarryFlag(new_value > original_value);
+        cpu->setHalfCarryFlag(((original_value & 0xF) - (new_value & 0xF)) > (original_value & 0xF));
+    }
+    else if(byte_in_range(first_byte, 0xA0, 0xA5))
+    {
+        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
+        uint8_t value_to_and = cpu->get_registers()[first_byte & 0xF];
+
+        uint8_t new_value = original_value & value_to_and;
+        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+
+        cpu->setZeroFlag(new_value == 0);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(true);
+        cpu->setHalfCarryFlag(false);
+    }
+    else if(byte_in_range(first_byte, 0xA8, 0xAD))
+    {
+        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
+        uint8_t value_to_xor = cpu->get_registers()[(first_byte - 8) & 0xF];
+
+        uint8_t new_value = original_value ^ value_to_xor;
+        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+
+        cpu->setZeroFlag(new_value == 0);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(false);
+        cpu->setHalfCarryFlag(false);
+    }
+    else if(byte_in_range(first_byte, 0xB0, 0xB5))
+    {
+        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
+        uint8_t value_to_or = cpu->get_registers()[first_byte & 0xF];
+
+        uint8_t new_value = original_value | value_to_or;
+        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+
+        cpu->setZeroFlag(new_value == 0);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(false);
+        cpu->setHalfCarryFlag(false);
+    }
+
+}
+void call_16bit_arithmetic(CPU* cpu)
+{
+
+}
+void call_8bit_rotation_shifts(CPU* cpu)
+{
+
+}

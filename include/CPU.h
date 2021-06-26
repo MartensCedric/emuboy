@@ -48,6 +48,11 @@ class CPU {
         void increment_pc(uint16_t bytes_to_increment);
         void fetch_cycle();
 
+        void setZeroFlag(bool isOn);
+        void setSubtractFlag(bool isOn);
+        void setHalfCarryFlag(bool isOn);
+        void setCarryFlag(bool isOn);
+
         void load_register_immediate(uint8_t reg_x, uint8_t value);
         void load_register_indirect(uint8_t reg_x, uint8_t reg_y);
         void load_memory_indirect(uint8_t reg_x, uint16_t memory_address);

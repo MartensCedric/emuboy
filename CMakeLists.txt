@@ -27,7 +27,7 @@ INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(CPU src/CPU.cpp src/opcodes/8bit_load_opcodes.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp)
+ADD_LIBRARY(CPU src/CPU.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp)
 TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
 ADD_EXECUTABLE(EMUBOY src/main.cpp)
