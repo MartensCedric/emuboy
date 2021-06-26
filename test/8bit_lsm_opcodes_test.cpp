@@ -142,6 +142,63 @@ BOOST_AUTO_TEST_SUITE(EightBitLSMTest)
         BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x74);
     }
 
+    BOOST_AUTO_TEST_CASE(validate0x47)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0x4D);
+        run_next_opcode(&cpu, { 0x47 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x4D);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x48)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x3E);
+        run_next_opcode(&cpu, { 0x48 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0x3E);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x49)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_C_INDEX, 0x0F);
+        run_next_opcode(&cpu, { 0x49 });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0x0F);
+    }
+
+
+    BOOST_AUTO_TEST_CASE(validate0x4A)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_D_INDEX, 0xB3);
+        run_next_opcode(&cpu, { 0x4A });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0xB3);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x4B)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_E_INDEX, 0xC7);
+        run_next_opcode(&cpu, { 0x4B });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0xC7);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x4C)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_H_INDEX, 0xFA);
+        run_next_opcode(&cpu, { 0x4C });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0xFA);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x4D)
+    {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_L_INDEX, 0xCF);
+        run_next_opcode(&cpu, { 0x4D });
+        BOOST_CHECK(cpu.get_registers()[REGISTER_C_INDEX] == 0xCF);
+    }
+
     BOOST_AUTO_TEST_CASE(validate0x50)
     {
         CPU cpu;
