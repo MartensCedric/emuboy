@@ -38,6 +38,7 @@ uint8_t CPU::fetch_next() {
 
 void CPU::fetch_cycle() {
     this->process_opcode();
+    this->fetch_next();
 }
 
 void CPU::process_opcode() {
@@ -49,16 +50,18 @@ void CPU::process_opcode() {
     {
         call_8bit_arithmetic(this);
     }
+    else if(next_is_16bit_lsm(this))
+    {
+        call_16bit_lsm(this);
+    }
+    else if(next_is_16bit_arithmetic(this))
+    {
+        call_16bit_arithmetic(this);
+    }
     else
     {
         throw std::runtime_error("Could not find opcode!");
     }
-}
-
-
-CPU::~CPU() {
-    delete[] memory;
-    delete[] registers;
 }
 
 void CPU::jump_to_address(uint16_t address) {
@@ -71,6 +74,25 @@ void CPU::increment_pc() {
 
 void CPU::increment_pc(uint16_t bytes_to_increment) {
     this->program_counter += bytes_to_increment;
+}
+
+void CPU::load_16bit_register_immediate(uint8_t reg_x, uint16_t value) {
+    switch (reg_x) {
+        case REGISTER_AF_INDEX:
+            this->registers[REGISTER_A_INDEX] = (uint8_t)(value & 0xF0);
+            this->registers[REGISTER_F_INDEX] = (uint8_t)(value & 0x0F);
+        case REGISTER_BC_INDEX:
+            this->registers[REGISTER_B_INDEX] = (uint8_t)(value & 0xF0);
+            this->registers[REGISTER_C_INDEX] = (uint8_t)(value & 0x0F);
+        case REGISTER_DE_INDEX:
+            this->registers[REGISTER_D_INDEX] = (uint8_t)(value & 0xF0);
+            this->registers[REGISTER_E_INDEX] = (uint8_t)(value & 0x0F);
+        case REGISTER_HL_INDEX:
+            this->registers[REGISTER_H_INDEX] = (uint8_t)(value & 0xF0);
+            this->registers[REGISTER_L_INDEX] = (uint8_t)(value & 0x0F);
+        default:
+            throw std::runtime_error("16bit register index out of bounds!");
+    }
 }
 
 void CPU::load_register_immediate(uint8_t reg_x, uint8_t value) {
@@ -101,6 +123,7 @@ void CPU::store_memory_immediate(uint16_t memory_address, uint8_t value) {
 const uint8_t* CPU::get_registers() const {
     return this->registers;
 }
+
 
 uint16_t CPU::get_16bit_register(uint8_t index) const {
     switch (index) {
@@ -137,5 +160,8 @@ void CPU::setHalfCarryFlag(bool isOn) {
     this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
 }
 
-
+CPU::~CPU() {
+    delete[] memory;
+    delete[] registers;
+}
 

@@ -114,8 +114,17 @@ void call_jump_calls(CPU* cpu)
 }
 void call_16bit_lsm(CPU* cpu)
 {
+    uint8_t first_byte = cpu->fetch();
 
+    if(byte_in_range_vertical(first_byte, 0x01, 0x31))
+    {
+        uint16_t data = ((uint16_t) cpu->fetch_next()) << 8;
+        data |= cpu->fetch_next();
+
+        cpu->load_16bit_register_immediate(1 + (first_byte >> 4), data);
+    }
 }
+
 void call_8bit_arithmetic(CPU* cpu)
 {
     uint8_t first_byte = cpu->fetch();

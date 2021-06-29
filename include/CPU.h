@@ -21,6 +21,7 @@
 #define REGISTER_BC_INDEX 1
 #define REGISTER_DE_INDEX 2
 #define REGISTER_HL_INDEX 3
+#define REGISTER_SP_INDEX 4
 
 class CPU {
     private:
@@ -33,6 +34,7 @@ class CPU {
         uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, F, A
 
         void process_opcode();
+
 
     public:
         CPU();
@@ -54,6 +56,7 @@ class CPU {
         void setCarryFlag(bool isOn);
 
         void load_register_immediate(uint8_t reg_x, uint8_t value);
+        void load_16bit_register_immediate(uint8_t reg_x, uint16_t value);
         void load_register_indirect(uint8_t reg_x, uint8_t reg_y);
         void load_memory_indirect(uint8_t reg_x, uint16_t memory_address);
 
