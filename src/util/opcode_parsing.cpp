@@ -123,9 +123,15 @@ void call_16bit_lsm(CPU* cpu)
 
         cpu->load_16bit_register_immediate(1 + (first_byte >> 4), data);
     }
+    else if(byte_in_range_vertical(first_byte, 0xC1, 0xF1))
+    {
+        uint8_t reg_x = (((first_byte & 0xF0) >> 8) - 11) % 4;
+        cpu->load_16bit_register_immediate(reg_x, cpu->pop());
+    }
     else if(byte_in_range_vertical(first_byte, 0xC5, 0xF5))
     {
-
+        uint8_t reg_x = (((first_byte & 0xF0) >> 8) - 11) % 4;
+        cpu->push(cpu->get_16bit_register(reg_x));
     }
 }
 
