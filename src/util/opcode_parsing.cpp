@@ -123,6 +123,10 @@ void call_16bit_lsm(CPU* cpu)
 
         cpu->load_16bit_register_immediate(1 + (first_byte >> 4), data);
     }
+    else if(byte_in_range_vertical(first_byte, 0xC5, 0xF5))
+    {
+
+    }
 }
 
 void call_8bit_arithmetic(CPU* cpu)

@@ -160,6 +160,26 @@ void CPU::setHalfCarryFlag(bool isOn) {
     this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
 }
 
+void CPU::push(uint16_t value) {
+    this->memory[--this->stack_pointer] = value & 0x00FF;
+    this->memory[--this->stack_pointer] = (value & 0xFF00) >> 8;
+}
+
+uint16_t CPU::peek() {
+    uint16_t value = this->memory[this->stack_pointer];
+    value <<= 8;
+    value += this->memory[this->stack_pointer + 1];
+    return value;
+
+}
+
+uint16_t CPU::pop() {
+    uint16_t value = peek();
+    this->stack_pointer += 2;
+    return value;
+}
+
+
 CPU::~CPU() {
     delete[] memory;
     delete[] registers;

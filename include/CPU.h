@@ -63,6 +63,10 @@ class CPU {
         void store_memory_indirect(uint16_t memory_address, uint8_t reg_x);
         void store_memory_immediate(uint16_t memory_address, uint8_t value);
 
+        void push(uint16_t value);
+        uint16_t peek();
+        uint16_t pop();
+
         ~CPU();
 };
 
