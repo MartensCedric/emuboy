@@ -101,7 +101,36 @@ void call_8bit_lsm(CPU* cpu) {
         cpu->store_memory_immediate(cpu->get_16bit_register(REGISTER_HL_INDEX), cpu->fetch_next());
     }
     else if(byte_in_range(first_byte, 0x78, 0x7D))
+    {
         cpu->load_register_indirect(REGISTER_A_INDEX, first_byte - 0x78);
+    }
+    else if(first_byte == 0xE0) {
+        cpu->store_memory_indirect(0xFF00 + cpu->fetch_next(), REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0xEA)
+    {
+            uint16_t address = cpu->fetch_next();
+            address += ((uint16_t)cpu->fetch_next()) << 8;
+            cpu->store_memory_indirect(address, REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0xE2)
+    {
+        cpu->store_memory_indirect(0xFF00 + cpu->get_registers()[REGISTER_C_INDEX], REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0xF0)
+    {
+        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->fetch_next());
+    }
+    else if(first_byte == 0xF2)
+    {
+        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->get_registers()[REGISTER_C_INDEX]);
+    }
+    else if(first_byte == 0xFA)
+    {
+        uint16_t address = cpu->fetch_next();
+        address += ((uint16_t)cpu->fetch_next()) << 8;
+        cpu->load_memory_indirect(REGISTER_A_INDEX, address);
+    }
 }
 
 void call_misc(CPU* cpu)
