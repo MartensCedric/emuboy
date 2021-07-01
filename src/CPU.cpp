@@ -58,6 +58,10 @@ void CPU::process_opcode() {
     {
         call_16bit_arithmetic(this);
     }
+    else if(next_is_jump_calls(this))
+    {
+        call_jump_calls(this);
+    }
     else
     {
         throw std::runtime_error("Could not find opcode!");
@@ -158,6 +162,23 @@ void CPU::setCarryFlag(bool isOn) {
 void CPU::setHalfCarryFlag(bool isOn) {
     this->registers[REGISTER_F_INDEX] &= 0xEF;
     this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
+}
+
+
+bool CPU::isZeroFlagOn() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 7);
+}
+
+bool CPU::isSubtractFlagOn() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 6);
+}
+
+bool CPU::isCarryFlagOn() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 5);
+}
+
+bool CPU::isHalfCarryFlagOn() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 4);
 }
 
 void CPU::push(uint16_t value) {

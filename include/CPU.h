@@ -55,6 +55,11 @@ class CPU {
         void setHalfCarryFlag(bool isOn);
         void setCarryFlag(bool isOn);
 
+        bool isZeroFlagOn();
+        bool isSubtractFlagOn();
+        bool isHalfCarryFlagOn();
+        bool isCarryFlagOn();
+
         void load_register_immediate(uint8_t reg_x, uint8_t value);
         void load_16bit_register_immediate(uint8_t reg_x, uint16_t value);
         void load_register_indirect(uint8_t reg_x, uint8_t reg_y);
