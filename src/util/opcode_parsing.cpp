@@ -109,9 +109,9 @@ void call_8bit_lsm(CPU* cpu) {
     }
     else if(first_byte == 0xEA)
     {
-            uint16_t address = cpu->fetch_next();
-            address += ((uint16_t)cpu->fetch_next()) << 8;
-            cpu->store_memory_indirect(address, REGISTER_A_INDEX);
+        uint16_t address = cpu->fetch_next();
+        address += ((uint16_t)cpu->fetch_next()) << 8;
+        cpu->store_memory_indirect(address, REGISTER_A_INDEX);
     }
     else if(first_byte == 0xE2)
     {
