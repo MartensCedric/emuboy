@@ -58,6 +58,10 @@ void CPU::process_opcode() {
     {
         call_16bit_arithmetic(this);
     }
+    else if(next_is_8bit_rotation_shifts(this))
+    {
+        call_8bit_rotation_shifts(this);
+    }
     else if(next_is_jump_calls(this))
     {
         call_jump_calls(this);
