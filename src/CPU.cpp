@@ -62,6 +62,10 @@ void CPU::process_opcode() {
     {
         call_jump_calls(this);
     }
+    else if(next_is_misc(this))
+    {
+        call_misc(this);
+    }
     else
     {
         throw std::runtime_error("Could not find opcode!");
@@ -205,4 +209,23 @@ CPU::~CPU() {
     delete[] memory;
     delete[] registers;
 }
+
+void CPU::stop() {
+    lcd_display_active = false;
+    cpu_active = false;
+}
+
+void CPU::halt() {
+    cpu_active = false;
+}
+
+void CPU::enable_interrupts() {
+    interrupts_enabled = true;
+}
+
+
+void CPU::disable_interrupts() {
+    interrupts_enabled = false;
+}
+
 

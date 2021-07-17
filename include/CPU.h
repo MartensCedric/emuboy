@@ -35,7 +35,10 @@ class CPU {
 
         void process_opcode();
 
+        bool cpu_active = true;
+        bool lcd_display_active = true;
 
+        bool interrupts_enabled = true;
     public:
         CPU();
         uint16_t get_stack_pointer() const;
@@ -49,6 +52,9 @@ class CPU {
         void increment_pc();
         void increment_pc(uint16_t bytes_to_increment);
         void fetch_cycle();
+
+        void enable_interrupts();
+        void disable_interrupts();
 
         void setZeroFlag(bool isOn);
         void setSubtractFlag(bool isOn);
@@ -71,6 +77,9 @@ class CPU {
         void push(uint16_t value);
         uint16_t peek();
         uint16_t pop();
+
+        void stop();
+        void halt();
 
         ~CPU();
 };

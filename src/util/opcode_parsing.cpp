@@ -2,6 +2,7 @@
 // Created by cedric on 2021-06-19.
 //
 
+#include <stdexcept>
 #include "opcode_parsing.h"
 #include "opcode_parsing_math.h"
 
@@ -135,8 +136,31 @@ void call_8bit_lsm(CPU* cpu) {
 
 void call_misc(CPU* cpu)
 {
+    uint8_t first_byte = cpu->fetch();
 
+    switch (first_byte) {
+        case 0x00:
+            // nop
+            break;
+        case 0x10:
+            cpu->stop();
+            break;
+        case 0x76:
+            cpu->halt();
+            break;
+        case 0xCB:
+            cpu->fetch_next();
+            call_8bit_rotation_shifts(cpu);
+            break;
+        case 0xF3:
+            cpu->disable_interrupts();
+        case 0xFB:
+            cpu->enable_interrupts();
+        default:
+            throw std::runtime_error("Cannot find misc instruction!");
+    }
 }
+
 void call_jump_calls(CPU* cpu)
 {
     uint8_t first_byte = cpu->fetch();
@@ -144,8 +168,8 @@ void call_jump_calls(CPU* cpu)
     if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
         byte_in_range_vertical(first_byte, 0xCF, 0xFF))
     {
-        cpu->push(cpu->get_stack_pointer());
-        cpu->jump_to_address(first_byte - 0xC7);
+        cpu->push(cpu->get_program_counter());
+        cpu->jump_to_address(first_byte - 0xC8);
     }
     else if(first_byte == 0xC0)
     {
