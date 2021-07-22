@@ -111,7 +111,7 @@ void call_8bit_lsm(CPU* cpu) {
     else if(first_byte == 0xEA)
     {
         uint16_t address = cpu->fetch_next();
-        address += ((uint16_t)cpu->fetch_next()) << 8;
+        address += (static_cast<uint16_t>(cpu->fetch_next()) << 8);
         cpu->store_memory_indirect(address, REGISTER_A_INDEX);
     }
     else if(first_byte == 0xE2)
@@ -129,7 +129,7 @@ void call_8bit_lsm(CPU* cpu) {
     else if(first_byte == 0xFA)
     {
         uint16_t address = cpu->fetch_next();
-        address += ((uint16_t)cpu->fetch_next()) << 8;
+        address += (static_cast<uint16_t>(cpu->fetch_next())) << 8;
         cpu->load_memory_indirect(REGISTER_A_INDEX, address);
     }
 }
@@ -202,7 +202,7 @@ void call_16bit_lsm(CPU* cpu)
 
     if(byte_in_range_vertical(first_byte, 0x01, 0x31))
     {
-        uint16_t data = ((uint16_t) cpu->fetch_next()) << 8;
+        uint16_t data = (static_cast<uint16_t>(cpu->fetch_next())) << 8;
         data |= cpu->fetch_next();
 
         cpu->load_16bit_register_immediate(1 + (first_byte >> 4), data);
@@ -304,7 +304,15 @@ void call_8bit_arithmetic(CPU* cpu)
 }
 void call_16bit_arithmetic(CPU* cpu)
 {
+    uint8_t first_byte = cpu->fetch();
 
+    if(byte_in_range_vertical(first_byte, 0x03, 0x33))
+    {
+        uint8_t reg_x = ((first_byte & 0xF0) >> 4) + 1;
+        uint16_t value = cpu->get_16bit_register(reg_x);
+        value++;
+        cpu->load_16bit_register_immediate(reg_x, value);
+    }
 }
 
 void call_8bit_rotation_shifts(CPU* cpu)

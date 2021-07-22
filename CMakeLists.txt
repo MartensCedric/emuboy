@@ -1,20 +1,27 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.17)
 PROJECT(EMUBOY)
+
+
+SET(CMAKE_CXX_STANDARD 20)
+#SET(CMAKE_CXX_FLAGS "-Wall -Wextra  -Wstrict-aliasing -pedantic -fmax-errors=5 -Werror -Wunreachable-code -Wcast-align \
+#-Wcast-qual -Wctor-dtor-privacy -Wdisabled-optimization -Wformat=2 -Winit-self -Wlogical-op -Wmissing-include-dirs \
+#-Wnoexcept -Wold-style-cast -Woverloaded-virtual -Wredundant-decls -Wshadow -Wsign-promo -Wstrict-null-sentinel \
+#-Wstrict-overflow=5 -Wswitch-default -Wundef -Wno-unused -Wno-variadic-macros -Wno-parentheses \
+#-fdiagnostics-show-option ${CMAKE_CXX_FLAGS}")
 ENABLE_TESTING()
 
 FIND_PACKAGE(Boost 1.65.1 REQUIRED)
 
-IF(NOT BOOST_FOUND)
+IF (NOT BOOST_FOUND)
     MESSAGE(FATAL_ERROR "BOOST NOT FOUND")
-ENDIF()
+ENDIF ()
 
 FIND_PACKAGE(SDL2 REQUIRED)
 
-IF(NOT SDL2_FOUND)
+IF (NOT SDL2_FOUND)
     MESSAGE(FATAL_ERROR "SDL2 NOT FOUND")
-ENDIF()
+ENDIF ()
 
-SET(CMAKE_CXX_STANDARD 20)
 FUNCTION(ADD_BOOST_TEST NAME SRC)
 
     ADD_EXECUTABLE(${NAME} ${SRC})
@@ -30,7 +37,6 @@ INCLUDE_DIRECTORIES(${BOOST_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/opcodes)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
 ADD_LIBRARY(CPU src/CPU.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp src/video/frame_buffer.cpp src/video/color.cpp)
