@@ -93,15 +93,19 @@ void CPU::load_16bit_register_immediate(uint8_t reg_x, uint16_t value) {
         case REGISTER_AF_INDEX:
             this->registers[REGISTER_A_INDEX] = static_cast<uint8_t>(value & 0xF0);
             this->registers[REGISTER_F_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            break;
         case REGISTER_BC_INDEX:
             this->registers[REGISTER_B_INDEX] = static_cast<uint8_t>(value & 0xF0);
             this->registers[REGISTER_C_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            break;
         case REGISTER_DE_INDEX:
             this->registers[REGISTER_D_INDEX] = static_cast<uint8_t>(value & 0xF0);
             this->registers[REGISTER_E_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            break;
         case REGISTER_HL_INDEX:
             this->registers[REGISTER_H_INDEX] = static_cast<uint8_t>(value & 0xF0);
             this->registers[REGISTER_L_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            break;
         default:
             throw std::runtime_error("16bit register index out of bounds!");
     }
