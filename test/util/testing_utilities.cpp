@@ -2,7 +2,7 @@
 // Created by cedric on 2021-06-20.
 //
 
-#include "CPU.h"
+#include "cpu/CPU.h"
 #include <initializer_list>
 #include <algorithm>
 

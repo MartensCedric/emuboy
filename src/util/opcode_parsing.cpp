@@ -333,6 +333,17 @@ void call_16bit_arithmetic(CPU* cpu)
         cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
         cpu->load_16bit_register_immediate(REGISTER_HL_INDEX, final_value);
     }
+    else if(first_byte == 0xE8)
+    {
+        uint16_t base_value = cpu->get_16bit_register(REGISTER_SP_INDEX);
+        uint16_t value_added = static_cast<uint16_t>(cpu->fetch_next());
+        uint16_t final_value = base_value + value_added;
+        cpu->load_16bit_register_immediate(REGISTER_SP_INDEX, final_value);
+        cpu->setZeroFlag(false);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(final_value < base_value);
+        cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
+    }
 }
 
 void call_8bit_rotation_shifts(CPU* cpu)

@@ -5,7 +5,7 @@
 #ifndef EMUBOY_OPCODE_PARSING_CATEGORIES_H
 #define EMUBOY_OPCODE_PARSING_CATEGORIES_H
 
-#include "CPU.h"
+#include "cpu/CPU.h"
 /**
  * Categories taken from this website: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
  */

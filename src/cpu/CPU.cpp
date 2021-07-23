@@ -2,7 +2,7 @@
 // Created by cedric on 2021-06-16.
 //
 
-#include "CPU.h"
+#include "cpu/CPU.h"
 #include <cstring>
 #include <cstdlib>
 #include <stdexcept>

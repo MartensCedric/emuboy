@@ -4,7 +4,7 @@
 
 #ifndef EMUBOY_TESTING_UTILITIES_H
 #define EMUBOY_TESTING_UTILITIES_H
-#include "CPU.h"
+#include "cpu/CPU.h"
 #include <initializer_list>
 #include <algorithm>
 

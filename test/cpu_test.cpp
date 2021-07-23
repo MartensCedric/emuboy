@@ -3,7 +3,7 @@
 #include <boost/test/included/unit_test.hpp>
 #include <exception>
 #include "util/safety.h"
-#include "CPU.h"
+#include "cpu/CPU.h"
 
 BOOST_AUTO_TEST_SUITE(CPUTest)
 

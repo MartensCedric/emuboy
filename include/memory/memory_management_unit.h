@@ -1,0 +1,8 @@
+//
+// Created by cedric on 2021-07-22.
+//
+
+#ifndef EMUBOY_MEMORY_MANAGEMENT_UNIT_H
+#define EMUBOY_MEMORY_MANAGEMENT_UNIT_H
+
+#endif //EMUBOY_MEMORY_MANAGEMENT_UNIT_H

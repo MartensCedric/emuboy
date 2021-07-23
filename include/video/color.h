@@ -15,11 +15,11 @@ namespace Color {
     class Pixel
     {
         private:
-            uint8_t pixel_value;
+            uint8_t shade_value;
         public:
-            Pixel(uint8_t value);
-            void set_pixel_value(uint8_t value);
-            uint8_t get_pixel_value() const;
+            Pixel(uint8_t shade_value);
+            void set_shade_value(uint8_t shade_value);
+            uint8_t get_shade_value() const;
     };
 }
 
