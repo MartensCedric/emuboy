@@ -91,20 +91,24 @@ void CPU::increment_pc(uint16_t bytes_to_increment) {
 void CPU::load_16bit_register_immediate(uint8_t reg_x, uint16_t value) {
     switch (reg_x) {
         case REGISTER_AF_INDEX:
-            this->registers[REGISTER_A_INDEX] = static_cast<uint8_t>(value & 0xF0);
-            this->registers[REGISTER_F_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            this->registers[REGISTER_A_INDEX] = static_cast<uint8_t>((value & 0xFF00) >> 8);
+            this->registers[REGISTER_F_INDEX] = static_cast<uint8_t>(value & 0x00FF);
             break;
         case REGISTER_BC_INDEX:
-            this->registers[REGISTER_B_INDEX] = static_cast<uint8_t>(value & 0xF0);
-            this->registers[REGISTER_C_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            this->registers[REGISTER_B_INDEX] = static_cast<uint8_t>((value & 0xFF00) >> 8);
+            this->registers[REGISTER_C_INDEX] = static_cast<uint8_t>(value & 0x00FF);
             break;
         case REGISTER_DE_INDEX:
-            this->registers[REGISTER_D_INDEX] = static_cast<uint8_t>(value & 0xF0);
-            this->registers[REGISTER_E_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            this->registers[REGISTER_D_INDEX] = static_cast<uint8_t>((value & 0xFF00) >> 8);
+            this->registers[REGISTER_E_INDEX] = static_cast<uint8_t>(value & 0x00FF);
             break;
         case REGISTER_HL_INDEX:
-            this->registers[REGISTER_H_INDEX] = static_cast<uint8_t>(value & 0xF0);
-            this->registers[REGISTER_L_INDEX] = static_cast<uint8_t>(value & 0x0F);
+            this->registers[REGISTER_H_INDEX] = static_cast<uint8_t>((value & 0xFF00) >> 8);
+            this->registers[REGISTER_L_INDEX] = static_cast<uint8_t>(value & 0x00FF);
+            break;
+        case REGISTER_SP_INDEX:
+            this->memory[this->stack_pointer + 1] = value & 0x00FF;
+            this->memory[this->stack_pointer] = (value & 0xFF00) >> 8;
             break;
         default:
             throw std::runtime_error("16bit register index out of bounds!");
@@ -151,6 +155,8 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
             return ((static_cast<uint16_t>(this->registers[REGISTER_D_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_E_INDEX]));
         case REGISTER_HL_INDEX:
             return ((static_cast<uint16_t>(this->registers[REGISTER_H_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_L_INDEX]));
+        case REGISTER_SP_INDEX:
+            return this->peek();
         default:
             throw std::runtime_error("16bit register index out of bounds!");
     }
@@ -198,7 +204,7 @@ void CPU::push(uint16_t value) {
     this->memory[--this->stack_pointer] = (value & 0xFF00) >> 8;
 }
 
-uint16_t CPU::peek() {
+uint16_t CPU::peek() const {
     uint16_t value = this->memory[this->stack_pointer];
     value <<= 8;
     value += this->memory[this->stack_pointer + 1];

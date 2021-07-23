@@ -49,11 +49,11 @@ BOOST_AUTO_TEST_SUITE(SixteenBitArithmeticTest)
     BOOST_AUTO_TEST_CASE(validate0x33) {
         CPU cpu;
         cpu.load_16bit_register_immediate(REGISTER_SP_INDEX, 0x62F1);
-        run_next_opcode(&cpu, {0x23});
+        run_next_opcode(&cpu, {0x33});
         BOOST_CHECK(cpu.get_16bit_register(REGISTER_SP_INDEX) == 0x62F2);
 
         cpu.load_16bit_register_immediate(REGISTER_SP_INDEX, 0xFFFF);
-        run_next_opcode(&cpu, {0x23});
+        run_next_opcode(&cpu, {0x33});
         BOOST_CHECK(cpu.get_16bit_register(REGISTER_SP_INDEX) == 0x0000);
     }
 

@@ -75,7 +75,7 @@ class CPU {
         void store_memory_immediate(uint16_t memory_address, uint8_t value);
 
         void push(uint16_t value);
-        uint16_t peek();
+        uint16_t peek() const;
         uint16_t pop();
 
         void stop();
