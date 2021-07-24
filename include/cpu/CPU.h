@@ -38,6 +38,8 @@ class CPU {
         bool cpu_active = true;
         bool lcd_display_active = true;
 
+        bool should_increment_pc = true;
+
         bool interrupts_enabled = true;
     public:
         CPU();

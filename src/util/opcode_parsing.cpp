@@ -171,7 +171,7 @@ void call_jump_calls(CPU* cpu)
         byte_in_range_vertical(first_byte, 0xCF, 0xFF))
     {
         cpu->push(cpu->get_program_counter());
-        cpu->jump_to_address(first_byte - 0xC8);
+        cpu->jump_to_address(first_byte - 0xC7);
     }
     else if(first_byte == 0xC0)
     {
@@ -196,6 +196,10 @@ void call_jump_calls(CPU* cpu)
     {
         if(cpu->isCarryFlagOn())
             cpu->jump_to_address(cpu->pop());
+    }
+    else if(first_byte == 0x18)
+    {
+        cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
 }
 void call_16bit_lsm(CPU* cpu)

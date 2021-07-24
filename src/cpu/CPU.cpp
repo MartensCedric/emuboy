@@ -32,11 +32,13 @@ uint8_t CPU::fetch() const{
 }
 
 uint8_t CPU::fetch_next() {
-    this->increment_pc();
+    if(this->should_increment_pc)
+        this->increment_pc();
     return this->fetch();
 }
 
 void CPU::fetch_cycle() {
+    this->should_increment_pc = true;
     this->process_opcode();
     this->fetch_next();
 }
@@ -78,6 +80,7 @@ void CPU::process_opcode() {
 
 void CPU::jump_to_address(uint16_t address) {
     this->program_counter = address;
+    this->should_increment_pc = false;
 }
 
 void CPU::increment_pc() {

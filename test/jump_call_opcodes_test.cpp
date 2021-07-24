@@ -13,6 +13,15 @@
 
 BOOST_AUTO_TEST_SUITE(JumpCallTest)
 
+    BOOST_AUTO_TEST_CASE(validate0x18) {
+        CPU cpu;
+        cpu.jump_to_address(0xF1E3);
+        run_next_opcode(&cpu, {0x18, static_cast<uint8_t>(-5)});
+        BOOST_CHECK(cpu.get_program_counter() == 0xF1DE);
+        run_next_opcode(&cpu, {0x18, 0x21});
+        BOOST_CHECK(cpu.get_program_counter() == 0xF1FF);
+    }
+
     BOOST_AUTO_TEST_CASE(validate0xC7) {
         CPU cpu;
         cpu.jump_to_address(0xF345);
