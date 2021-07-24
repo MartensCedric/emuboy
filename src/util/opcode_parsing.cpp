@@ -167,7 +167,31 @@ void call_jump_calls(CPU* cpu)
 {
     uint8_t first_byte = cpu->fetch();
 
-    if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
+    if(first_byte == 0x18)
+    {
+       cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+    }
+    else if(first_byte == 0x20)
+    {
+        if(!cpu->isZeroFlagOn())
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+    }
+    else if(first_byte == 0x28)
+    {
+        if(cpu->isZeroFlagOn())
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+    }
+    else if(first_byte == 0x30)
+    {
+        if(!cpu->isCarryFlagOn())
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+    }
+    else if(first_byte == 0x38)
+    {
+        if(cpu->isCarryFlagOn())
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+    }
+    else if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
         byte_in_range_vertical(first_byte, 0xCF, 0xFF))
     {
         cpu->push(cpu->get_program_counter());
@@ -196,10 +220,6 @@ void call_jump_calls(CPU* cpu)
     {
         if(cpu->isCarryFlagOn())
             cpu->jump_to_address(cpu->pop());
-    }
-    else if(first_byte == 0x18)
-    {
-        cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
 }
 void call_16bit_lsm(CPU* cpu)
