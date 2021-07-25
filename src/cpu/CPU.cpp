@@ -209,7 +209,48 @@ void CPU::disable_interrupts() {
     interrupts_enabled = false;
 }
 
+
+void CPU::set_zero_flag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0x7F;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
+}
+
+void CPU::set_subtract_flag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xBF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 6);
+}
+
+void CPU::set_carry_flag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xDF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 5);
+}
+
+void CPU::set_half_carry_flag(bool isOn) {
+    this->registers[REGISTER_F_INDEX] &= 0xEF;
+    this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
+}
+
+bool CPU::is_zero_flag_on() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 7);
+}
+
+bool CPU::is_subtract_flag_on() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 6);
+}
+
+bool CPU::is_carry_flag_on() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 5);
+}
+
+bool CPU::is_half_carry_flag_on() {
+    return this->registers[REGISTER_F_INDEX] & (1 << 4);
+}
+
 ArithmeticUnit *CPU::get_arithmetic_unit() const {
     return arithmetic_unit;
+}
+
+LogicUnit *CPU::get_logic_unit() const {
+    return logic_unit;
 }
 

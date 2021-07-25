@@ -9,35 +9,31 @@
 #include "cpu/CPU.h"
 #include "cpu/alu_options.h"
 #include "memory/memory_management_unit.h"
-class CPU;
+
 
 class ArithmeticUnit
 {
     private:
         CPU* cpu;
-        void set_zero_flag(bool is_on);
-        void set_subtract_flag(bool is_on);
-        void set_half_carry_flag(bool is_on);
-        void set_carry_flag(bool is_on);
 
         template<typename T>
         void set_addition_flags(T new_value, T original_value)
         {
             T half_max= std::pow(2, sizeof(T) * 4);
-            set_zero_flag(new_value == 0);
-            set_subtract_flag(false);
-            set_carry_flag(new_value < original_value);
-            set_half_carry_flag(new_value >= half_max && original_value < half_max);
+            cpu->set_zero_flag(new_value == 0);
+            cpu->set_subtract_flag(false);
+            cpu->set_half_carry_flag(new_value >= half_max && original_value < half_max);
+            cpu->set_carry_flag(new_value < original_value);
         }
 
         template<typename T>
         void set_subtraction_flags(T new_value, T original_value)
         {
             T half_max= std::pow(2, sizeof(T) * 4);
-            set_zero_flag(new_value == 0);
-            set_subtract_flag(true);
-            set_carry_flag(new_value > original_value);
-            set_half_carry_flag(new_value < half_max && original_value >= half_max);
+            cpu->set_zero_flag(new_value == 0);
+            cpu->set_subtract_flag(true);
+            cpu->set_half_carry_flag(new_value < half_max && original_value >= half_max);
+            cpu->set_carry_flag(new_value > original_value);
         }
 
     public:
@@ -58,11 +54,6 @@ class ArithmeticUnit
 
         void decrement_register_8bit(uint8_t register_x);
         void decrement_indirect_8bit(uint16_t address);
-
-        bool is_zero_flag_on();
-        bool is_subtract_flag_on();
-        bool is_half_carry_flag_on();
-        bool is_carry_flag_on();
 
         ~ArithmeticUnit();
 

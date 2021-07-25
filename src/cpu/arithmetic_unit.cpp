@@ -80,42 +80,6 @@ void ArithmeticUnit::decrement_indirect_8bit(uint16_t address) {
     this->sub_memory_immediate_8bit(address, 1);
 }
 
-void ArithmeticUnit::set_zero_flag(bool isOn) {
-    cpu->registers[REGISTER_F_INDEX] &= 0x7F;
-    cpu->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
-}
-
-void ArithmeticUnit::set_subtract_flag(bool isOn) {
-    cpu->registers[REGISTER_F_INDEX] &= 0xBF;
-    cpu->registers[REGISTER_F_INDEX] += (int(isOn) << 6);
-}
-
-void ArithmeticUnit::set_carry_flag(bool isOn) {
-    cpu->registers[REGISTER_F_INDEX] &= 0xDF;
-    cpu->registers[REGISTER_F_INDEX] += (int(isOn) << 5);
-}
-
-void ArithmeticUnit::set_half_carry_flag(bool isOn) {
-    cpu->registers[REGISTER_F_INDEX] &= 0xEF;
-    cpu->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
-}
-
-bool ArithmeticUnit::is_zero_flag_on() {
-    return cpu->registers[REGISTER_F_INDEX] & (1 << 7);
-}
-
-bool ArithmeticUnit::is_subtract_flag_on() {
-    return cpu->registers[REGISTER_F_INDEX] & (1 << 6);
-}
-
-bool ArithmeticUnit::is_carry_flag_on() {
-    return cpu->registers[REGISTER_F_INDEX] & (1 << 5);
-}
-
-bool ArithmeticUnit::is_half_carry_flag_on() {
-    return cpu->registers[REGISTER_F_INDEX] & (1 << 4);
-}
-
 ArithmeticUnit::~ArithmeticUnit() {
 
 }

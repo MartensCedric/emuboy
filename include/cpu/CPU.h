@@ -7,9 +7,9 @@
 #include <cstdint>
 #include <cstddef>
 #include <boost/scoped_array.hpp>
-#include "arithmetic_unit.h"
 
 class ArithmeticUnit;
+class LogicUnit;
 
 class CPU {
     private:
@@ -22,6 +22,12 @@ class CPU {
         uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, F, A
 
         ArithmeticUnit* arithmetic_unit;
+        LogicUnit* logic_unit;
+
+        void set_zero_flag(bool is_on);
+        void set_subtract_flag(bool is_on);
+        void set_half_carry_flag(bool is_on);
+        void set_carry_flag(bool is_on);
 
         void process_opcode();
 
@@ -32,13 +38,18 @@ class CPU {
 
         bool interrupts_enabled = true;
         friend class ArithmeticUnit;
+        friend class LogicUnit;
+
     public:
         CPU();
         uint16_t get_stack_pointer() const;
         uint16_t get_program_counter() const;
         const uint8_t* get_registers() const;
         uint16_t get_16bit_register(uint8_t index) const;
+
         ArithmeticUnit* get_arithmetic_unit() const;
+        LogicUnit* get_logic_unit() const;
+
         uint8_t fetch() const;
         uint8_t fetch_next();
         void jump_to_address(uint16_t address);
@@ -65,9 +76,17 @@ class CPU {
         void stop();
         void halt();
 
-        ~CPU();
+        bool is_zero_flag_on();
+        bool is_subtract_flag_on();
+        bool is_half_carry_flag_on();
+        bool is_carry_flag_on();
+
+
+     ~CPU();
 
 };
 
+#include "cpu/arithmetic_unit.h"
+#include "cpu/logic_unit.h"
 
 #endif //EMUBOY_CPU_H

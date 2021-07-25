@@ -173,22 +173,22 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0x20)
     {
-        if(!cpu->get_arithmetic_unit()->is_zero_flag_on())
+        if(!cpu->is_zero_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x28)
     {
-        if(cpu->get_arithmetic_unit()->is_zero_flag_on())
+        if(cpu->is_zero_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x30)
     {
-        if(!cpu->get_arithmetic_unit()->is_carry_flag_on())
+        if(!cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x38)
     {
-        if(cpu->get_arithmetic_unit()->is_carry_flag_on())
+        if(cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
@@ -199,12 +199,12 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0xC0)
     {
-        if(!cpu->get_arithmetic_unit()->is_zero_flag_on())
+        if(!cpu->is_zero_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xC8)
     {
-        if(cpu->get_arithmetic_unit()->is_zero_flag_on())
+        if(cpu->is_zero_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xC9)
@@ -213,12 +213,12 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0xD0)
     {
-        if(!cpu->get_arithmetic_unit()->is_carry_flag_on())
+        if(!cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xD8)
     {
-        if(cpu->get_arithmetic_unit()->is_carry_flag_on())
+        if(cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
 }
@@ -267,27 +267,15 @@ void call_8bit_arithmetic(CPU* cpu)
     }
     else if(byte_in_range(first_byte, 0xA8, 0xAD))
     {
-        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
-        uint8_t value_to_xor = cpu->get_registers()[(first_byte - 8) & 0xF];
-
-        uint8_t new_value = original_value ^ value_to_xor;
-        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-}
+        cpu->get_logic_unit()->logic_or_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
+    }
     else if(byte_in_range(first_byte, 0xB0, 0xB5))
     {
-        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
-        uint8_t value_to_or = cpu->get_registers()[first_byte & 0xF];
-
-        uint8_t new_value = original_value | value_to_or;
-        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
+        cpu->get_logic_unit()->logic_xor_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
     }
     else if(byte_in_range(first_byte, 0xB8, 0xBD))
     {
-        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
-        uint8_t value_to_subtract = cpu->get_registers()[(first_byte - 8) & 0xF];
-
-        uint8_t new_value = original_value - value_to_subtract;
-        // COMPARE (only flags get changed)
+        cpu->get_logic_unit()->compare_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
     }
     else if(byte_in_range_vertical(first_byte, 0x04, 0x24))
     {
