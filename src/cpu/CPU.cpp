@@ -11,12 +11,14 @@
 #include <util/opcode_parsing.h>
 #include "safety.h"
 #include "opcode_parsing_categories.h"
+#include "memory/memory_management_unit.h"
 
 CPU::CPU() {
     memset(this->memory, 0, NUM_MEMORY_BYTES);
     memset(this->registers, 0, NUM_REGISTERS);
     this->stack_pointer = NUM_MEMORY_BYTES - 1;
     this->program_counter = 0x100;
+    this->arithmetic_unit = new ArithmeticUnit(this);
 }
 
 uint16_t CPU::get_program_counter() const {
@@ -165,43 +167,6 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
     }
 }
 
-void CPU::setZeroFlag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0x7F;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
-}
-
-void CPU::setSubtractFlag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0xBF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 6);
-}
-
-void CPU::setCarryFlag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0xDF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 5);
-}
-
-void CPU::setHalfCarryFlag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0xEF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
-}
-
-
-bool CPU::isZeroFlagOn() {
-    return this->registers[REGISTER_F_INDEX] & (1 << 7);
-}
-
-bool CPU::isSubtractFlagOn() {
-    return this->registers[REGISTER_F_INDEX] & (1 << 6);
-}
-
-bool CPU::isCarryFlagOn() {
-    return this->registers[REGISTER_F_INDEX] & (1 << 5);
-}
-
-bool CPU::isHalfCarryFlagOn() {
-    return this->registers[REGISTER_F_INDEX] & (1 << 4);
-}
-
 void CPU::push(uint16_t value) {
     this->memory[--this->stack_pointer] = value & 0x00FF;
     this->memory[--this->stack_pointer] = (value & 0xFF00) >> 8;
@@ -240,9 +205,11 @@ void CPU::enable_interrupts() {
     interrupts_enabled = true;
 }
 
-
 void CPU::disable_interrupts() {
     interrupts_enabled = false;
 }
 
+ArithmeticUnit *CPU::get_arithmetic_unit() const {
+    return arithmetic_unit;
+}
 

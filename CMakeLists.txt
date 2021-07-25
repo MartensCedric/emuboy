@@ -40,7 +40,7 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(CPU src/cpu/CPU.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp src/video/frame_buffer.cpp src/video/color.cpp)
+ADD_LIBRARY(CPU src/cpu/CPU.cpp src/cpu/arithmetic_unit.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/util/opcode_parsing.cpp src/video/frame_buffer.cpp src/video/color.cpp)
 TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(CPU ${SDL2_LIBRARIES})

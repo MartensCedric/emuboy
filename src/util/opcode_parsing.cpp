@@ -173,22 +173,22 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0x20)
     {
-        if(!cpu->isZeroFlagOn())
+        if(!cpu->get_arithmetic_unit()->is_zero_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x28)
     {
-        if(cpu->isZeroFlagOn())
+        if(cpu->get_arithmetic_unit()->is_zero_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x30)
     {
-        if(!cpu->isCarryFlagOn())
+        if(!cpu->get_arithmetic_unit()->is_carry_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(first_byte == 0x38)
     {
-        if(cpu->isCarryFlagOn())
+        if(cpu->get_arithmetic_unit()->is_carry_flag_on())
             cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
     }
     else if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
@@ -199,12 +199,12 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0xC0)
     {
-        if(!cpu->isZeroFlagOn())
+        if(!cpu->get_arithmetic_unit()->is_zero_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xC8)
     {
-        if(cpu->isZeroFlagOn())
+        if(cpu->get_arithmetic_unit()->is_zero_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xC9)
@@ -213,12 +213,12 @@ void call_jump_calls(CPU* cpu)
     }
     else if(first_byte == 0xD0)
     {
-        if(!cpu->isCarryFlagOn())
+        if(!cpu->get_arithmetic_unit()->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
     else if(first_byte == 0xD8)
     {
-        if(cpu->isCarryFlagOn())
+        if(cpu->get_arithmetic_unit()->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
 }
@@ -251,29 +251,11 @@ void call_8bit_arithmetic(CPU* cpu)
 
     if(byte_in_range(first_byte, 0x80, 0x85))
     {
-        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
-        uint8_t value_to_add = cpu->get_registers()[first_byte & 0xF];
-
-        uint8_t new_value = original_value + value_to_add;
-        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(new_value < original_value);
-        cpu->setHalfCarryFlag(((original_value & 0xF) + (new_value & 0xF)) < (original_value & 0xF));
+        cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
     }
     else if(byte_in_range(first_byte, 0x90, 0x95))
     {
-        uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
-        uint8_t value_to_subtract = cpu->get_registers()[first_byte & 0xF];
-
-        uint8_t new_value = original_value - value_to_subtract;
-        cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(true);
-        cpu->setCarryFlag(new_value > original_value);
-        cpu->setHalfCarryFlag(((original_value & 0xF) - (new_value & 0xF)) > (original_value & 0xF));
+        cpu->get_arithmetic_unit()->sub_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
     }
     else if(byte_in_range(first_byte, 0xA0, 0xA5))
     {
@@ -282,11 +264,6 @@ void call_8bit_arithmetic(CPU* cpu)
 
         uint8_t new_value = original_value & value_to_and;
         cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(true);
-        cpu->setHalfCarryFlag(false);
     }
     else if(byte_in_range(first_byte, 0xA8, 0xAD))
     {
@@ -295,12 +272,7 @@ void call_8bit_arithmetic(CPU* cpu)
 
         uint8_t new_value = original_value ^ value_to_xor;
         cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(false);
-        cpu->setHalfCarryFlag(false);
-    }
+}
     else if(byte_in_range(first_byte, 0xB0, 0xB5))
     {
         uint8_t original_value = cpu->get_registers()[REGISTER_A_INDEX];
@@ -308,11 +280,6 @@ void call_8bit_arithmetic(CPU* cpu)
 
         uint8_t new_value = original_value | value_to_or;
         cpu->load_register_immediate(REGISTER_A_INDEX, new_value);
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(false);
-        cpu->setHalfCarryFlag(false);
     }
     else if(byte_in_range(first_byte, 0xB8, 0xBD))
     {
@@ -320,22 +287,35 @@ void call_8bit_arithmetic(CPU* cpu)
         uint8_t value_to_subtract = cpu->get_registers()[(first_byte - 8) & 0xF];
 
         uint8_t new_value = original_value - value_to_subtract;
-
-        cpu->setZeroFlag(new_value == 0);
-        cpu->setSubtractFlag(true);
-        cpu->setCarryFlag(new_value > original_value);
-        cpu->setHalfCarryFlag(((original_value & 0xF) - (new_value & 0xF)) > (original_value & 0xF));
+        // COMPARE (only flags get changed)
     }
     else if(byte_in_range_vertical(first_byte, 0x04, 0x24))
     {
         const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
-        const uint8_t original_value = cpu->get_registers()[reg_x];
-        const uint8_t final_value = original_value + 1;
-        cpu->load_register_immediate(reg_x, final_value);
-        cpu->setZeroFlag(final_value == 0);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(final_value < original_value);
-        cpu->setHalfCarryFlag(((original_value & 0xF) - (final_value & 0xF)) > (original_value & 0xF));
+        cpu->get_arithmetic_unit()->increment_register_8bit(reg_x);
+    }
+    else if(byte_in_range_vertical(first_byte, 0x05, 0x25))
+    {
+        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+        cpu->get_arithmetic_unit()->decrement_register_8bit(reg_x);
+    }
+    else if(byte_in_range_vertical(first_byte, 0x0C, 0x3C))
+    {
+        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+        cpu->get_arithmetic_unit()->increment_register_8bit(reg_x);
+    }
+    else if(byte_in_range_vertical(first_byte, 0x0D, 0x3D))
+    {
+        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+        cpu->get_arithmetic_unit()->decrement_register_8bit(reg_x);
+    }
+    else if(first_byte == 0x34)
+    {
+        cpu->get_arithmetic_unit()->increment_indirect_8bit(cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0x35)
+    {
+        cpu->get_arithmetic_unit()->decrement_indirect_8bit(cpu->get_16bit_register(REGISTER_HL_INDEX));
     }
 
 }
@@ -363,9 +343,9 @@ void call_16bit_arithmetic(CPU* cpu)
         uint16_t value_added = cpu->get_16bit_register(reg_x);
         uint16_t base_value = cpu->get_16bit_register(REGISTER_HL_INDEX);
         uint16_t final_value = base_value + value_added;
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(final_value < base_value);
-        cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
+//        cpu->setSubtractFlag(false);
+//        cpu->setCarryFlag(final_value < base_value);
+//        cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
         cpu->load_16bit_register_immediate(REGISTER_HL_INDEX, final_value);
     }
     else if(first_byte == 0xE8)
@@ -374,10 +354,10 @@ void call_16bit_arithmetic(CPU* cpu)
         uint16_t value_added = static_cast<uint16_t>(cpu->fetch_next());
         uint16_t final_value = base_value + value_added;
         cpu->load_16bit_register_immediate(REGISTER_SP_INDEX, final_value);
-        cpu->setZeroFlag(false);
-        cpu->setSubtractFlag(false);
-        cpu->setCarryFlag(final_value < base_value);
-        cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
+//        cpu->setZeroFlag(false);
+//        cpu->setSubtractFlag(false);
+//        cpu->setCarryFlag(final_value < base_value);
+//        cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
     }
 }
 

@@ -7,21 +7,9 @@
 #include <cstdint>
 #include <cstddef>
 #include <boost/scoped_array.hpp>
+#include "arithmetic_unit.h"
 
-#define REGISTER_A_INDEX 7
-#define REGISTER_B_INDEX 0
-#define REGISTER_C_INDEX 1
-#define REGISTER_D_INDEX 2
-#define REGISTER_E_INDEX 3
-#define REGISTER_F_INDEX 6
-#define REGISTER_H_INDEX 4
-#define REGISTER_L_INDEX 5
-
-#define REGISTER_AF_INDEX 0
-#define REGISTER_BC_INDEX 1
-#define REGISTER_DE_INDEX 2
-#define REGISTER_HL_INDEX 3
-#define REGISTER_SP_INDEX 4
+class ArithmeticUnit;
 
 class CPU {
     private:
@@ -33,6 +21,8 @@ class CPU {
         uint8_t* memory = new uint8_t [NUM_MEMORY_BYTES];
         uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, F, A
 
+        ArithmeticUnit* arithmetic_unit;
+
         void process_opcode();
 
         bool cpu_active = true;
@@ -41,12 +31,14 @@ class CPU {
         bool should_increment_pc = true;
 
         bool interrupts_enabled = true;
+        friend class ArithmeticUnit;
     public:
         CPU();
         uint16_t get_stack_pointer() const;
         uint16_t get_program_counter() const;
         const uint8_t* get_registers() const;
         uint16_t get_16bit_register(uint8_t index) const;
+        ArithmeticUnit* get_arithmetic_unit() const;
         uint8_t fetch() const;
         uint8_t fetch_next();
         void jump_to_address(uint16_t address);
@@ -57,16 +49,6 @@ class CPU {
 
         void enable_interrupts();
         void disable_interrupts();
-
-        void setZeroFlag(bool isOn);
-        void setSubtractFlag(bool isOn);
-        void setHalfCarryFlag(bool isOn);
-        void setCarryFlag(bool isOn);
-
-        bool isZeroFlagOn();
-        bool isSubtractFlagOn();
-        bool isHalfCarryFlagOn();
-        bool isCarryFlagOn();
 
         void load_register_immediate(uint8_t reg_x, uint8_t value);
         void load_16bit_register_immediate(uint8_t reg_x, uint16_t value);
@@ -84,6 +66,7 @@ class CPU {
         void halt();
 
         ~CPU();
+
 };
 
 
