@@ -19,12 +19,12 @@ bool is_in(const T& value, std::initializer_list<T> list)
 
 bool next_is_misc(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
     return is_in<uint8_t>(first_byte, {0x00, 0x10, 0x76, 0xF3, 0xFB});
 }
 bool next_is_jump_calls(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
     if(is_in<uint8_t>(first_byte, {0x20, 0x30, 0xC0, 0xD0}))
         return true;
 
@@ -53,7 +53,7 @@ bool next_is_jump_calls(const CPU* cpu)
 }
 bool next_is_8bit_lsm(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
     if(byte_in_range(first_byte, 0x40, 0x4F))
         return true;
 
@@ -89,7 +89,7 @@ bool next_is_8bit_lsm(const CPU* cpu)
 
 bool next_is_16bit_lsm(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
     if(byte_in_range_vertical(first_byte, 0x01, 0x31))
         return true;
 
@@ -106,7 +106,7 @@ bool next_is_16bit_lsm(const CPU* cpu)
 
 bool next_is_8bit_arithmetic(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(byte_in_range(first_byte, 0x80, 0x8F))
         return true;
@@ -140,7 +140,7 @@ bool next_is_8bit_arithmetic(const CPU* cpu)
 
 bool next_is_16bit_arithmetic(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(byte_in_range_vertical(first_byte, 0x03, 0x33))
         return true;
@@ -155,6 +155,6 @@ bool next_is_16bit_arithmetic(const CPU* cpu)
 }
 bool next_is_8bit_rotation_shifts(const CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
     return first_byte == 0xCB;
 }

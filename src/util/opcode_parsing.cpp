@@ -13,7 +13,7 @@
  */
 
 void call_8bit_lsm(CPU* cpu) {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if (byte_in_range_vertical(first_byte, 0x02, 0x12)) {
         const uint8_t reg_x = 1 + ((first_byte & 0xF0) >> 4);
@@ -86,7 +86,7 @@ void call_8bit_lsm(CPU* cpu) {
         byte_in_range_vertical(first_byte, 0x0E, 0x3E))
     {
         const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
-        cpu->load_register_immediate(reg_x, cpu->fetch_next());
+        cpu->load_register_immediate(reg_x, cpu->fetch_next_byte());
     }
     else if(byte_in_range(first_byte, 0x70, 0x75))
     {
@@ -99,19 +99,18 @@ void call_8bit_lsm(CPU* cpu) {
     }
     else if(first_byte == 0x36)
     {
-        cpu->store_memory_immediate(cpu->get_16bit_register(REGISTER_HL_INDEX), cpu->fetch_next());
+        cpu->store_memory_immediate(cpu->get_16bit_register(REGISTER_HL_INDEX), cpu->fetch_next_byte());
     }
     else if(byte_in_range(first_byte, 0x78, 0x7D))
     {
         cpu->load_register_indirect(REGISTER_A_INDEX, first_byte - 0x78);
     }
     else if(first_byte == 0xE0) {
-        cpu->store_memory_indirect(0xFF00 + cpu->fetch_next(), REGISTER_A_INDEX);
+        cpu->store_memory_indirect(0xFF00 + cpu->fetch_next_byte(), REGISTER_A_INDEX);
     }
     else if(first_byte == 0xEA)
     {
-        uint16_t address = cpu->fetch_next();
-        address += (static_cast<uint16_t>(cpu->fetch_next()) << 8);
+        uint16_t address = cpu->fetch_next_word();
         cpu->store_memory_indirect(address, REGISTER_A_INDEX);
     }
     else if(first_byte == 0xE2)
@@ -120,7 +119,7 @@ void call_8bit_lsm(CPU* cpu) {
     }
     else if(first_byte == 0xF0)
     {
-        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->fetch_next());
+        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->fetch_next_byte());
     }
     else if(first_byte == 0xF2)
     {
@@ -128,15 +127,14 @@ void call_8bit_lsm(CPU* cpu) {
     }
     else if(first_byte == 0xFA)
     {
-        uint16_t address = cpu->fetch_next();
-        address += (static_cast<uint16_t>(cpu->fetch_next())) << 8;
+        uint16_t address = cpu->fetch_next_word();
         cpu->load_memory_indirect(REGISTER_A_INDEX, address);
     }
 }
 
 void call_misc(CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     switch (first_byte) {
         case 0x00:
@@ -149,7 +147,7 @@ void call_misc(CPU* cpu)
             cpu->halt();
             break;
         case 0xCB:
-            cpu->fetch_next();
+            cpu->fetch_next_byte();
             call_8bit_rotation_shifts(cpu);
             break;
         case 0xF3:
@@ -165,31 +163,31 @@ void call_misc(CPU* cpu)
 
 void call_jump_calls(CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(first_byte == 0x18)
     {
-       cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+       cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next_byte()));
     }
     else if(first_byte == 0x20)
     {
         if(!cpu->is_zero_flag_on())
-            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next_byte()));
     }
     else if(first_byte == 0x28)
     {
         if(cpu->is_zero_flag_on())
-            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next_byte()));
     }
     else if(first_byte == 0x30)
     {
         if(!cpu->is_carry_flag_on())
-            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next_byte()));
     }
     else if(first_byte == 0x38)
     {
         if(cpu->is_carry_flag_on())
-            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next()));
+            cpu->jump_to_address(cpu->get_program_counter() + static_cast<int8_t>(cpu->fetch_next_byte()));
     }
     else if(byte_in_range_vertical(first_byte, 0xC7, 0xF7) ||
         byte_in_range_vertical(first_byte, 0xCF, 0xFF))
@@ -224,13 +222,11 @@ void call_jump_calls(CPU* cpu)
 }
 void call_16bit_lsm(CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(byte_in_range_vertical(first_byte, 0x01, 0x31))
     {
-        uint16_t data = (static_cast<uint16_t>(cpu->fetch_next())) << 8;
-        data |= cpu->fetch_next();
-
+        uint16_t data = cpu->fetch_next_word();
         cpu->load_16bit_register_immediate(1 + (first_byte >> 4), data);
     }
     else if(byte_in_range_vertical(first_byte, 0xC1, 0xF1))
@@ -247,7 +243,7 @@ void call_16bit_lsm(CPU* cpu)
 
 void call_8bit_arithmetic(CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(byte_in_range(first_byte, 0x80, 0x85))
     {
@@ -317,7 +313,7 @@ void call_8bit_arithmetic(CPU* cpu)
 }
 void call_16bit_arithmetic(CPU* cpu)
 {
-    uint8_t first_byte = cpu->fetch();
+    uint8_t first_byte = cpu->fetch_byte();
 
     if(byte_in_range_vertical(first_byte, 0x03, 0x33))
     {
@@ -347,7 +343,7 @@ void call_16bit_arithmetic(CPU* cpu)
     else if(first_byte == 0xE8)
     {
         uint16_t base_value = cpu->get_16bit_register(REGISTER_SP_INDEX);
-        uint16_t value_added = static_cast<uint16_t>(cpu->fetch_next());
+        uint16_t value_added = static_cast<uint16_t>(cpu->fetch_next_byte());
         uint16_t final_value = base_value + value_added;
         cpu->load_16bit_register_immediate(REGISTER_SP_INDEX, final_value);
 //        cpu->setZeroFlag(false);

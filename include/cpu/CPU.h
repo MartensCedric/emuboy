@@ -50,8 +50,9 @@ class CPU {
         ArithmeticUnit* get_arithmetic_unit() const;
         LogicUnit* get_logic_unit() const;
 
-        uint8_t fetch() const;
-        uint8_t fetch_next();
+        uint8_t fetch_byte() const;
+        uint8_t fetch_next_byte();
+        uint16_t fetch_next_word();
         void jump_to_address(uint16_t address);
 
         void increment_pc();

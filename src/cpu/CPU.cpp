@@ -29,20 +29,27 @@ uint16_t CPU::get_stack_pointer() const {
     return this->stack_pointer;
 }
 
-uint8_t CPU::fetch() const{
+uint8_t CPU::fetch_byte() const{
     return this->memory[this->get_program_counter()];
 }
 
-uint8_t CPU::fetch_next() {
+uint8_t CPU::fetch_next_byte() {
     if(this->should_increment_pc)
         this->increment_pc();
-    return this->fetch();
+    return this->fetch_byte();
+}
+
+uint16_t CPU::fetch_next_word() {
+    uint8_t low_byte = fetch_next_byte();
+    uint8_t high_byte = fetch_next_byte();
+    uint16_t word = (static_cast<uint16_t>(high_byte) << 8) + low_byte;
+    return word;
 }
 
 void CPU::fetch_cycle() {
     this->should_increment_pc = true;
     this->process_opcode();
-    this->fetch_next();
+    this->fetch_next_byte();
 }
 
 void CPU::process_opcode() {
@@ -209,7 +216,6 @@ void CPU::disable_interrupts() {
     interrupts_enabled = false;
 }
 
-
 void CPU::set_zero_flag(bool isOn) {
     this->registers[REGISTER_F_INDEX] &= 0x7F;
     this->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
@@ -262,4 +268,5 @@ bool CPU::is_lcd_display_active() const {
 bool CPU::is_cpu_active() const {
     return cpu_active;
 }
+
 
