@@ -218,22 +218,22 @@ void CPU::disable_interrupts() {
 
 void CPU::set_zero_flag(bool isOn) {
     this->registers[REGISTER_F_INDEX] &= 0x7F;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 7);
+    this->registers[REGISTER_F_INDEX] |= (int(isOn) << 7);
 }
 
 void CPU::set_subtract_flag(bool isOn) {
     this->registers[REGISTER_F_INDEX] &= 0xBF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 6);
+    this->registers[REGISTER_F_INDEX] |= (int(isOn) << 6);
 }
 
 void CPU::set_half_carry_flag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0xEF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 5);
+    this->registers[REGISTER_F_INDEX] &= 0xDF;
+    this->registers[REGISTER_F_INDEX] |= (int(isOn) << 5);
 }
 
 void CPU::set_carry_flag(bool isOn) {
-    this->registers[REGISTER_F_INDEX] &= 0xDF;
-    this->registers[REGISTER_F_INDEX] += (int(isOn) << 4);
+    this->registers[REGISTER_F_INDEX] &= 0xEF;
+    this->registers[REGISTER_F_INDEX] |= (int(isOn) << 4);
 }
 
 
@@ -267,6 +267,14 @@ bool CPU::is_lcd_display_active() const {
 
 bool CPU::is_cpu_active() const {
     return cpu_active;
+}
+
+uint8_t CPU::get_byte_memory_indirect(uint8_t reg_x) {
+    return this->memory[get_16bit_register(reg_x)];
+}
+
+uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
+    throw std::runtime_error("Not implemented");
 }
 
 

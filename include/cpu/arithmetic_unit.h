@@ -17,23 +17,45 @@ class ArithmeticUnit
         CPU* cpu;
 
         template<typename T>
-        void set_addition_flags(T new_value, T original_value)
+        void set_addition_flags(T new_value, T original_value, flags options)
         {
-            T half_max= std::pow(2, sizeof(T) * 4);
-            cpu->set_zero_flag(new_value == 0);
-            cpu->set_subtract_flag(false);
-            cpu->set_half_carry_flag(new_value >= half_max && original_value < half_max);
-            cpu->set_carry_flag(new_value < original_value);
+            if(options.zero_flag)
+                cpu->set_zero_flag(new_value == 0);
+
+            if(options.subtract_flag)
+                cpu->set_subtract_flag(false);
+
+            if(options.half_carry_flag)
+            {
+                size_t bits_for_half_the_type = sizeof(T) * 4;
+                T lower_mask = std::pow(2, bits_for_half_the_type) - 1;
+                T carry_mask = 1 << bits_for_half_the_type;
+
+                cpu->set_half_carry_flag((((new_value - original_value) & lower_mask) + (original_value & lower_mask)) & carry_mask);
+            }
+
+            if(options.carry_flag)
+                cpu->set_carry_flag(new_value < original_value);
         }
 
         template<typename T>
-        void set_subtraction_flags(T new_value, T original_value)
+        void set_subtraction_flags(T new_value, T original_value, flags options)
         {
             T half_max= std::pow(2, sizeof(T) * 4);
-            cpu->set_zero_flag(new_value == 0);
-            cpu->set_subtract_flag(true);
-            cpu->set_half_carry_flag(new_value < half_max && original_value >= half_max);
-            cpu->set_carry_flag(new_value > original_value);
+
+            if(options.zero_flag)
+                cpu->set_zero_flag(new_value == 0);
+
+            if(options.subtract_flag)
+                cpu->set_subtract_flag(true);
+
+            if(options.half_carry_flag)
+            {
+                // todo: half-borrow
+            }
+
+            if(options.carry_flag)
+                cpu->set_carry_flag(new_value > original_value);
         }
 
     public:

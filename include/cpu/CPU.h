@@ -67,6 +67,9 @@ class CPU {
         void load_register_indirect(uint8_t reg_x, uint8_t reg_y);
         void load_memory_indirect(uint8_t reg_x, uint16_t memory_address);
 
+        uint8_t get_byte_memory_indirect(uint8_t reg_x);
+        uint16_t get_word_memory_indirect(uint8_t reg_x);
+
         void store_memory_indirect(uint16_t memory_address, uint8_t reg_x);
         void store_memory_immediate(uint16_t memory_address, uint8_t value);
 
