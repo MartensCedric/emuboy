@@ -305,6 +305,14 @@ void call_8bit_arithmetic(CPU* cpu)
     {
         cpu->get_arithmetic_unit()->decrement_indirect_8bit(cpu->get_16bit_register(REGISTER_HL_INDEX));
     }
+    else if(byte_in_range(first_byte, 0x88, 0x8D))
+    {
+        cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
+    }
+    else if(byte_in_range(first_byte, 0x98, 0x9D))
+    {
+        cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
+    }
 
 }
 void call_16bit_arithmetic(CPU* cpu)

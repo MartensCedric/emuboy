@@ -4,6 +4,7 @@
 #include <exception>
 #include "util/safety.h"
 #include "cpu/CPU.h"
+#include "util/testing_utilities.h"
 
 BOOST_AUTO_TEST_SUITE(CPUTest)
 
@@ -22,5 +23,25 @@ BOOST_AUTO_TEST_SUITE(CPUTest)
         BOOST_CHECK(cpu.pop() == 0xFEED);
         BOOST_CHECK(cpu.pop() == 0xDEAD);
         BOOST_CHECK(cpu.pop() == 0xBEEF);
+    }
+
+    BOOST_AUTO_TEST_CASE(stopTest)
+    {
+        CPU cpu;
+        BOOST_CHECK(cpu.is_cpu_active());
+        BOOST_CHECK(cpu.is_lcd_display_active());
+        run_next_opcode(&cpu, {0x10});
+        BOOST_CHECK(!cpu.is_cpu_active());
+        BOOST_CHECK(!cpu.is_lcd_display_active());
+    }
+
+    BOOST_AUTO_TEST_CASE(haltTest)
+    {
+        CPU cpu;
+        BOOST_CHECK(cpu.is_cpu_active());
+        BOOST_CHECK(cpu.is_lcd_display_active());
+        run_next_opcode(&cpu, {0x76});
+        BOOST_CHECK(!cpu.is_cpu_active());
+        BOOST_CHECK(cpu.is_lcd_display_active());
     }
 BOOST_AUTO_TEST_SUITE_END()

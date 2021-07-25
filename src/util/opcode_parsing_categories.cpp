@@ -66,7 +66,7 @@ bool next_is_8bit_lsm(const CPU* cpu)
     if(byte_in_range(first_byte, 0x70, 0x75))
         return true;
 
-    if(byte_in_range(first_byte, 0x76, 0x7F))
+    if(byte_in_range(first_byte, 0x77, 0x7F))
         return true;
 
     if(byte_in_range_vertical(first_byte, 0x02, 0x32))

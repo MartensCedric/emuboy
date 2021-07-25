@@ -5,6 +5,7 @@
 #include "cpu/CPU.h"
 #include <initializer_list>
 #include <algorithm>
+#include "cpu/flags.h"
 
 void set_next_opcode(CPU* cpu, std::initializer_list<uint8_t> opcode)
 {
@@ -25,3 +26,12 @@ void run_next_opcode(CPU* cpu, std::initializer_list<uint8_t> opcode)
     cpu->fetch_cycle();
 }
 
+void set_flags(CPU* cpu, flags flags)
+{
+    uint8_t flags_to_set = 0;
+    flags_to_set |= flags.zero_flag ? 0x80 : 0;
+    flags_to_set |= flags.subtract_flag ? 0x40 : 0;
+    flags_to_set |= flags.half_carry_flag ? 0x20 : 0;
+    flags_to_set |= flags.carry_flag ? 0x10 : 0;
+    cpu->load_register_immediate(REGISTER_F_INDEX, flags_to_set);
+}

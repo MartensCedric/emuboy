@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include "cpu/CPU.h"
-#include "cpu/alu_options.h"
+#include "cpu/flags.h"
 #include "memory/memory_management_unit.h"
 
 

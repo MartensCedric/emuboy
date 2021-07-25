@@ -22,6 +22,55 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0xF1FF);
     }
 
+    BOOST_AUTO_TEST_CASE(validate0x20)
+    {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_NONE);
+        cpu.jump_to_address(0xE231);
+        run_next_opcode(&cpu, {0x20, 0x13});
+        BOOST_CHECK(cpu.get_program_counter() == 0xE244);
+        set_flags(&cpu, FLAGS_ZERO_ONLY);
+        run_next_opcode(&cpu, {0x20});
+        BOOST_CHECK(cpu.get_program_counter() == 0xE245);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x28)
+    {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_ZERO_ONLY);
+        cpu.jump_to_address(0x4ED0);
+        run_next_opcode(&cpu, {0x28, 0x11});
+        BOOST_CHECK(cpu.get_program_counter() == 0x4EE1);
+        set_flags(&cpu, FLAGS_NONE);
+        run_next_opcode(&cpu, {0x28});
+        BOOST_CHECK(cpu.get_program_counter() == 0x4EE2);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x30)
+    {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_NONE);
+        cpu.jump_to_address(0xF122);
+        run_next_opcode(&cpu, {0x30, 0x04});
+        BOOST_CHECK(cpu.get_program_counter() == 0xF126);
+        set_flags(&cpu, FLAGS_CARRY_ONLY);
+        run_next_opcode(&cpu, {0x30});
+        BOOST_CHECK(cpu.get_program_counter() == 0xF127);
+    }
+
+    BOOST_AUTO_TEST_CASE(validate0x38)
+    {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_CARRY_ONLY);
+        cpu.jump_to_address(0x6F20);
+        run_next_opcode(&cpu, {0x38, 0x15});
+        BOOST_CHECK(cpu.get_program_counter() == 0x6F35);
+        set_flags(&cpu, FLAGS_NONE);
+        run_next_opcode(&cpu, {0x38});
+        BOOST_CHECK(cpu.get_program_counter() == 0x6F36);
+    }
+
+
     BOOST_AUTO_TEST_CASE(validate0xC7) {
         CPU cpu;
         cpu.jump_to_address(0xF345);

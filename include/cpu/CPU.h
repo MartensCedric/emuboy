@@ -76,6 +76,9 @@ class CPU {
         void stop();
         void halt();
 
+        bool is_cpu_active() const;
+        bool is_lcd_display_active() const;
+
         bool is_zero_flag_on();
         bool is_subtract_flag_on();
         bool is_half_carry_flag_on();
