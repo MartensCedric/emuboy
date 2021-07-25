@@ -326,6 +326,17 @@ void call_8bit_arithmetic(CPU* cpu)
         cpu->setCarryFlag(new_value > original_value);
         cpu->setHalfCarryFlag(((original_value & 0xF) - (new_value & 0xF)) > (original_value & 0xF));
     }
+    else if(byte_in_range_vertical(first_byte, 0x04, 0x24))
+    {
+        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+        const uint8_t original_value = cpu->get_registers()[reg_x];
+        const uint8_t final_value = original_value + 1;
+        cpu->load_register_immediate(reg_x, final_value);
+        cpu->setZeroFlag(final_value == 0);
+        cpu->setSubtractFlag(false);
+        cpu->setCarryFlag(final_value < original_value);
+        cpu->setHalfCarryFlag(((original_value & 0xF) - (final_value & 0xF)) > (original_value & 0xF));
+    }
 
 }
 void call_16bit_arithmetic(CPU* cpu)
