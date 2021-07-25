@@ -36,6 +36,11 @@ void ArithmeticUnit::add_memory_immediate_8bit(uint16_t address, uint8_t immedia
     this->set_addition_flags(new_value, original_value);
 }
 
+void ArithmeticUnit::add_carry_registers_8bit(uint8_t register_x, uint8_t immediate_value) {
+    uint8_t carry_bit = cpu->is_carry_flag_on() ? 1 : 0;
+    this->add_registers_8bit(register_x, immediate_value + carry_bit);
+}
+
 void ArithmeticUnit::sub_registers_8bit(uint8_t register_x, uint8_t register_y) {
     const uint8_t original_value = cpu->get_registers()[register_x];
     const uint8_t new_value = original_value - cpu->get_registers()[register_y];
@@ -78,6 +83,11 @@ void ArithmeticUnit::decrement_register_8bit(uint8_t register_x) {
 
 void ArithmeticUnit::decrement_indirect_8bit(uint16_t address) {
     this->sub_memory_immediate_8bit(address, 1);
+}
+
+void ArithmeticUnit::sub_carry_registers_8bit(uint8_t register_x, uint8_t immediate_value) {
+    uint8_t carry_bit = cpu->is_carry_flag_on() ? 1 : 0;
+    this->sub_register_immediate_8bit(register_x, immediate_value + carry_bit);
 }
 
 ArithmeticUnit::~ArithmeticUnit() {
