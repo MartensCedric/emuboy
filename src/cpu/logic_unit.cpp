@@ -56,7 +56,18 @@ void LogicUnit::logic_xor_immediate_8bit(uint8_t register_x, uint8_t immediate_v
     this->set_xor_flags(new_value, original_value);
 }
 
+void LogicUnit::set_carry_flag() {
+    this->cpu->set_carry_flag(true);
+    this->cpu->set_half_carry_flag(false);
+    this->cpu->set_subtract_flag(false);
+}
+
+void LogicUnit::complement_register(uint8_t register_x) {
+    this->cpu->registers[register_x] = ~this->cpu->registers[register_x];
+    this->cpu->set_subtract_flag(true);
+    this->cpu->set_half_carry_flag(true);
+}
+
 LogicUnit::~LogicUnit() {
 
 }
-

@@ -67,6 +67,9 @@ class LogicUnit
         void logic_xor_registers_8bit(uint8_t register_x, uint8_t register_y);
         void logic_xor_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
 
+        void set_carry_flag();
+        void complement_register(uint8_t register_x);
+
         ~LogicUnit();
 };
 

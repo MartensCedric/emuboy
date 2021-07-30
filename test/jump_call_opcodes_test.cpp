@@ -90,7 +90,6 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0x6F34);
     }
 
-
     BOOST_AUTO_TEST_CASE(validate0xC7) {
         CPU cpu;
         cpu.jump_to_address(0xF345);

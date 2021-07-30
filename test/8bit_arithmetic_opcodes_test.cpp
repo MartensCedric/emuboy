@@ -153,6 +153,13 @@ BOOST_AUTO_TEST_SUITE(EightBitArithmeticTest)
         BOOST_CHECK(!cpu.is_carry_flag_on());
     }
 
+    BOOST_AUTO_TEST_CASE(validate0x37) {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_NONE);
+        run_next_opcode(&cpu, {0x37});
+        BOOST_CHECK(cpu.is_carry_flag_on());
+    }
+
     BOOST_AUTO_TEST_CASE(validate0x2C) {
         CPU cpu;
         set_flags(&cpu, FLAGS_NONE);

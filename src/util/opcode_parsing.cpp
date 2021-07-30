@@ -249,6 +249,10 @@ void call_8bit_arithmetic(CPU* cpu)
     {
         cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
     }
+    else if(first_byte == 0x2F)
+    {
+        cpu->get_logic_unit()->complement_register(REGISTER_A_INDEX);
+    }
     else if(byte_in_range(first_byte, 0x90, 0x95))
     {
         cpu->get_arithmetic_unit()->sub_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
@@ -300,6 +304,10 @@ void call_8bit_arithmetic(CPU* cpu)
     else if(first_byte == 0x35)
     {
         cpu->get_arithmetic_unit()->decrement_indirect_8bit(cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0x37)
+    {
+        cpu->get_logic_unit()->set_carry_flag();
     }
     else if(byte_in_range(first_byte, 0x88, 0x8D))
     {
