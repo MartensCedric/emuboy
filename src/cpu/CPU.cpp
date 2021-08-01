@@ -53,31 +53,33 @@ void CPU::fetch_cycle() {
 }
 
 void CPU::process_opcode() {
-    if(next_is_8bit_lsm(this))
+
+    const uint8_t first_byte = this->fetch_byte();
+    if(next_is_8bit_lsm(first_byte))
     {
         call_8bit_lsm(this);
     }
-    else if(next_is_8bit_arithmetic(this))
+    else if(next_is_8bit_arithmetic(first_byte))
     {
         call_8bit_arithmetic(this);
     }
-    else if(next_is_16bit_lsm(this))
+    else if(next_is_16bit_lsm(first_byte))
     {
         call_16bit_lsm(this);
     }
-    else if(next_is_16bit_arithmetic(this))
+    else if(next_is_16bit_arithmetic(first_byte))
     {
         call_16bit_arithmetic(this);
     }
-    else if(next_is_8bit_rotation_shifts(this))
+    else if(next_is_8bit_rotation_shifts(first_byte))
     {
         call_8bit_rotation_shifts(this);
     }
-    else if(next_is_jump_calls(this))
+    else if(next_is_jump_calls(first_byte))
     {
         call_jump_calls(this);
     }
-    else if(next_is_misc(this))
+    else if(next_is_misc(first_byte))
     {
         call_misc(this);
     }

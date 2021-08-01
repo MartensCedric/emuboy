@@ -10,12 +10,12 @@
  * Categories taken from this website: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
  */
 
-bool next_is_misc(const CPU* cpu);
-bool next_is_jump_calls(const CPU* cpu);
-bool next_is_8bit_lsm(const CPU* cpu);
-bool next_is_16bit_lsm(const CPU* cpu);
-bool next_is_8bit_arithmetic(const CPU* cpu);
-bool next_is_16bit_arithmetic(const CPU* cpu);
-bool next_is_8bit_rotation_shifts(const CPU* cpu);
+bool next_is_misc(uint8_t first_byte);
+bool next_is_jump_calls(uint8_t first_byte);
+bool next_is_8bit_lsm(uint8_t first_byte);
+bool next_is_16bit_lsm(uint8_t first_byte);
+bool next_is_8bit_arithmetic(uint8_t first_byte);
+bool next_is_16bit_arithmetic(uint8_t first_byte);
+bool next_is_8bit_rotation_shifts(uint8_t first_byte);
 
 #endif //EMUBOY_OPCODE_PARSING_CATEGORIES_H
