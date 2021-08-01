@@ -209,6 +209,10 @@ void call_jump_calls(CPU* cpu)
     {
         cpu->jump_to_address(cpu->pop());
     }
+    else if(first_byte == 0xCE)
+    {
+        cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
     else if(first_byte == 0xD0)
     {
         if(!cpu->is_carry_flag_on())
@@ -218,6 +222,18 @@ void call_jump_calls(CPU* cpu)
     {
         if(cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
+    }
+    else if(first_byte == 0xDE)
+    {
+        cpu->get_arithmetic_unit()->sub_carry_registers_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
+    else if(first_byte == 0xEE)
+    {
+        cpu->get_logic_unit()->logic_xor_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
+    else if(first_byte == 0xFE)
+    {
+        cpu->get_logic_unit()->compare_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
     }
 }
 void call_16bit_lsm(CPU* cpu)
@@ -308,6 +324,10 @@ void call_8bit_arithmetic(CPU* cpu)
     else if(first_byte == 0x37)
     {
         cpu->get_logic_unit()->set_carry_flag();
+    }
+    else if(first_byte == 0x3F)
+    {
+        cpu->get_logic_unit()->complement_carry_flag();
     }
     else if(byte_in_range(first_byte, 0x88, 0x8D))
     {

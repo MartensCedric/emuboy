@@ -57,6 +57,7 @@ class LogicUnit
         explicit LogicUnit(CPU* cpu);
 
         void compare_registers_8bit(uint8_t register_x, uint8_t register_y);
+        void compare_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
 
         void logic_or_registers_8bit(uint8_t register_x, uint8_t register_y);
         void logic_or_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
@@ -68,6 +69,7 @@ class LogicUnit
         void logic_xor_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
 
         void set_carry_flag();
+        void complement_carry_flag();
         void complement_register(uint8_t register_x);
 
         ~LogicUnit();
