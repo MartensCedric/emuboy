@@ -2,7 +2,6 @@
 // Created by cedric on 2021-06-19.
 //
 #include <initializer_list>
-#include <algorithm>
 #include "opcode_parsing_categories.h"
 #include "opcode_parsing_math.h"
 
@@ -10,12 +9,6 @@
  * This grid is critical for the understanding of this section.
  * https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
  */
-
-template <typename T>
-bool is_in(const T& value, std::initializer_list<T> list)
-{
-    return std::find(std::begin(list), std::end(list), value) != std::end(list);
-}
 
 bool next_is_misc(const uint8_t first_byte)
 {
@@ -150,5 +143,11 @@ bool next_is_16bit_arithmetic(const uint8_t first_byte)
 }
 bool next_is_8bit_rotation_shifts(const uint8_t first_byte)
 {
+    if(byte_in_range_vertical(first_byte, 0x07, 0x17))
+        return true;
+
+    if(byte_in_range_vertical(first_byte, 0x0F, 0x1F))
+        return true;
+
     return first_byte == 0xCB;
 }

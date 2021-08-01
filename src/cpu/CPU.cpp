@@ -238,7 +238,6 @@ void CPU::set_carry_flag(bool isOn) {
     this->registers[REGISTER_F_INDEX] |= (int(isOn) << 4);
 }
 
-
 bool CPU::is_zero_flag_on() {
     return this->registers[REGISTER_F_INDEX] & (1 << 7);
 }
