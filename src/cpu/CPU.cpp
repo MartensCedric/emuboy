@@ -19,6 +19,7 @@ CPU::CPU() {
     this->stack_pointer = NUM_MEMORY_BYTES - 1;
     this->program_counter = 0x100;
     this->arithmetic_unit = new ArithmeticUnit(this);
+    this->logic_unit = new LogicUnit(this);
 }
 
 uint16_t CPU::get_program_counter() const {
@@ -121,8 +122,8 @@ void CPU::load_16bit_register_immediate(uint8_t reg_x, uint16_t value) {
             this->registers[REGISTER_L_INDEX] = static_cast<uint8_t>(value & 0x00FF);
             break;
         case REGISTER_SP_INDEX:
-            this->memory[this->stack_pointer + 1] = value & 0x00FF;
-            this->memory[this->stack_pointer] = (value & 0xFF00) >> 8;
+            this->memory[this->stack_pointer + 1] = static_cast<uint8_t>(value & 0x00FF);
+            this->memory[this->stack_pointer] = static_cast<uint8_t>((value & 0xFF00) >> 8);
             break;
         default:
             throw std::runtime_error("16bit register index out of bounds!");
@@ -193,12 +194,6 @@ uint16_t CPU::pop() {
     uint16_t value = peek();
     this->stack_pointer += 2;
     return value;
-}
-
-
-CPU::~CPU() {
-    delete[] memory;
-    delete[] registers;
 }
 
 void CPU::stop() {
@@ -278,4 +273,9 @@ uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
     throw std::runtime_error("Not implemented");
 }
 
-
+CPU::~CPU() {
+    delete[] memory;
+    delete[] registers;
+    delete arithmetic_unit;
+    delete logic_unit;
+}
