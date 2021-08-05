@@ -245,4 +245,34 @@ BOOST_AUTO_TEST_SUITE(EightBitArithmeticTest)
         BOOST_CHECK(!cpu.is_carry_flag_on());
     }
 
+    BOOST_AUTO_TEST_CASE(validate0xF6) {
+        CPU cpu;
+        set_flags(&cpu, FLAGS_NONE);
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0x00);
+
+        run_next_opcode(&cpu, {0xF6, 0x00});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_A_INDEX] == 0x00);
+        BOOST_CHECK(cpu.is_zero_flag_on());
+        BOOST_CHECK(!cpu.is_subtract_flag_on());
+        BOOST_CHECK(!cpu.is_half_carry_flag_on());
+        BOOST_CHECK(!cpu.is_carry_flag_on());
+
+        set_flags(&cpu, FLAGS_NONE);
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0xA3);
+        run_next_opcode(&cpu, {0xF6, 0x18});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_A_INDEX] == 0xBB);
+        BOOST_CHECK(!cpu.is_zero_flag_on());
+        BOOST_CHECK(!cpu.is_subtract_flag_on());
+        BOOST_CHECK(!cpu.is_half_carry_flag_on());
+        BOOST_CHECK(!cpu.is_carry_flag_on());
+
+        cpu.load_register_immediate(REGISTER_A_INDEX, 0xFF);
+        run_next_opcode(&cpu, {0x3C});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_A_INDEX] == 0x00);
+        BOOST_CHECK(cpu.is_zero_flag_on());
+        BOOST_CHECK(!cpu.is_subtract_flag_on());
+        BOOST_CHECK(cpu.is_half_carry_flag_on());
+        BOOST_CHECK(!cpu.is_carry_flag_on());
+    }
+
 BOOST_AUTO_TEST_SUITE_END()

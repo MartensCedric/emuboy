@@ -122,6 +122,15 @@ bool next_is_8bit_arithmetic(const uint8_t first_byte)
     if(byte_in_range_vertical(first_byte, 0x0D, 0x3D))
         return true;
 
+    if(byte_in_range_vertical(first_byte, 0x2F, 0x3F))
+        return true;
+
+    if(byte_in_range_vertical(first_byte, 0xC6, 0xF6))
+        return true;
+
+    if(byte_in_range_vertical(first_byte, 0xCE, 0xFE))
+        return true;
+
     if(is_in<uint8_t>(first_byte, {0xE0, 0xF0, 0xE2, 0xF2, 0xEA, 0xFA}))
         return true;
 

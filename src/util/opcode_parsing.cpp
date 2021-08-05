@@ -293,6 +293,22 @@ void call_8bit_arithmetic(CPU* cpu)
     {
         cpu->get_logic_unit()->compare_registers_8bit(REGISTER_A_INDEX, (first_byte - 8) & 0xF);
     }
+    else if(first_byte == 0xC6)
+    {
+        cpu->get_arithmetic_unit()->add_register_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
+    else if(first_byte == 0xD6)
+    {
+        cpu->get_arithmetic_unit()->sub_register_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
+    else if(first_byte == 0xE6)
+    {
+        cpu->get_logic_unit()->logic_and_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
+    else if(first_byte == 0xF6)
+    {
+        cpu->get_logic_unit()->logic_or_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
+    }
     else if(byte_in_range_vertical(first_byte, 0x04, 0x24))
     {
         const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);

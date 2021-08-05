@@ -25,11 +25,11 @@ BOOST_AUTO_TEST_SUITE(SafetyTest)
 
     BOOST_AUTO_TEST_CASE(validateAllOpcodesExists)
     {
-        for(uint16_t i = 0; i < 16; i++)
+        for(uint8_t i = 0; i < 16; i++)
         {
-            for(uint16_t j = 0; j < 16; j++)
+            for(uint8_t j = 0; j < 16; j++)
             {
-                uint16_t opcode = (i << 8) + j;
+                uint8_t opcode = (i << 4) + j;
                 if(is_in<uint8_t>(opcode, { 0xD3, 0xE3, 0xE4, 0xF4, 0xDB, 0xEB,
                                             0xEC, 0xFC, 0xDD, 0xED, 0xFD }))
                     continue;
@@ -43,9 +43,9 @@ BOOST_AUTO_TEST_SUITE(SafetyTest)
                 opcode_exists = opcode_exists || next_is_8bit_rotation_shifts(opcode);
 
                 std::stringstream ss;
-                ss << std::hex << i;
-                ss << std::hex << j;
-                BOOST_CHECK_MESSAGE(opcode_exists, "Could not find opcode: 0x" + ss.str());
+                ss << std::hex << static_cast<uint16_t>(i);
+                ss << std::hex << static_cast<uint16_t>(j);
+                BOOST_CHECK_MESSAGE(opcode_exists, "Opcode: 0x" + ss.str());
             }
         }
     }
