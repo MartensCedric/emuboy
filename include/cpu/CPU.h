@@ -6,7 +6,6 @@
 #define EMUBOY_CPU_H
 #include <cstdint>
 #include <cstddef>
-#include <boost/scoped_array.hpp>
 
 class ArithmeticUnit;
 class LogicUnit;

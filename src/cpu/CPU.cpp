@@ -16,7 +16,7 @@
 CPU::CPU() {
     memset(this->memory, 0, NUM_MEMORY_BYTES);
     memset(this->registers, 0, NUM_REGISTERS);
-    this->stack_pointer = NUM_MEMORY_BYTES - 1;
+    this->stack_pointer = NUM_MEMORY_BYTES;
     this->program_counter = 0x100;
     this->arithmetic_unit = new ArithmeticUnit(this);
     this->logic_unit = new LogicUnit(this);
@@ -122,8 +122,7 @@ void CPU::load_16bit_register_immediate(uint8_t reg_x, uint16_t value) {
             this->registers[REGISTER_L_INDEX] = static_cast<uint8_t>(value & 0x00FF);
             break;
         case REGISTER_SP_INDEX:
-            this->memory[this->stack_pointer + 1] = static_cast<uint8_t>(value & 0x00FF);
-            this->memory[this->stack_pointer] = static_cast<uint8_t>((value & 0xFF00) >> 8);
+            this->stack_pointer = value;
             break;
         default:
             throw std::runtime_error("16bit register index out of bounds!");
@@ -171,7 +170,7 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
         case REGISTER_HL_INDEX:
             return ((static_cast<uint16_t>(this->registers[REGISTER_H_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_L_INDEX]));
         case REGISTER_SP_INDEX:
-            return this->peek();
+            return this->stack_pointer;
         default:
             throw std::runtime_error("16bit register index out of bounds!");
     }
@@ -183,8 +182,11 @@ void CPU::push(uint16_t value) {
 }
 
 uint16_t CPU::peek() const {
-    uint16_t value = this->memory[this->stack_pointer];
-    value <<= 8;
+
+    if(this->stack_pointer >= NUM_MEMORY_BYTES)
+        throw std::runtime_error("Stack pointer out of bounds");
+
+    uint16_t value = static_cast<uint16_t>(this->memory[this->stack_pointer]) << 8;
     value += this->memory[this->stack_pointer + 1];
     return value;
 
