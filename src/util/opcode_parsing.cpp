@@ -265,6 +265,38 @@ void call_8bit_arithmetic(CPU* cpu)
     {
         cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
     }
+    else if(first_byte == 0x86)
+    {
+        cpu->get_arithmetic_unit()->add_register_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0x87)
+    {
+        cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0x96)
+    {
+        cpu->get_logic_unit()->logic_and_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0x97)
+    {
+        cpu->get_arithmetic_unit()->sub_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0xA6)
+    {
+        cpu->get_logic_unit()->logic_and_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0xA7)
+    {
+        cpu->get_logic_unit()->logic_and_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+    }
+    else if(first_byte == 0xB6)
+    {
+        cpu->get_logic_unit()->logic_or_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+    }
+    else if(first_byte == 0xB7)
+    {
+        cpu->get_logic_unit()->logic_or_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+    }
     else if(first_byte == 0x2F)
     {
         cpu->get_logic_unit()->complement_register(REGISTER_A_INDEX);
