@@ -209,6 +209,15 @@ void call_jump_calls(CPU* cpu)
     {
         cpu->jump_to_address(cpu->fetch_next_word());
     }
+    else if(first_byte == 0xC4)
+    {
+        if(!cpu->is_zero_flag_on())
+        {
+            // todo: refactor into call() function
+            cpu->push(cpu->get_program_counter() + 3);
+            cpu->jump_to_address(cpu->fetch_next_word());
+        }
+    }
     else if(first_byte == 0xC8)
     {
         if(cpu->is_zero_flag_on())
@@ -217,6 +226,11 @@ void call_jump_calls(CPU* cpu)
     else if(first_byte == 0xC9)
     {
         cpu->jump_to_address(cpu->pop());
+    }
+    else if(first_byte == 0xCA)
+    {
+        if(cpu->is_zero_flag_on())
+            cpu->jump_to_address(cpu->fetch_next_word());
     }
     else if(first_byte == 0xCE)
     {
@@ -232,10 +246,29 @@ void call_jump_calls(CPU* cpu)
         if(!cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->fetch_next_word());
     }
+    else if(first_byte == 0xD4)
+    {
+        if(!cpu->is_carry_flag_on())
+        {
+            // todo: refactor into call() function
+            cpu->push(cpu->get_program_counter() + 3);
+            cpu->jump_to_address(cpu->fetch_next_word());
+        }
+    }
     else if(first_byte == 0xD8)
     {
         if(cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
+    }
+    else if(first_byte == 0xDA)
+    {
+        if(cpu->is_carry_flag_on())
+            cpu->jump_to_address(cpu->fetch_next_word());
+    }
+    else if(first_byte == 0xD9)
+    {
+        cpu->jump_to_address(cpu->pop());
+        cpu->enable_interrupts();
     }
     else if(first_byte == 0xDE)
     {
