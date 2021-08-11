@@ -200,6 +200,15 @@ void call_jump_calls(CPU* cpu)
         if(!cpu->is_zero_flag_on())
             cpu->jump_to_address(cpu->pop());
     }
+    else if(first_byte == 0xC2)
+    {
+        if(!cpu->is_zero_flag_on())
+            cpu->jump_to_address(cpu->fetch_next_word());
+    }
+    else if(first_byte == 0xC3)
+    {
+        cpu->jump_to_address(cpu->fetch_next_word());
+    }
     else if(first_byte == 0xC8)
     {
         if(cpu->is_zero_flag_on())
@@ -217,6 +226,11 @@ void call_jump_calls(CPU* cpu)
     {
         if(!cpu->is_carry_flag_on())
             cpu->jump_to_address(cpu->pop());
+    }
+    else if(first_byte == 0xD2)
+    {
+        if(!cpu->is_carry_flag_on())
+            cpu->jump_to_address(cpu->fetch_next_word());
     }
     else if(first_byte == 0xD8)
     {
