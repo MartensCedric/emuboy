@@ -274,6 +274,10 @@ void call_jump_calls(CPU* cpu)
     {
         cpu->get_arithmetic_unit()->sub_carry_registers_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
     }
+    else if(first_byte == 0xE9)
+    {
+        cpu->jump_to_address(cpu->get_word_memory_indirect(cpu->get_16bit_register(REGISTER_HL_INDEX)));
+    }
     else if(first_byte == 0xEE)
     {
         cpu->get_logic_unit()->logic_xor_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
@@ -301,6 +305,10 @@ void call_16bit_lsm(CPU* cpu)
     {
         uint8_t reg_x = (((first_byte & 0xF0) >> 8) - 11) % 4;
         cpu->push(cpu->get_16bit_register(reg_x));
+    }
+    else if(first_byte == 0xF9)
+    {
+        cpu->load_16bit_register_immediate(REGISTER_SP_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
     }
 }
 
@@ -478,5 +486,22 @@ void call_16bit_arithmetic(CPU* cpu)
 
 void call_8bit_rotation_shifts(CPU* cpu)
 {
+    uint8_t first_byte = cpu->fetch_byte();
 
+    if(first_byte == 0x07)
+    {
+        // todo: RLCA
+    }
+    else if(first_byte == 0x17)
+    {
+        // todo: RLA
+    }
+    else if(first_byte == 0xCB)
+    {
+        uint8_t second_byte = cpu->fetch_next_byte();
+        if(byte_in_range(second_byte, 0x20, 0x25))
+        {
+
+        }
+    }
 }
