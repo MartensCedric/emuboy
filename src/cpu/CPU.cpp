@@ -20,6 +20,7 @@ CPU::CPU() {
     this->program_counter = 0x100;
     this->arithmetic_unit = new ArithmeticUnit(this);
     this->logic_unit = new LogicUnit(this);
+    this->shifting_unit = new ShiftingUnit(this);
 }
 
 uint16_t CPU::get_program_counter() const {
@@ -259,6 +260,10 @@ LogicUnit *CPU::get_logic_unit() const {
     return logic_unit;
 }
 
+ShiftingUnit *CPU::get_shifting_unit() const {
+    return shifting_unit;
+}
+
 bool CPU::is_lcd_display_active() const {
     return lcd_display_active;
 }
@@ -281,3 +286,4 @@ CPU::~CPU() {
     delete arithmetic_unit;
     delete logic_unit;
 }
+

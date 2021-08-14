@@ -9,6 +9,7 @@
 
 class ArithmeticUnit;
 class LogicUnit;
+class ShiftingUnit;
 
 class CPU {
     private:
@@ -22,6 +23,7 @@ class CPU {
 
         ArithmeticUnit* arithmetic_unit;
         LogicUnit* logic_unit;
+        ShiftingUnit* shifting_unit;
 
         void set_zero_flag(bool is_on);
         void set_subtract_flag(bool is_on);
@@ -38,6 +40,7 @@ class CPU {
         bool interrupts_enabled = true;
         friend class ArithmeticUnit;
         friend class LogicUnit;
+        friend class ShiftingUnit;
 
     public:
         CPU();
@@ -48,6 +51,7 @@ class CPU {
 
         ArithmeticUnit* get_arithmetic_unit() const;
         LogicUnit* get_logic_unit() const;
+        ShiftingUnit* get_shifting_unit() const;
 
         uint8_t fetch_byte() const;
         uint8_t fetch_next_byte();
@@ -94,5 +98,6 @@ class CPU {
 
 #include "cpu/arithmetic_unit.h"
 #include "cpu/logic_unit.h"
+#include "cpu/shifting_unit.h"
 
 #endif //EMUBOY_CPU_H

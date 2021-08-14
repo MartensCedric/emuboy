@@ -15,8 +15,9 @@ class ShiftingUnit
         CPU* cpu;
     public:
         explicit ShiftingUnit(CPU* cpu);
-        void set_bit(uint8_t bit, uint8_t register_x);
-        void reset_bit(uint8_t bit, uint8_t register_x);
+        void set_bit_register(uint8_t bit, uint8_t register_x);
+        void reset_bit_register(uint8_t bit, uint8_t register_x);
+        void test_bit_register(uint8_t bit, uint8_t register_x);
         ~ShiftingUnit();
 };
 

@@ -503,5 +503,23 @@ void call_8bit_rotation_shifts(CPU* cpu)
         {
 
         }
+        else if(byte_in_range_matrix(second_byte, 0x80,0xB3))
+        {
+            uint8_t bit_to_test = (((second_byte & 0xF0) >> 8) - 0x0C) * 2;
+            uint8_t register_x = second_byte & 0xF;
+            cpu->get_shifting_unit()->test_bit_register(bit_to_test, register_x);
+        }
+        else if(byte_in_range_matrix(second_byte, 0x80,0xB3))
+        {
+            uint8_t bit_to_reset = (((second_byte & 0xF0) >> 8) - 0x0C) * 2;
+            uint8_t register_x = second_byte & 0xF;
+            cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, register_x);
+        }
+        else if(byte_in_range_matrix(second_byte, 0xC0,0xF3))
+        {
+            uint8_t bit_to_set = (((second_byte & 0xF0) >> 8) - 0x0C) * 2;
+            uint8_t register_x = second_byte & 0xF;
+            cpu->get_shifting_unit()->set_bit_register(bit_to_set, register_x);
+        }
     }
 }
