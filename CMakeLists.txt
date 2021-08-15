@@ -59,4 +59,5 @@ ADD_BOOST_TEST(TEST_8BIT_ARITHMETIC_OPCODES test/8bit_arithmetic_opcodes_test.cp
 ADD_BOOST_TEST(TEST_16BIT_ARITHMETIC_OPCODES test/16bit_arithmetic_opcodes_test.cpp)
 ADD_BOOST_TEST(TEST_16BIT_LSM_OPCODES test/16bit_lsm_opcodes_test.cpp)
 ADD_BOOST_TEST(TEST_JUMP_CALL_OPCODES test/jump_call_opcodes_test.cpp)
+ADD_BOOST_TEST(TEST_8BIT_ROTATIONS_SHIFTS test/8bit_rotation_shift_opcodes_test.cpp)
 ADD_BOOST_TEST(TEST_CPU test/cpu_test.cpp)
