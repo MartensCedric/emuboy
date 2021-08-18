@@ -511,6 +511,21 @@ void call_8bit_rotation_shifts(CPU* cpu)
             uint8_t register_x = second_byte & 0x0F;
             cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, register_x);
         }
+        else if(byte_in_range_vertical(second_byte, 0x8C, 0xBC))
+        {
+            uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
+            cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_H_INDEX);
+        }
+        else if(byte_in_range_vertical(second_byte, 0x8D, 0xBD))
+        {
+            uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
+            cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_L_INDEX);
+        }
+        else if(byte_in_range_vertical(second_byte, 0x8F, 0xBF))
+        {
+            uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
+            cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_A_INDEX);
+        }
         else if(byte_in_range_matrix(second_byte, 0xC0,0xF3))
         {
             uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
@@ -536,7 +551,8 @@ void call_8bit_rotation_shifts(CPU* cpu)
         {
             uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
             cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_A_INDEX);
-        } else if(byte_in_range_matrix(second_byte, 0x88, 0xBB))
+        }
+        else if(byte_in_range_matrix(second_byte, 0x88, 0xBB))
         {
             uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
             uint8_t register_x = (second_byte - 0x08) & 0x0F;
@@ -557,5 +573,12 @@ void call_8bit_rotation_shifts(CPU* cpu)
             uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
             cpu->get_shifting_unit()->set_bit_register(bit_to_set, REGISTER_A_INDEX);
         }
+        else if(byte_in_range_matrix(second_byte, 0xC8, 0xFB))
+        {
+            uint8_t bit_to_set= ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
+            uint8_t register_x = (second_byte - 0x08) & 0x0F;
+            cpu->get_shifting_unit()->reset_bit_register(bit_to_set, register_x);
+        }
+
     }
 }
