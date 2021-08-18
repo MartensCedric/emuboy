@@ -4,12 +4,12 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
 #include "cpu/CPU.h"
-
+#include <thread>
 
 
 int main() {
 
-    //CPU cpu;
+    CPU cpu;
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
@@ -23,6 +23,8 @@ int main() {
                                        800, 800, 0);
     while (running)
     {
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+
         SDL_Event event;
 
         while(SDL_PollEvent(&event))
@@ -40,7 +42,7 @@ int main() {
 
         if(!stopped)
         {
-//            cpu.fetch_cycle();
+            cpu.fetch_cycle();
         }
     }
 

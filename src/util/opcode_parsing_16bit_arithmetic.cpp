@@ -2,6 +2,11 @@
 // Created by cedric on 2021-08-17.
 //
 
+/**
+ * To understand what is going in this file, it is critical that
+ * the reader follows with this table:
+ * https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+ */
 
 #include <cpu/CPU.h>
 #include <util/opcode_parsing_math.h>
