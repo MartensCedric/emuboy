@@ -7,7 +7,6 @@
 
 #include <boost/test/included/unit_test.hpp>
 #include <exception>
-#include "opcode_parsing_math.h"
 #include "cpu/CPU.h"
 #include "util/testing_utilities.h"
 

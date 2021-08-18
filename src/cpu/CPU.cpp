@@ -8,7 +8,13 @@
 #include <stdexcept>
 #include <ios>
 #include <sstream>
-#include <util/opcode_parsing.h>
+#include <util/opcode_parsing_8bit_lsm.h>
+#include <util/opcode_parsing_8bit_arithmetic.h>
+#include <util/opcode_parsing_16bit_lsm.h>
+#include <util/opcode_parsing_16bit_arithmetic.h>
+#include <util/opcode_parsing_8bit_rotation_shifts.h>
+#include <util/opcode_parsing_jump_calls.h>
+#include <util/opcode_parsing_misc.h>
 #include "safety.h"
 #include "opcode_parsing_categories.h"
 #include "memory/memory_management_unit.h"
