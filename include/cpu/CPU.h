@@ -6,6 +6,9 @@
 #define EMUBOY_CPU_H
 #include <cstdint>
 #include <cstddef>
+#include <functional>
+
+#define DEBUG_OPCODES true
 
 class ArithmeticUnit;
 class LogicUnit;
@@ -91,6 +94,12 @@ class CPU {
         bool is_half_carry_flag_on();
         bool is_carry_flag_on();
 
+        typedef std::function<const bool(uint16_t)> condition;
+        void register_opcode(const char* name, condition opcode_condition);
+
+#ifdef DEBUG_OPCODES
+        void print_opcode();
+#endif
 
      ~CPU();
 

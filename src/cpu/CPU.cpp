@@ -18,6 +18,9 @@
 #include "safety.h"
 #include "opcode_parsing_categories.h"
 #include "memory/memory_management_unit.h"
+#ifdef DEBUG_OPCODE
+#include "util/opcode_parsing_math.h"
+#endif
 
 CPU::CPU() {
     memset(this->memory, 0, NUM_MEMORY_BYTES);
@@ -63,6 +66,11 @@ void CPU::fetch_cycle() {
 void CPU::process_opcode() {
 
     const uint8_t first_byte = this->fetch_byte();
+
+#ifdef DEBUG_OPCODES
+    this->print_opcode();
+#endif
+
     if(next_is_8bit_lsm(first_byte))
     {
         call_8bit_lsm(this);
@@ -286,10 +294,23 @@ uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
     throw std::runtime_error("Not implemented");
 }
 
+#ifdef DEBUG_OPCODES
+void CPU::print_opcode()
+{
+    // todo: find a way to print relevant info for each opcode
+    uint8_t first_byte = fetch_byte();
+    printf("Opcode: 0x%02x\n", first_byte);
+}
+#endif
+
 CPU::~CPU() {
     delete[] memory;
     delete[] registers;
     delete arithmetic_unit;
     delete logic_unit;
+}
+
+void CPU::register_opcode(const char *name, CPU::condition opcode_condition) {
+
 }
 

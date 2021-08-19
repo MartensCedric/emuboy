@@ -9,7 +9,7 @@
 #define CARTRIDGE_BANK_0 0
 #define CARTRIDGE_BANK_1 1
 
-#define CARTRIDGE_SIZE 0x4000
+#define CARTRIDGE_SIZE 0x8000
 
-uint8_t* load_cartridge(const char* filename);
+void load_cartridge(const char* filename, CPU* cpu);
 #endif //EMUBOY_CARTRIDGE_LOADER_H

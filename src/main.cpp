@@ -5,11 +5,12 @@
 #include <SDL2/SDL_timer.h>
 #include "cpu/CPU.h"
 #include <thread>
-
+#include "cartridge/cartridge_loader.h"
 
 int main() {
 
     CPU cpu;
+    load_cartridge("roms/dr_mario.gb", &cpu);
 
     if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         printf("Error initializing SDL: %s\n", SDL_GetError());
