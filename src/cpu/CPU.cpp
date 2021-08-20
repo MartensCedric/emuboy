@@ -18,6 +18,7 @@
 #include "safety.h"
 #include "opcode_parsing_categories.h"
 #include "memory/memory_management_unit.h"
+
 #ifdef DEBUG_OPCODE
 #include "util/opcode_parsing_math.h"
 #endif
@@ -42,12 +43,12 @@ uint16_t CPU::get_stack_pointer() const {
     return this->stack_pointer;
 }
 
-uint8_t CPU::fetch_byte() const{
+uint8_t CPU::fetch_byte() const {
     return this->memory[this->get_program_counter()];
 }
 
 uint8_t CPU::fetch_next_byte() {
-    if(this->should_increment_pc)
+    if (this->should_increment_pc)
         this->increment_pc();
     return this->fetch_byte();
 }
@@ -67,10 +68,8 @@ void CPU::fetch_cycle() {
 
 void CPU::process_opcode() {
 
-    for(std::vector<Opcode*>::iterator it = opcodes.begin(); it != opcodes.end(); it++)
-    {
-        if((*it)->should_execute(this->fetch_byte()))
-        {
+    for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end(); it++) {
+        if ((*it)->should_execute(this->fetch_byte())) {
             (*it)->execute(this);
             return; // todo: remove this once opcodes have been migrated
         }
@@ -83,36 +82,21 @@ void CPU::process_opcode() {
     this->print_opcode();
 #endif
 
-    if(next_is_8bit_lsm(first_byte))
-    {
+    if (next_is_8bit_lsm(first_byte)) {
         call_8bit_lsm(this);
-    }
-    else if(next_is_8bit_arithmetic(first_byte))
-    {
+    } else if (next_is_8bit_arithmetic(first_byte)) {
         call_8bit_arithmetic(this);
-    }
-    else if(next_is_16bit_lsm(first_byte))
-    {
+    } else if (next_is_16bit_lsm(first_byte)) {
         call_16bit_lsm(this);
-    }
-    else if(next_is_16bit_arithmetic(first_byte))
-    {
+    } else if (next_is_16bit_arithmetic(first_byte)) {
         call_16bit_arithmetic(this);
-    }
-    else if(next_is_8bit_rotation_shifts(first_byte))
-    {
+    } else if (next_is_8bit_rotation_shifts(first_byte)) {
         call_8bit_rotation_shifts(this);
-    }
-    else if(next_is_jump_calls(first_byte))
-    {
+    } else if (next_is_jump_calls(first_byte)) {
         call_jump_calls(this);
-    }
-    else if(next_is_misc(first_byte))
-    {
+    } else if (next_is_misc(first_byte)) {
         call_misc(this);
-    }
-    else
-    {
+    } else {
         throw std::runtime_error("Could not find opcode!");
     }
 }
@@ -181,7 +165,7 @@ void CPU::store_memory_immediate(uint16_t memory_address, uint8_t value) {
     this->memory[memory_address] = value;
 }
 
-const uint8_t* CPU::get_registers() const {
+const uint8_t *CPU::get_registers() const {
     return this->registers;
 }
 
@@ -189,13 +173,17 @@ const uint8_t* CPU::get_registers() const {
 uint16_t CPU::get_16bit_register(uint8_t index) const {
     switch (index) {
         case REGISTER_AF_INDEX:
-            return ((static_cast<uint16_t>(this->registers[REGISTER_A_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_F_INDEX]));
+            return ((static_cast<uint16_t>(this->registers[REGISTER_A_INDEX])) << 8) +
+                   (static_cast<uint16_t>(this->registers[REGISTER_F_INDEX]));
         case REGISTER_BC_INDEX:
-            return ((static_cast<uint16_t>(this->registers[REGISTER_B_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_C_INDEX]));
+            return ((static_cast<uint16_t>(this->registers[REGISTER_B_INDEX])) << 8) +
+                   (static_cast<uint16_t>(this->registers[REGISTER_C_INDEX]));
         case REGISTER_DE_INDEX:
-            return ((static_cast<uint16_t>(this->registers[REGISTER_D_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_E_INDEX]));
+            return ((static_cast<uint16_t>(this->registers[REGISTER_D_INDEX])) << 8) +
+                   (static_cast<uint16_t>(this->registers[REGISTER_E_INDEX]));
         case REGISTER_HL_INDEX:
-            return ((static_cast<uint16_t>(this->registers[REGISTER_H_INDEX])) << 8) + (static_cast<uint16_t>(this->registers[REGISTER_L_INDEX]));
+            return ((static_cast<uint16_t>(this->registers[REGISTER_H_INDEX])) << 8) +
+                   (static_cast<uint16_t>(this->registers[REGISTER_L_INDEX]));
         case REGISTER_SP_INDEX:
             return this->stack_pointer;
         default:
@@ -210,7 +198,7 @@ void CPU::push(uint16_t value) {
 
 uint16_t CPU::peek() const {
 
-    if(this->stack_pointer >= NUM_MEMORY_BYTES)
+    if (this->stack_pointer >= NUM_MEMORY_BYTES)
         throw std::runtime_error("Stack pointer out of bounds");
 
     uint16_t value = static_cast<uint16_t>(this->memory[this->stack_pointer]) << 8;
@@ -306,24 +294,25 @@ uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
     throw std::runtime_error("Not implemented"); // todo: do this
 }
 
-void CPU::register_opcode(const char* name, std::function<bool(uint16_t)> opcode_condition, std::function<void (CPU*)> opcode_execution) {
-    Opcode* opcode = new Opcode(name, opcode_condition, opcode_execution);
+void CPU::register_opcode(const char *name, std::function<bool(uint16_t)> opcode_condition,
+                          std::function<void(CPU *)> opcode_execution) {
+    Opcode *opcode = new Opcode(name, opcode_condition, opcode_execution);
     this->opcodes.push_back(opcode);
 }
 
 
 #ifdef DEBUG_OPCODES
-void CPU::print_opcode()
-{
+
+void CPU::print_opcode() {
     // todo: find a way to print relevant info for each opcode
     uint8_t first_byte = fetch_byte();
     printf("Opcode: 0x%02x\n", first_byte);
 }
+
 #endif
 
 CPU::~CPU() {
-    for(std::vector<Opcode*>::iterator it = opcodes.begin(); it != opcodes.end(); it++)
-    {
+    for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end(); it++) {
         delete *it;
     }
     delete[] memory;

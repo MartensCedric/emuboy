@@ -1,5 +1,6 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE SafetyTest
+
 #include <boost/test/included/unit_test.hpp>
 #include <exception>
 #include "util/safety.h"
@@ -8,8 +9,7 @@
 
 BOOST_AUTO_TEST_SUITE(CPUTest)
 
-    BOOST_AUTO_TEST_CASE(stackTest)
-    {
+    BOOST_AUTO_TEST_CASE(stackTest) {
         CPU cpu;
         cpu.push(0xBEEF);
         cpu.push(0xDEAD);
@@ -25,8 +25,7 @@ BOOST_AUTO_TEST_SUITE(CPUTest)
         BOOST_CHECK(cpu.pop() == 0xBEEF);
     }
 
-    BOOST_AUTO_TEST_CASE(stopTest)
-    {
+    BOOST_AUTO_TEST_CASE(stopTest) {
         CPU cpu;
         BOOST_CHECK(cpu.is_cpu_active());
         BOOST_CHECK(cpu.is_lcd_display_active());
@@ -35,8 +34,7 @@ BOOST_AUTO_TEST_SUITE(CPUTest)
         BOOST_CHECK(!cpu.is_lcd_display_active());
     }
 
-    BOOST_AUTO_TEST_CASE(haltTest)
-    {
+    BOOST_AUTO_TEST_CASE(haltTest) {
         CPU cpu;
         BOOST_CHECK(cpu.is_cpu_active());
         BOOST_CHECK(cpu.is_lcd_display_active());
@@ -44,4 +42,5 @@ BOOST_AUTO_TEST_SUITE(CPUTest)
         BOOST_CHECK(!cpu.is_cpu_active());
         BOOST_CHECK(cpu.is_lcd_display_active());
     }
+
 BOOST_AUTO_TEST_SUITE_END()

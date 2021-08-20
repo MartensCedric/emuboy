@@ -12,8 +12,7 @@
 #include <util/opcode_parsing_8bit_rotation_shifts.h>
 #include <stdexcept>
 
-void call_misc(CPU* cpu)
-{
+void call_misc(CPU *cpu) {
     uint8_t first_byte = cpu->fetch_byte();
 
     switch (first_byte) {

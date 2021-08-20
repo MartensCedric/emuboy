@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_SUITE(EightBitArithmeticTest)
 
         cpu.store_memory_immediate(0x21F2, 0xFF);
         run_next_opcode(&cpu, {0x34});
-        BOOST_CHECK(cpu.get_byte_memory_indirect(REGISTER_HL_INDEX)  == 0x00);
+        BOOST_CHECK(cpu.get_byte_memory_indirect(REGISTER_HL_INDEX) == 0x00);
         BOOST_CHECK(cpu.is_zero_flag_on());
         BOOST_CHECK(!cpu.is_subtract_flag_on());
         BOOST_CHECK(cpu.is_half_carry_flag_on());

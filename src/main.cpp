@@ -18,20 +18,17 @@ int main() {
 
     bool running = true;
     bool stopped = false;
-    SDL_Window* window = SDL_CreateWindow("EmuBoy",
-                                       SDL_WINDOWPOS_CENTERED,
-                                       SDL_WINDOWPOS_CENTERED,
-                                       800, 800, 0);
-    while (running)
-    {
+    SDL_Window *window = SDL_CreateWindow("EmuBoy",
+                                          SDL_WINDOWPOS_CENTERED,
+                                          SDL_WINDOWPOS_CENTERED,
+                                          800, 800, 0);
+    while (running) {
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
         SDL_Event event;
 
-        while(SDL_PollEvent(&event))
-        {
-            switch(event.type)
-            {
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
                 case SDL_QUIT:
                     running = false;
                     SDL_Quit();
@@ -41,8 +38,7 @@ int main() {
             }
         }
 
-        if(!stopped)
-        {
+        if (!stopped) {
             cpu.fetch_cycle();
         }
     }

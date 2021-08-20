@@ -22,8 +22,7 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0xF1FF);
     }
 
-    BOOST_AUTO_TEST_CASE(validate0x20)
-    {
+    BOOST_AUTO_TEST_CASE(validate0x20) {
         CPU cpu;
         set_flags(&cpu, FLAGS_NONE);
         cpu.jump_to_address(0xE231);
@@ -39,8 +38,7 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0xE242);
     }
 
-    BOOST_AUTO_TEST_CASE(validate0x28)
-    {
+    BOOST_AUTO_TEST_CASE(validate0x28) {
         CPU cpu;
         set_flags(&cpu, FLAGS_ZERO_ONLY);
         cpu.jump_to_address(0x4ED0);
@@ -56,8 +54,7 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0x4ED2);
     }
 
-    BOOST_AUTO_TEST_CASE(validate0x30)
-    {
+    BOOST_AUTO_TEST_CASE(validate0x30) {
         CPU cpu;
         set_flags(&cpu, FLAGS_NONE);
         cpu.jump_to_address(0xF122);
@@ -73,8 +70,7 @@ BOOST_AUTO_TEST_SUITE(JumpCallTest)
         BOOST_CHECK(cpu.get_program_counter() == 0xF122);
     }
 
-    BOOST_AUTO_TEST_CASE(validate0x38)
-    {
+    BOOST_AUTO_TEST_CASE(validate0x38) {
         CPU cpu;
         set_flags(&cpu, FLAGS_CARRY_ONLY);
         cpu.jump_to_address(0x6F20);

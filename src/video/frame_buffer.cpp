@@ -6,7 +6,7 @@
 
 FrameBuffer::FrameBuffer(uint8_t width, uint8_t height) : width(width), height(height) {
     size_t size = width * height;
-    this->buffer = (Color::Pixel*) malloc(size * sizeof(Color::Pixel));
+    this->buffer = (Color::Pixel *) malloc(size * sizeof(Color::Pixel));
 }
 
 FrameBuffer::~FrameBuffer() {
