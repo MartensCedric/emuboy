@@ -30,6 +30,8 @@ CPU::CPU() {
     this->arithmetic_unit = new ArithmeticUnit(this);
     this->logic_unit = new LogicUnit(this);
     this->shifting_unit = new ShiftingUnit(this);
+
+    register_8bit_arithmetic_opcodes(this);
 }
 
 uint16_t CPU::get_program_counter() const {
@@ -65,6 +67,16 @@ void CPU::fetch_cycle() {
 
 void CPU::process_opcode() {
 
+    for(std::vector<Opcode*>::iterator it = opcodes.begin(); it != opcodes.end(); it++)
+    {
+        if((*it)->should_execute(this->fetch_byte()))
+        {
+            (*it)->execute(this);
+            return; // todo: remove this once opcodes have been migrated
+        }
+    }
+
+    // todo: remove all the bottom part once all opcodes have been refactored
     const uint8_t first_byte = this->fetch_byte();
 
 #ifdef DEBUG_OPCODES
@@ -291,8 +303,14 @@ uint8_t CPU::get_byte_memory_indirect(uint8_t reg_x) {
 }
 
 uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
-    throw std::runtime_error("Not implemented");
+    throw std::runtime_error("Not implemented"); // todo: do this
 }
+
+void CPU::register_opcode(const char* name, std::function<bool(uint16_t)> opcode_condition, std::function<void (CPU*)> opcode_execution) {
+    Opcode* opcode = new Opcode(name, opcode_condition, opcode_execution);
+    this->opcodes.push_back(opcode);
+}
+
 
 #ifdef DEBUG_OPCODES
 void CPU::print_opcode()
@@ -304,13 +322,12 @@ void CPU::print_opcode()
 #endif
 
 CPU::~CPU() {
+    for(std::vector<Opcode*>::iterator it = opcodes.begin(); it != opcodes.end(); it++)
+    {
+        delete *it;
+    }
     delete[] memory;
     delete[] registers;
     delete arithmetic_unit;
     delete logic_unit;
 }
-
-void CPU::register_opcode(const char *name, CPU::condition opcode_condition) {
-
-}
-

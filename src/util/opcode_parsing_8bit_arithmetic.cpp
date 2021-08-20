@@ -10,16 +10,29 @@
 
 #include <cpu/CPU.h>
 #include <util/opcode_parsing_math.h>
+void register_8bit_arithmetic_opcodes(CPU* cpu)
+{
 
+    cpu->register_opcode("INC Registers 0x04-0x34",
+                         [](uint16_t opcode) { return byte_in_range_vertical(opcode & 0xFF, 0x04, 0x24); },
+                         [](CPU* cpu){
+                             uint8_t first_byte = cpu->fetch_byte();
+                             const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
+                             cpu->get_arithmetic_unit()->increment_register_8bit(reg_x);
+                         });
+
+    cpu->register_opcode("ADD Registers 0x80-0x85",
+                         [](uint16_t opcode){ return byte_in_range(opcode & 0xFF, 0x80, 0x85); },
+                         [](CPU* cpu) {
+                                uint8_t first_byte = cpu->fetch_byte();
+                                cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
+                            }
+                         );
+}
 void call_8bit_arithmetic(CPU* cpu)
 {
     uint8_t first_byte = cpu->fetch_byte();
-
-    if(byte_in_range(first_byte, 0x80, 0x85))
-    {
-        cpu->get_arithmetic_unit()->add_registers_8bit(REGISTER_A_INDEX, first_byte & 0xF);
-    }
-    else if(first_byte == 0x86)
+    if(first_byte == 0x86)
     {
         cpu->get_arithmetic_unit()->add_register_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
     }
@@ -94,11 +107,6 @@ void call_8bit_arithmetic(CPU* cpu)
     else if(first_byte == 0xF6)
     {
         cpu->get_logic_unit()->logic_or_immediate_8bit(REGISTER_A_INDEX, cpu->fetch_next_byte());
-    }
-    else if(byte_in_range_vertical(first_byte, 0x04, 0x24))
-    {
-        const uint8_t reg_x = (((first_byte & 0xF0) >> 4) * 2) + ((first_byte & 0x08) >> 3);
-        cpu->get_arithmetic_unit()->increment_register_8bit(reg_x);
     }
     else if(byte_in_range_vertical(first_byte, 0x05, 0x25))
     {

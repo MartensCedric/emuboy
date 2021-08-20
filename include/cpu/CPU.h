@@ -7,12 +7,14 @@
 #include <cstdint>
 #include <cstddef>
 #include <functional>
+#include "opcode.h"
 
 #define DEBUG_OPCODES true
 
 class ArithmeticUnit;
 class LogicUnit;
 class ShiftingUnit;
+class Opcode;
 
 class CPU {
     private:
@@ -23,6 +25,8 @@ class CPU {
         uint16_t program_counter;
         uint8_t* memory = new uint8_t [NUM_MEMORY_BYTES];
         uint8_t* registers = new uint8_t [NUM_REGISTERS];  // B, C, D, E, H, L, F, A
+
+        std::vector<Opcode*> opcodes;
 
         ArithmeticUnit* arithmetic_unit;
         LogicUnit* logic_unit;
@@ -94,8 +98,7 @@ class CPU {
         bool is_half_carry_flag_on();
         bool is_carry_flag_on();
 
-        typedef std::function<const bool(uint16_t)> condition;
-        void register_opcode(const char* name, condition opcode_condition);
+        void register_opcode(const char *name, std::function<bool(uint16_t)> opcode_condition, std::function<void(CPU*)> opcode_execution);
 
 #ifdef DEBUG_OPCODES
         void print_opcode();
