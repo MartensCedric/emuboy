@@ -22,28 +22,4 @@ BOOST_AUTO_TEST_SUITE(SafetyTest)
         BOOST_CHECK_THROW(validate_argument<uint8_t>(0x38, 0x48), std::runtime_error);
     }
 
-    BOOST_AUTO_TEST_CASE(validateAllOpcodesExists) {
-        for (uint8_t i = 0; i < 16; i++) {
-            for (uint8_t j = 0; j < 16; j++) {
-                uint8_t opcode = (i << 4) + j;
-                if (is_in<uint8_t>(opcode, {0xD3, 0xE3, 0xE4, 0xF4, 0xDB, 0xEB,
-                                            0xEC, 0xFC, 0xDD, 0xED, 0xFD}))
-                    continue;
-
-                bool opcode_exists = next_is_misc(opcode);
-                opcode_exists = opcode_exists || next_is_jump_calls(opcode);
-                opcode_exists = opcode_exists || next_is_16bit_arithmetic(opcode);
-                opcode_exists = opcode_exists || next_is_16bit_lsm(opcode);
-                opcode_exists = opcode_exists || next_is_8bit_arithmetic(opcode);
-                opcode_exists = opcode_exists || next_is_8bit_lsm(opcode);
-                opcode_exists = opcode_exists || next_is_8bit_rotation_shifts(opcode);
-
-                std::stringstream ss;
-                ss << std::hex << static_cast<uint16_t>(i);
-                ss << std::hex << static_cast<uint16_t>(j);
-                BOOST_CHECK_MESSAGE(opcode_exists, "Opcode: 0x" + ss.str());
-            }
-        }
-    }
-
 BOOST_AUTO_TEST_SUITE_END()

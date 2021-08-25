@@ -19,10 +19,6 @@
 #include "opcode_parsing_categories.h"
 #include "memory/memory_management_unit.h"
 
-#ifdef DEBUG_OPCODE
-#include "util/opcode_parsing_math.h"
-#endif
-
 CPU::CPU() {
     memset(this->memory, 0, NUM_MEMORY_BYTES);
     memset(this->registers, 0, NUM_REGISTERS);
@@ -77,15 +73,8 @@ void CPU::process_opcode() {
 
     // todo: remove all the bottom part once all opcodes have been refactored
     const uint8_t first_byte = this->fetch_byte();
-
-#ifdef DEBUG_OPCODES
-    this->print_opcode();
-#endif
-
     if (next_is_8bit_lsm(first_byte)) {
         call_8bit_lsm(this);
-    } else if (next_is_8bit_arithmetic(first_byte)) {
-        call_8bit_arithmetic(this);
     } else if (next_is_16bit_lsm(first_byte)) {
         call_16bit_lsm(this);
     } else if (next_is_16bit_arithmetic(first_byte)) {
@@ -299,17 +288,6 @@ void CPU::register_opcode(const char *name, std::function<bool(uint16_t)> opcode
     Opcode *opcode = new Opcode(name, opcode_condition, opcode_execution);
     this->opcodes.push_back(opcode);
 }
-
-
-#ifdef DEBUG_OPCODES
-
-void CPU::print_opcode() {
-    // todo: find a way to print relevant info for each opcode
-    uint8_t first_byte = fetch_byte();
-    printf("Opcode: 0x%02x\n", first_byte);
-}
-
-#endif
 
 CPU::~CPU() {
     for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end(); it++) {

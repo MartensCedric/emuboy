@@ -7,5 +7,4 @@
 #include "cpu/CPU.h"
 #include "opcode_parsing_categories.h"
 void register_8bit_arithmetic_opcodes(CPU* cpu);
-void call_8bit_arithmetic(CPU* cpu);
 #endif //EMUBOY_OPCODE_PARSING_8BIT_ARITHMETIC_H
