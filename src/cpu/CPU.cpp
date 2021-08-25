@@ -29,6 +29,11 @@ CPU::CPU() {
     this->shifting_unit = new ShiftingUnit(this);
 
     register_8bit_arithmetic_opcodes(this);
+//    register_16bit_arithmetic_opcodes(this);
+    register_8bit_lsm_opcodes(this);
+//    register_16bit_arithmetic_opcodes(this);
+//    register_jump_calls_opcodes(this);
+//    register_misc_opcodes(this);
 }
 
 uint16_t CPU::get_program_counter() const {

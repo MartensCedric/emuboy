@@ -6,5 +6,6 @@
 #define EMUBOY_OPCODE_PARSING_8BIT_LSM_H
 #include "cpu/CPU.h"
 #include "opcode_parsing_categories.h"
+void register_8bit_lsm_opcodes(CPU* cpu);
 void call_8bit_lsm(CPU* cpu);
 #endif //EMUBOY_OPCODE_PARSING_8BIT_LSM_H
