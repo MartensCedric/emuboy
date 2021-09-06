@@ -81,12 +81,11 @@ void CPU::fetch_cycle() {
 uint16_t CPU::next_opcode() const {
     uint8_t first_byte = this->fetch_byte();
 
-    if (first_byte != 0xCB)
-    {
+    if (first_byte != 0xCB) {
         return first_byte;
     }
 
-    if(this->program_counter >= NUM_MEMORY_BYTES)
+    if (this->program_counter >= NUM_MEMORY_BYTES)
         throw std::runtime_error("Rest of opcode out of bounds!");
 
     uint16_t second_byte = this->memory[this->program_counter + 1];

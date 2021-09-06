@@ -4,6 +4,9 @@
 
 #ifndef EMUBOY_OPCODE_PARSING_MISC_H
 #define EMUBOY_OPCODE_PARSING_MISC_H
+
 #include "cpu/CPU.h"
-void register_misc_opcodes(CPU* cpu);
+
+void register_misc_opcodes(CPU *cpu);
+
 #endif //EMUBOY_OPCODE_PARSING_MISC_H

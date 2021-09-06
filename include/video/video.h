@@ -4,11 +4,12 @@
 
 #ifndef EMUBOY_VIDEO_H
 #define EMUBOY_VIDEO_H
+
 #include <cstdint>
 #include <cstddef>
 
-class Video
-{
+class Video {
 
 };
+
 #endif //EMUBOY_VIDEO_H

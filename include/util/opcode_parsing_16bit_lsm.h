@@ -4,6 +4,9 @@
 
 #ifndef EMUBOY_OPCODE_PARSING_16BIT_LSM_H
 #define EMUBOY_OPCODE_PARSING_16BIT_LSM_H
+
 #include "cpu/CPU.h"
-void register_16bit_lsm_opcodes(CPU* cpu);
+
+void register_16bit_lsm_opcodes(CPU *cpu);
+
 #endif //EMUBOY_OPCODE_PARSING_16BIT_LSM_H

@@ -20,8 +20,7 @@
 #define REGISTER_HL_INDEX 3
 #define REGISTER_SP_INDEX 4
 
-class MemoryManagementUnit
-{
+class MemoryManagementUnit {
 
 };
 

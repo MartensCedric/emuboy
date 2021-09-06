@@ -4,6 +4,7 @@
 
 #ifndef EMUBOY_COLOR_H
 #define EMUBOY_COLOR_H
+
 #include <stdexcept>
 
 namespace Color {
@@ -12,14 +13,15 @@ namespace Color {
     const uint8_t COLOR_LIGHT = 2;
     const uint8_t COLOR_LIGHTEST = 3;
 
-    class Pixel
-    {
-        private:
-            uint8_t shade_value;
-        public:
-            Pixel(uint8_t shade_value);
-            void set_shade_value(uint8_t shade_value);
-            uint8_t get_shade_value() const;
+    class Pixel {
+    private:
+        uint8_t shade_value;
+    public:
+        Pixel(uint8_t shade_value);
+
+        void set_shade_value(uint8_t shade_value);
+
+        uint8_t get_shade_value() const;
     };
 }
 

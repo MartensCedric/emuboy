@@ -45,7 +45,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
-                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("BIT N A 0xCB 0x47-0x77, N is even",
@@ -78,7 +79,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2 + 1;
-                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("BIT N A 0xCB 0x4F-0x7F, N is odd",
@@ -145,7 +147,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
-                             cpu->get_shifting_unit()->reset_bit_memory_indirect(bit_to_reset, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->reset_bit_memory_indirect(bit_to_reset, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("RES N A 0xCB 0x87-0xB7, N is even",
@@ -201,7 +204,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
-                             cpu->get_shifting_unit()->reset_bit_memory_indirect(bit_to_reset, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->reset_bit_memory_indirect(bit_to_reset, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("RES N A 0xCB 0x8F-0xBF, N is odd",
@@ -257,7 +261,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
-                             cpu->get_shifting_unit()->set_bit_memory_indirect(bit_to_set, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->set_bit_memory_indirect(bit_to_set, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("SET N A 0xCB 0xC7-0xF7, N is even",
@@ -313,7 +318,8 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
-                             cpu->get_shifting_unit()->set_bit_memory_indirect(bit_to_set, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_shifting_unit()->set_bit_memory_indirect(bit_to_set, cpu->get_16bit_register(
+                                     REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("SET N A 0xCB 0xCF-0xFF, N is odd",
