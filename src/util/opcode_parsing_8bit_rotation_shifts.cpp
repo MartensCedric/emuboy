@@ -20,7 +20,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_matrix(opcode & 0xFF, 0x40, 0x73);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
                              uint8_t register_x = second_byte & 0x0F;
                              cpu->get_shifting_unit()->test_bit_register(bit_to_test, register_x);
@@ -32,7 +32,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_matrix(opcode & 0xFF, 0x80, 0xB3);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
                              uint8_t register_x = second_byte & 0x0F;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, register_x);
@@ -44,7 +44,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x8C, 0xBC);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_H_INDEX);
                          });
@@ -55,7 +55,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x8D, 0xBD);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_L_INDEX);
                          });
@@ -66,7 +66,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x8F, 0xBF);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_A_INDEX);
                          });
@@ -77,7 +77,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_matrix(opcode & 0xFF, 0xC0, 0xF3);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
                              uint8_t register_x = second_byte & 0x0F;
                              cpu->get_shifting_unit()->set_bit_register(bit_to_set, register_x);
@@ -89,7 +89,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x44, 0x74);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
                              cpu->get_shifting_unit()->test_bit_register(bit_to_test, REGISTER_H_INDEX);
                          });
@@ -100,7 +100,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x84, 0xB4);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_H_INDEX);
                          });
@@ -111,7 +111,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x85, 0xB5);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_L_INDEX);
                          });
@@ -122,7 +122,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0x87, 0xB7);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = (((second_byte & 0xF0) >> 4) - 0x08) * 2;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, REGISTER_A_INDEX);
                          });
@@ -133,7 +133,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_matrix(opcode & 0xFF, 0x88, 0xBB);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_reset = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
                              uint8_t register_x = (second_byte - 0x08) & 0x0F;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_reset, register_x);
@@ -145,7 +145,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0xC4, 0xF4);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
                              cpu->get_shifting_unit()->set_bit_register(bit_to_set, REGISTER_H_INDEX);
                          });
@@ -156,7 +156,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0xC5, 0xF5);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
                              cpu->get_shifting_unit()->set_bit_register(bit_to_set, REGISTER_L_INDEX);
                          });
@@ -167,7 +167,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0xC7, 0xF7);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = (((second_byte & 0xF0) >> 4) - 0x0C) * 2;
                              cpu->get_shifting_unit()->set_bit_register(bit_to_set, REGISTER_A_INDEX);
                          });
@@ -178,7 +178,7 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                                     byte_in_range_vertical(opcode & 0xFF, 0xC7, 0xF7);
                          },
                          [](CPU *cpu) {
-                             uint8_t second_byte = cpu->fetch_word() & 0xFF;
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
                              uint8_t bit_to_set = ((((second_byte & 0xF0) >> 4) - 0x08) * 2) + 1;
                              uint8_t register_x = (second_byte - 0x08) & 0x0F;
                              cpu->get_shifting_unit()->reset_bit_register(bit_to_set, register_x);
