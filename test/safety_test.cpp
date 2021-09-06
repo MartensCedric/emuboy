@@ -5,7 +5,6 @@
 #include <exception>
 #include <cpu/CPU.h>
 #include "util/safety.h"
-#include "util/opcode_parsing_categories.h"
 
 BOOST_AUTO_TEST_SUITE(SafetyTest)
 

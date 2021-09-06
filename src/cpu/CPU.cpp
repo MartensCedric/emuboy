@@ -4,10 +4,7 @@
 
 #include "cpu/CPU.h"
 #include <cstring>
-#include <cstdlib>
 #include <stdexcept>
-#include <ios>
-#include <sstream>
 #include <util/opcode_parsing_8bit_lsm.h>
 #include <util/opcode_parsing_8bit_arithmetic.h>
 #include <util/opcode_parsing_16bit_lsm.h>
@@ -16,7 +13,6 @@
 #include <util/opcode_parsing_jump_calls.h>
 #include <util/opcode_parsing_misc.h>
 #include "safety.h"
-#include "opcode_parsing_categories.h"
 #include "memory/memory_management_unit.h"
 
 CPU::CPU() {
@@ -28,11 +24,12 @@ CPU::CPU() {
     this->logic_unit = new LogicUnit(this);
     this->shifting_unit = new ShiftingUnit(this);
 
+    register_8bit_rotation_shifts_opcodes(this);
+    register_16bit_arithmetic_opcodes(this);
     register_8bit_arithmetic_opcodes(this);
-    register_16bit_arithmetic_opcodes(this);
-    register_8bit_lsm_opcodes(this);
-    register_16bit_arithmetic_opcodes(this);
     register_jump_calls_opcodes(this);
+    register_16bit_lsm_opcodes(this);
+    register_8bit_lsm_opcodes(this);
     register_misc_opcodes(this);
 }
 
@@ -57,7 +54,7 @@ uint8_t CPU::fetch_next_byte() {
 
 uint16_t CPU::fetch_word() const {
 
-    if(this->program_counter >= NUM_MEMORY_BYTES)
+    if (this->program_counter >= NUM_MEMORY_BYTES)
         return static_cast<uint16_t>(fetch_byte());
 
     uint8_t low_byte = this->memory[this->program_counter];
@@ -80,17 +77,35 @@ void CPU::fetch_cycle() {
     this->fetch_next_byte();
 }
 
+
+uint16_t CPU::next_opcode() const {
+    uint8_t first_byte = this->fetch_byte();
+
+    if (first_byte != 0xCB)
+    {
+        return first_byte;
+    }
+
+    if(this->program_counter >= NUM_MEMORY_BYTES)
+        throw std::runtime_error("Rest of opcode out of bounds!");
+
+    uint16_t second_byte = this->memory[this->program_counter + 1];
+    return (static_cast<uint16_t>(first_byte) << 8) + second_byte;
+}
+
 void CPU::process_opcode() {
 
     bool opcode_executed = false;
     for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end() && !opcode_executed; it++) {
-        if ((*it)->should_execute(this->fetch_word())) {
+        uint16_t opcode_word = this->next_opcode();
+
+        if ((*it)->should_execute(opcode_word)) {
             (*it)->execute(this);
             opcode_executed = true;
         }
     }
 
-    if(!opcode_executed) {
+    if (!opcode_executed) {
         throw std::runtime_error("Could not find opcode!");
     }
 }
@@ -303,3 +318,4 @@ CPU::~CPU() {
     delete arithmetic_unit;
     delete logic_unit;
 }
+

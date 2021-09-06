@@ -39,6 +39,9 @@ class CPU {
 
         void process_opcode();
 
+        uint16_t next_opcode() const;
+
+
         bool cpu_active = true;
         bool lcd_display_active = true;
 
@@ -102,10 +105,6 @@ class CPU {
         bool is_carry_flag_on();
 
         void register_opcode(const char *name, std::function<bool(uint16_t)> opcode_condition, std::function<void(CPU*)> opcode_execution);
-
-#ifdef DEBUG_OPCODES
-        void print_opcode();
-#endif
 
      ~CPU();
 

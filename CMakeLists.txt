@@ -40,7 +40,7 @@ INCLUDE_DIRECTORIES(${SDL2_INCLUDE_DIRS})
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include/util)
 
-ADD_LIBRARY(CPU src/cpu/CPU.cpp src/cpu/arithmetic_unit.cpp src/util/opcode_parsing_math.cpp src/util/opcode_parsing_categories.cpp src/video/frame_buffer.cpp src/video/color.cpp src/cpu/logic_unit.cpp src/cpu/shifting_unit.cpp src/util/opcode_parsing_8bit_arithmetic.cpp src/util/opcode_parsing_16bit_arithmetic.cpp src/util/opcode_parsing_8bit_rotation_shifts.cpp src/util/opcode_parsing_16bit_lsm.cpp src/util/opcode_parsing_jump_calls.cpp src/util/opcode_parsing_8bit_lsm.cpp src/util/opcode_parsing_16bit_lsm.cpp src/util/opcode_parsing_call_misc.cpp src/cartridge/cartridge_loader.cpp src/cpu/opcode.cpp)
+ADD_LIBRARY(CPU src/cpu/CPU.cpp src/cpu/arithmetic_unit.cpp src/util/opcode_parsing_math.cpp src/video/frame_buffer.cpp src/video/color.cpp src/cpu/logic_unit.cpp src/cpu/shifting_unit.cpp src/util/opcode_parsing_8bit_arithmetic.cpp src/util/opcode_parsing_16bit_arithmetic.cpp src/util/opcode_parsing_8bit_rotation_shifts.cpp src/util/opcode_parsing_16bit_lsm.cpp src/util/opcode_parsing_jump_calls.cpp src/util/opcode_parsing_8bit_lsm.cpp src/util/opcode_parsing_16bit_lsm.cpp src/util/opcode_parsing_call_misc.cpp src/cartridge/cartridge_loader.cpp src/cpu/opcode.cpp)
 TARGET_LINK_LIBRARIES(CPU ${BOOST_LIBRARIES})
 
 TARGET_LINK_LIBRARIES(CPU ${SDL2_LIBRARIES})

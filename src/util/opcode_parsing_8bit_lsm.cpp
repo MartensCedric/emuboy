@@ -174,7 +174,8 @@ void register_8bit_lsm_opcodes(CPU *cpu) {
     cpu->register_opcode("LD (C) A",
                          [](uint16_t opcode) { return opcode == 0xE2; },
                          [](CPU *cpu) {
-                             cpu->store_memory_indirect(0xFF00 + cpu->get_registers()[REGISTER_C_INDEX], REGISTER_A_INDEX);
+                             cpu->store_memory_indirect(0xFF00 + cpu->get_registers()[REGISTER_C_INDEX],
+                                                        REGISTER_A_INDEX);
                          });
 
     cpu->register_opcode("LDH A (a8)",
@@ -186,7 +187,8 @@ void register_8bit_lsm_opcodes(CPU *cpu) {
     cpu->register_opcode("LD A (C)",
                          [](uint16_t opcode) { return opcode == 0xF2; },
                          [](CPU *cpu) {
-                             cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->get_registers()[REGISTER_C_INDEX]);
+                             cpu->load_memory_indirect(REGISTER_A_INDEX,
+                                                       0xFF00 + cpu->get_registers()[REGISTER_C_INDEX]);
                          });
 
     cpu->register_opcode("LD A (a16)",

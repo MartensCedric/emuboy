@@ -9,35 +9,34 @@
  */
 
 #include <cpu/CPU.h>
-#include <util/opcode_parsing_8bit_rotation_shifts.h>
 #include <stdexcept>
 
-void call_misc(CPU *cpu) {
-    uint8_t first_byte = cpu->fetch_byte();
+void register_misc_opcodes(CPU *cpu) {
+    cpu->register_opcode("NOP",
+                         [](uint16_t opcode) { return opcode == 0x00; },
+                         [](CPU *cpu) {});
 
-    switch (first_byte) {
-        case 0x00:
-            // nop
-            break;
-        case 0x10:
-            cpu->stop();
-            break;
-        case 0x76:
-            cpu->halt();
-            break;
-        case 0xCB:
-            cpu->fetch_next_byte();
-            call_8bit_rotation_shifts(cpu);
-            break;
-        case 0xF3:
-            cpu->disable_interrupts();
-            break;
-        case 0xFB:
-            cpu->enable_interrupts();
-            break;
-        default:
-            throw std::runtime_error("Cannot find misc instruction!");
-    }
+    cpu->register_opcode("STOP",
+                         [](uint16_t opcode) { return opcode == 0x10; },
+                         [](CPU *cpu) {
+                             cpu->stop();
+                         });
+
+    cpu->register_opcode("HALT",
+                         [](uint16_t opcode) { return opcode == 0x76; },
+                         [](CPU *cpu) {
+                             cpu->halt();
+                         });
+
+    cpu->register_opcode("Disable Interrupts",
+                         [](uint16_t opcode) { return opcode == 0xF3; },
+                         [](CPU *cpu) {
+                             cpu->halt();
+                         });
+
+    cpu->register_opcode("Enable Interrupts",
+                         [](uint16_t opcode) { return opcode == 0xFB; },
+                         [](CPU *cpu) {
+                             cpu->halt();
+                         });
 }
-
-
