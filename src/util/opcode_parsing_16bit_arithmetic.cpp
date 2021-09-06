@@ -38,6 +38,8 @@ void register_16bit_arithmetic_opcodes(CPU *cpu) {
                              uint16_t value_added = cpu->get_16bit_register(reg_x);
                              uint16_t base_value = cpu->get_16bit_register(REGISTER_HL_INDEX);
                              uint16_t final_value = base_value + value_added;
+
+                             //todo: uncomment and fix
                              // cpu->setSubtractFlag(false);
                              // cpu->setCarryFlag(final_value < base_value);
                              // cpu->setHalfCarryFlag(((base_value & 0xF) + (final_value & 0xF)) < (base_value & 0xF));
@@ -51,6 +53,7 @@ void register_16bit_arithmetic_opcodes(CPU *cpu) {
                              uint16_t value_added = static_cast<uint16_t>(cpu->fetch_next_byte());
                              uint16_t final_value = base_value + value_added;
                              cpu->load_16bit_register_immediate(REGISTER_SP_INDEX, final_value);
+                             //todo: uncomment and fix
                              //        cpu->setZeroFlag(false);
                              //        cpu->setSubtractFlag(false);
                              //        cpu->setCarryFlag(final_value < base_value);

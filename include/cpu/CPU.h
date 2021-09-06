@@ -93,6 +93,8 @@ class CPU {
         uint16_t peek() const;
         uint16_t pop();
 
+        void call(uint16_t address);
+
         void stop();
         void halt();
 

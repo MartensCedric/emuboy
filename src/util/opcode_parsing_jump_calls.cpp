@@ -94,9 +94,7 @@ void register_jump_calls_opcodes(CPU *cpu) {
                          [](uint16_t opcode) { return opcode == 0xC4; },
                          [](CPU *cpu) {
                              if (!cpu->is_zero_flag_on()) {
-                                 // todo: refactor into call() function
-                                 cpu->push(cpu->get_program_counter() + 3);
-                                 cpu->jump_to_address(cpu->fetch_next_word());
+                                 cpu->call(cpu->fetch_next_word());
                              }
                          });
 
@@ -145,9 +143,7 @@ void register_jump_calls_opcodes(CPU *cpu) {
                          [](uint16_t opcode) { return opcode == 0xD4; },
                          [](CPU *cpu) {
                              if (!cpu->is_carry_flag_on()) {
-                                 // todo: refactor into call() function
-                                 cpu->push(cpu->get_program_counter() + 3);
-                                 cpu->jump_to_address(cpu->fetch_next_word());
+                                 cpu->call(cpu->fetch_next_word());
                              }
                          });
 

@@ -200,6 +200,12 @@ uint16_t CPU::get_16bit_register(uint8_t index) const {
     }
 }
 
+
+void CPU::call(uint16_t address) {
+    this->push(this->get_program_counter() + 3);
+    this->jump_to_address(address);
+}
+
 void CPU::push(uint16_t value) {
     this->memory[--this->stack_pointer] = value & 0x00FF;
     this->memory[--this->stack_pointer] = (value & 0xFF00) >> 8;
