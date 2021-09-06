@@ -170,19 +170,29 @@ void register_8bit_lsm_opcodes(CPU *cpu) {
                              uint16_t address = cpu->fetch_next_word();
                              cpu->store_memory_indirect(address, REGISTER_A_INDEX);
                          });
-}
 
-void call_8bit_lsm(CPU *cpu) {
-    uint8_t first_byte = cpu->fetch_byte();
+    cpu->register_opcode("LD (C) A",
+                         [](uint16_t opcode) { return opcode == 0xE2; },
+                         [](CPU *cpu) {
+                             cpu->store_memory_indirect(0xFF00 + cpu->get_registers()[REGISTER_C_INDEX], REGISTER_A_INDEX);
+                         });
 
-    if (first_byte == 0xE2) {
-        cpu->store_memory_indirect(0xFF00 + cpu->get_registers()[REGISTER_C_INDEX], REGISTER_A_INDEX);
-    } else if (first_byte == 0xF0) {
-        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->fetch_next_byte());
-    } else if (first_byte == 0xF2) {
-        cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->get_registers()[REGISTER_C_INDEX]);
-    } else if (first_byte == 0xFA) {
-        uint16_t address = cpu->fetch_next_word();
-        cpu->load_memory_indirect(REGISTER_A_INDEX, address);
-    }
+    cpu->register_opcode("LDH A (a8)",
+                         [](uint16_t opcode) { return opcode == 0xF0; },
+                         [](CPU *cpu) {
+                             cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->fetch_next_byte());
+                         });
+
+    cpu->register_opcode("LD A (C)",
+                         [](uint16_t opcode) { return opcode == 0xF2; },
+                         [](CPU *cpu) {
+                             cpu->load_memory_indirect(REGISTER_A_INDEX, 0xFF00 + cpu->get_registers()[REGISTER_C_INDEX]);
+                         });
+
+    cpu->register_opcode("LD A (a16)",
+                         [](uint16_t opcode) { return opcode == 0xFA; },
+                         [](CPU *cpu) {
+                             uint16_t address = cpu->fetch_next_word();
+                             cpu->load_memory_indirect(REGISTER_A_INDEX, address);
+                         });
 }

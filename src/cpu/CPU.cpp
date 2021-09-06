@@ -29,11 +29,11 @@ CPU::CPU() {
     this->shifting_unit = new ShiftingUnit(this);
 
     register_8bit_arithmetic_opcodes(this);
-//    register_16bit_arithmetic_opcodes(this);
+    register_16bit_arithmetic_opcodes(this);
     register_8bit_lsm_opcodes(this);
-//    register_16bit_arithmetic_opcodes(this);
-//    register_jump_calls_opcodes(this);
-//    register_misc_opcodes(this);
+    register_16bit_arithmetic_opcodes(this);
+    register_jump_calls_opcodes(this);
+    register_misc_opcodes(this);
 }
 
 uint16_t CPU::get_program_counter() const {
@@ -54,6 +54,19 @@ uint8_t CPU::fetch_next_byte() {
     return this->fetch_byte();
 }
 
+
+uint16_t CPU::fetch_word() const {
+
+    if(this->program_counter >= NUM_MEMORY_BYTES)
+        return static_cast<uint16_t>(fetch_byte());
+
+    uint8_t low_byte = this->memory[this->program_counter];
+    uint8_t high_byte = this->memory[this->program_counter + 1];
+    uint16_t word = (static_cast<uint16_t>(high_byte) << 8) + low_byte;
+    return word;
+}
+
+
 uint16_t CPU::fetch_next_word() {
     uint8_t low_byte = fetch_next_byte();
     uint8_t high_byte = fetch_next_byte();
@@ -69,28 +82,15 @@ void CPU::fetch_cycle() {
 
 void CPU::process_opcode() {
 
-    for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end(); it++) {
-        if ((*it)->should_execute(this->fetch_byte())) {
+    bool opcode_executed = false;
+    for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end() && !opcode_executed; it++) {
+        if ((*it)->should_execute(this->fetch_word())) {
             (*it)->execute(this);
-            return; // todo: remove this once opcodes have been migrated
+            opcode_executed = true;
         }
     }
 
-    // todo: remove all the bottom part once all opcodes have been refactored
-    const uint8_t first_byte = this->fetch_byte();
-    if (next_is_8bit_lsm(first_byte)) {
-        call_8bit_lsm(this);
-    } else if (next_is_16bit_lsm(first_byte)) {
-        call_16bit_lsm(this);
-    } else if (next_is_16bit_arithmetic(first_byte)) {
-        call_16bit_arithmetic(this);
-    } else if (next_is_8bit_rotation_shifts(first_byte)) {
-        call_8bit_rotation_shifts(this);
-    } else if (next_is_jump_calls(first_byte)) {
-        call_jump_calls(this);
-    } else if (next_is_misc(first_byte)) {
-        call_misc(this);
-    } else {
+    if(!opcode_executed) {
         throw std::runtime_error("Could not find opcode!");
     }
 }

@@ -62,7 +62,10 @@ class CPU {
 
         uint8_t fetch_byte() const;
         uint8_t fetch_next_byte();
+
+        uint16_t fetch_word() const;
         uint16_t fetch_next_word();
+
         void jump_to_address(uint16_t address);
 
         void increment_pc();
