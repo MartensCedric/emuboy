@@ -161,8 +161,9 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
     cpu->register_opcode("SUB A (HL)",
                          [](uint16_t opcode) { return opcode == 0x96; },
                          [](CPU *cpu) {
-                             cpu->get_logic_unit()->logic_and_indirect_8bit(REGISTER_A_INDEX,
-                                                                            cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_logic_unit()->logic_and_memory_indirect_8bit(REGISTER_A_INDEX,
+                                                                                   cpu->get_16bit_register(
+                                                                                           REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("SUB A A",
@@ -174,8 +175,9 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
     cpu->register_opcode("AND A (HL)",
                          [](uint16_t opcode) { return opcode == 0xA6; },
                          [](CPU *cpu) {
-                             cpu->get_logic_unit()->logic_and_indirect_8bit(REGISTER_A_INDEX,
-                                                                            cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_logic_unit()->logic_and_memory_indirect_8bit(REGISTER_A_INDEX,
+                                                                                   cpu->get_16bit_register(
+                                                                                           REGISTER_HL_INDEX));
                          });
     cpu->register_opcode("AND A A",
                          [](uint16_t opcode) { return opcode == 0xA7; },
@@ -193,7 +195,9 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
     cpu->register_opcode("XOR A (HL)",
                          [](uint16_t opcode) { return opcode == 0xAE; },
                          [](CPU *cpu) {
-                             cpu->get_logic_unit()->logic_xor_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_logic_unit()->logic_xor_memory_indirect_8bit(REGISTER_A_INDEX,
+                                                                                   cpu->get_16bit_register(
+                                                                                           REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("XOR A A",
@@ -212,8 +216,9 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
     cpu->register_opcode("OR A (HL)",
                          [](uint16_t opcode) { return opcode == 0xB6; },
                          [](CPU *cpu) {
-                             cpu->get_logic_unit()->logic_or_indirect_8bit(REGISTER_A_INDEX,
-                                                                           cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_logic_unit()->logic_or_memory_indirect_8bit(REGISTER_A_INDEX,
+                                                                                  cpu->get_16bit_register(
+                                                                                          REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("OR A A",
@@ -232,7 +237,9 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
     cpu->register_opcode("CP A (HL)",
                          [](uint16_t opcode) { return opcode == 0xBE; },
                          [](CPU *cpu) {
-                             cpu->get_logic_unit()->compare_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                             cpu->get_logic_unit()->compare_memory_indirect_8bit(REGISTER_A_INDEX,
+                                                                                 cpu->get_16bit_register(
+                                                                                         REGISTER_HL_INDEX));
                          });
 
     cpu->register_opcode("CP A A",

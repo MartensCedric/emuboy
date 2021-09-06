@@ -58,19 +58,19 @@ class LogicUnit
 
         void compare_registers_8bit(uint8_t register_x, uint8_t register_y);
         void compare_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
-        void compare_indirect_8bit(uint8_t register_x, uint16_t address);
+        void compare_memory_indirect_8bit(uint8_t register_x, uint16_t address);
 
         void logic_or_registers_8bit(uint8_t register_x, uint8_t register_y);
         void logic_or_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
-        void logic_or_indirect_8bit(uint8_t register_x, uint16_t address);
+        void logic_or_memory_indirect_8bit(uint8_t register_x, uint16_t address);
 
         void logic_and_registers_8bit(uint8_t register_x, uint8_t register_y);
         void logic_and_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
-        void logic_and_indirect_8bit(uint8_t register_x, uint16_t address);
+        void logic_and_memory_indirect_8bit(uint8_t register_x, uint16_t address);
 
         void logic_xor_registers_8bit(uint8_t register_x, uint8_t register_y);
         void logic_xor_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
-        void logic_xor_indirect_8bit(uint8_t register_x, uint16_t address);
+        void logic_xor_memory_indirect_8bit(uint8_t register_x, uint16_t address);
 
         void set_carry_flag();
         void complement_carry_flag();
