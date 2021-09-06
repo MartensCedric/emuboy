@@ -26,6 +26,72 @@ void register_8bit_rotation_shifts_opcodes(CPU *cpu) {
                              cpu->get_shifting_unit()->test_bit_register(bit_to_test, register_x);
                          });
 
+    cpu->register_opcode("BIT N L 0xCB 0x45-0x75, N is even",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_vertical(opcode & 0xFF, 0x45, 0x75);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
+                             cpu->get_shifting_unit()->test_bit_register(bit_to_test, REGISTER_L_INDEX);
+                         });
+
+    cpu->register_opcode("BIT N (HL) 0xCB 0x46-0x76, N is even",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_vertical(opcode & 0xFF, 0x46, 0x76);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
+                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                         });
+
+    cpu->register_opcode("BIT N A 0xCB 0x47-0x77, N is even",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_vertical(opcode & 0xFF, 0x47, 0x77);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2;
+                             cpu->get_shifting_unit()->test_bit_register(bit_to_test, REGISTER_A_INDEX);
+                         });
+
+    cpu->register_opcode("BIT N A 0xCB 0x48-0x7D, N is odd",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_matrix(opcode & 0xFF, 0x48, 0x7D);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2 + 1;
+                             cpu->get_shifting_unit()->test_bit_register(bit_to_test, (second_byte & 0xF) - 0x8);
+                         });
+
+    cpu->register_opcode("BIT N (HL) 0xCB 0x4E-0x7E, N is odd",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_vertical(opcode & 0xFF, 0x4E, 0x7E);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2 + 1;
+                             cpu->get_shifting_unit()->test_bit_memory_indirect(bit_to_test, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                         });
+
+    cpu->register_opcode("BIT N A 0xCB 0x4F-0x7F, N is odd",
+                         [](uint16_t opcode) {
+                             return ((opcode & 0xFF00) == 0xCB00) &&
+                                    byte_in_range_vertical(opcode & 0xFF, 0x4F, 0x7F);
+                         },
+                         [](CPU *cpu) {
+                             uint8_t second_byte = (cpu->fetch_word() & 0xFF00) >> 8;
+                             uint8_t bit_to_test = (((second_byte & 0xF0) >> 4) - 0x04) * 2 + 1;
+                             cpu->get_shifting_unit()->test_bit_register(bit_to_test, REGISTER_A_INDEX);
+                         });
+
     cpu->register_opcode("BIT N H 0xCB 0x44-0x74, N is even",
                          [](uint16_t opcode) {
                              return ((opcode & 0xFF00) == 0xCB00) &&
