@@ -123,8 +123,8 @@ void register_jump_calls_opcodes(CPU *cpu) {
     cpu->register_opcode("ADC A d8",
                          [](uint16_t opcode) { return opcode == 0xCE; },
                          [](CPU *cpu) {
-                             cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX,
-                                                                                  cpu->fetch_next_byte());
+                             cpu->get_arithmetic_unit()->add_carry_register_immediate_8bit(REGISTER_A_INDEX,
+                                                                                           cpu->fetch_next_byte());
                          });
 
     cpu->register_opcode("RET NC",
@@ -175,8 +175,8 @@ void register_jump_calls_opcodes(CPU *cpu) {
     cpu->register_opcode("SBC A d8",
                          [](uint16_t opcode) { return opcode == 0xDE; },
                          [](CPU *cpu) {
-                             cpu->get_arithmetic_unit()->sub_carry_registers_8bit(REGISTER_A_INDEX,
-                                                                                  cpu->fetch_next_byte());
+                             cpu->get_arithmetic_unit()->sub_carry_register_immediate_8bit(REGISTER_A_INDEX,
+                                                                                           cpu->fetch_next_byte());
                          });
 
     cpu->register_opcode("JP (HL)",

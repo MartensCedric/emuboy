@@ -65,13 +65,17 @@ class ArithmeticUnit
         void add_register_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
         void add_register_indirect_8bit(uint8_t register_x, uint16_t address);
         void add_memory_immediate_8bit(uint16_t address, uint8_t immediate_value);
-        void add_carry_registers_8bit(uint8_t register_x, uint8_t immediate_value);
+        void add_carry_register_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
+        void add_carry_register_indirect_8bit(uint8_t register_x, uint16_t address);
+        void add_carry_register_8bit(uint8_t register_x, uint8_t register_y);
 
         void sub_registers_8bit(uint8_t register_x, uint8_t register_y);
         void sub_register_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
         void sub_register_indirect_8bit(uint8_t register_x, uint16_t address);
         void sub_memory_immediate_8bit(uint16_t address, uint8_t immediate_value);
-        void sub_carry_registers_8bit(uint8_t register_x, uint8_t immediate_value);
+        void sub_carry_register_immediate_8bit(uint8_t register_x, uint8_t immediate_value);
+        void sub_carry_register_indirect_8bit(uint8_t register_x, uint16_t address);
+        void sub_carry_register_8bit(uint8_t register_x, uint8_t register_y);
 
         void increment_register_8bit(uint8_t register_x);
         void increment_indirect_8bit(uint16_t address);

@@ -82,8 +82,8 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
                          [](uint16_t opcode) { return byte_in_range(opcode, 0x88, 0x8D); },
                          [](CPU *cpu) {
                              uint8_t first_byte = cpu->fetch_byte();
-                             cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX,
-                                                                                  (first_byte - 8u) & 0xFu);
+                             cpu->get_arithmetic_unit()->add_carry_register_immediate_8bit(REGISTER_A_INDEX,
+                                                                                           (first_byte - 8u) & 0xFu);
                          });
 
     cpu->register_opcode("ADD Registers 0x80-0x85",
@@ -112,8 +112,32 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
                          [](uint16_t opcode) { return byte_in_range(opcode, 0x98, 0x9D); },
                          [](CPU *cpu) {
                              uint8_t first_byte = cpu->fetch_byte();
-                             cpu->get_arithmetic_unit()->add_carry_registers_8bit(REGISTER_A_INDEX,
-                                                                                  (first_byte - 8u) & 0xFu);
+                             cpu->get_arithmetic_unit()->add_carry_register_immediate_8bit(REGISTER_A_INDEX,
+                                                                                           (first_byte - 8u) & 0xFu);
+                         });
+
+    cpu->register_opcode("ADC A (HL)",
+                         [](uint16_t opcode){ return opcode == 0x8E;},
+                         [](CPU *cpu){
+                            cpu->get_arithmetic_unit()->add_carry_register_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+    });
+
+    cpu->register_opcode("ADC A A",
+                         [](uint16_t opcode){ return opcode == 0x8F;},
+                         [](CPU *cpu){
+                             cpu->get_arithmetic_unit()->add_carry_register_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+                         });
+
+    cpu->register_opcode("SBC A (HL)",
+                         [](uint16_t opcode){ return opcode == 0x9E;},
+                         [](CPU *cpu){
+                             cpu->get_arithmetic_unit()->sub_carry_register_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                         });
+
+    cpu->register_opcode("SBC A A",
+                         [](uint16_t opcode){ return opcode == 0x9F;},
+                         [](CPU *cpu){
+                             cpu->get_arithmetic_unit()->sub_carry_register_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
                          });
 
     cpu->register_opcode("AND Registers 0xA0-0xA5",
@@ -166,6 +190,18 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
                              cpu->get_logic_unit()->logic_or_registers_8bit(REGISTER_A_INDEX, (first_byte - 8u) & 0xFu);
                          });
 
+    cpu->register_opcode("XOR A (HL)",
+                         [](uint16_t opcode) { return opcode == 0xAE; },
+                         [](CPU *cpu) {
+                             cpu->get_logic_unit()->logic_xor_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                         });
+
+    cpu->register_opcode("XOR A A",
+                         [](uint16_t opcode) { return opcode == 0xAF; },
+                         [](CPU *cpu) {
+                             cpu->get_logic_unit()->logic_xor_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
+                         });
+
     cpu->register_opcode("OR Registers 0xB0-0xB5",
                          [](uint16_t opcode) { return byte_in_range(opcode, 0xB0, 0xB5); },
                          [](CPU *cpu) {
@@ -191,6 +227,18 @@ void register_8bit_arithmetic_opcodes(CPU *cpu) {
                          [](CPU *cpu) {
                              uint8_t first_byte = cpu->fetch_byte();
                              cpu->get_logic_unit()->compare_registers_8bit(REGISTER_A_INDEX, (first_byte - 8u) & 0xFu);
+                         });
+
+    cpu->register_opcode("CP A (HL)",
+                         [](uint16_t opcode) { return opcode == 0xBE; },
+                         [](CPU *cpu) {
+                             cpu->get_logic_unit()->compare_indirect_8bit(REGISTER_A_INDEX, cpu->get_16bit_register(REGISTER_HL_INDEX));
+                         });
+
+    cpu->register_opcode("CP A A",
+                         [](uint16_t opcode) { return opcode == 0xBF; },
+                         [](CPU *cpu) {
+                             cpu->get_logic_unit()->compare_registers_8bit(REGISTER_A_INDEX, REGISTER_A_INDEX);
                          });
 
     cpu->register_opcode("ADD A d8",
