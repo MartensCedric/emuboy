@@ -23,7 +23,7 @@ int main() {
                                           SDL_WINDOWPOS_CENTERED,
                                           800, 800, 0);
     while (running) {
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds (10));
 
         SDL_Event event;
 

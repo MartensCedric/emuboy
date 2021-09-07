@@ -9,9 +9,7 @@ FrameBuffer::FrameBuffer(uint8_t width, uint8_t height) : width(width), height(h
     this->buffer = (Color::Pixel *) malloc(size * sizeof(Color::Pixel));
 }
 
-FrameBuffer::~FrameBuffer() {
-    free(this->buffer);
-}
+
 
 void FrameBuffer::set_pixel(uint8_t x, uint8_t y, Color::Pixel pixel) {
     this->buffer[get_index(x, y)] = pixel;
@@ -19,4 +17,8 @@ void FrameBuffer::set_pixel(uint8_t x, uint8_t y, Color::Pixel pixel) {
 
 Color::Pixel FrameBuffer::get_pixel(uint8_t x, uint8_t y) {
     return this->buffer[get_index(x, y)];
+}
+
+FrameBuffer::~FrameBuffer() {
+    free(this->buffer);
 }

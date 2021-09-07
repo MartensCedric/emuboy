@@ -10,6 +10,7 @@
 
 class FrameBuffer {
 private:
+    uint8_t* memory_map = nullptr;
     Color::Pixel *buffer;
     const uint8_t width;
     const uint8_t height;

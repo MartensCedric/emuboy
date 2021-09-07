@@ -10,7 +10,7 @@
 #include <functional>
 #include "opcode.h"
 
-#define DEBUG_OPCODES true
+#include "memory/memory_management_unit.h"
 
 class ArithmeticUnit;
 
@@ -23,7 +23,6 @@ class Opcode;
 class CPU {
 private:
     const static size_t NUM_REGISTERS = 8;
-    const static size_t NUM_MEMORY_BYTES = 0xFFFF;
 
     uint16_t stack_pointer;
     uint16_t program_counter;
