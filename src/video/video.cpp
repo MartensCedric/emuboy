@@ -4,7 +4,7 @@
 
 #include "video/video.h"
 
-Video::Video(MemoryManagementUnit* mmu) {
+Video::Video(MemoryManagementUnit& mmu) {
     this->mode = 0;
     this->clock = 0;
     this->mmu = mmu;
@@ -12,11 +12,11 @@ Video::Video(MemoryManagementUnit* mmu) {
 }
 
 uint8_t Video::get_scroll_x() const {
-    return this->mmu->memory[0xFF43];
+    return this->mmu[0xFF43];
 }
 
 uint8_t Video::get_scroll_y() const {
-    return this->mmu->memory[0xFF42];
+    return this->mmu[0xFF42];
 }
 
 

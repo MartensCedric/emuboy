@@ -6,6 +6,7 @@
 #define EMUBOY_MEMORY_MANAGEMENT_UNIT_H
 
 #include <stdint.h>
+#include <stdlib.h>
 #define NUM_MEMORY_BYTES 0xFFFF
 
 #define REGISTER_A_INDEX 7
@@ -25,13 +26,15 @@
 
 class MemoryManagementUnit {
 private:
-
-
-    MemoryManagementUnit();
-    ~MemoryManagementUnit();
+    uint8_t* memory;
 
 public:
-    uint8_t* memory; //todo: find a clean way to do this, perhaps have getters for some registers and a raw pointer one
+    uint8_t& operator[](std::size_t index);
+    uint8_t& operator[](std::size_t index) const;
+
+
+    explicit MemoryManagementUnit();
+    ~MemoryManagementUnit();
 };
 
 #endif //EMUBOY_MEMORY_MANAGEMENT_UNIT_H

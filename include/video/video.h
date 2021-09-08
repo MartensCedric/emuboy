@@ -17,13 +17,13 @@ private:
     uint8_t line;
 
     FrameBuffer* frame;
-    MemoryManagementUnit* mmu;
+    MemoryManagementUnit mmu;
 
     uint8_t get_scroll_x() const;
     uint8_t get_scroll_y() const;
 
 public:
-    Video(MemoryManagementUnit* mmu);
+    Video(MemoryManagementUnit& mmu);
     ~Video();
 };
 

@@ -16,7 +16,6 @@
 #include "memory/memory_management_unit.h"
 
 CPU::CPU() {
-    memset(this->memory, 0, NUM_MEMORY_BYTES);
     memset(this->registers, 0, NUM_REGISTERS);
     this->stack_pointer = NUM_MEMORY_BYTES;
     this->program_counter = 0x100;
@@ -42,7 +41,7 @@ uint16_t CPU::get_stack_pointer() const {
 }
 
 uint8_t CPU::fetch_byte() const {
-    return this->memory[this->get_program_counter()];
+    return this->mmu[this->get_program_counter()];
 }
 
 uint8_t CPU::fetch_next_byte() {
@@ -57,8 +56,8 @@ uint16_t CPU::fetch_word() const {
     if (this->program_counter >= NUM_MEMORY_BYTES)
         return static_cast<uint16_t>(fetch_byte());
 
-    uint8_t low_byte = this->memory[this->program_counter];
-    uint8_t high_byte = this->memory[this->program_counter + 1];
+    uint8_t low_byte = this->mmu[this->program_counter];
+    uint8_t high_byte = this->mmu[this->program_counter + 1];
     uint16_t word = (static_cast<uint16_t>(high_byte) << 8) + low_byte;
     return word;
 }
@@ -88,7 +87,7 @@ uint16_t CPU::next_opcode() const {
     if (this->program_counter >= NUM_MEMORY_BYTES)
         throw std::runtime_error("Rest of opcode out of bounds!");
 
-    uint16_t second_byte = this->memory[this->program_counter + 1];
+    uint16_t second_byte = this->mmu[this->program_counter + 1];
     return (static_cast<uint16_t>(first_byte) << 8) + second_byte;
 }
 
@@ -161,16 +160,16 @@ void CPU::load_register_indirect(uint8_t reg_x, uint8_t reg_y) {
 
 void CPU::load_memory_indirect(uint8_t reg_x, uint16_t memory_address) {
     validate_leq_than<uint8_t>(reg_x, 0x08);
-    this->registers[reg_x] = this->memory[memory_address];
+    this->registers[reg_x] = this->mmu[memory_address];
 }
 
 void CPU::store_memory_indirect(uint16_t memory_address, uint8_t reg_x) {
     validate_leq_than<uint8_t>(reg_x, 0x08);
-    this->memory[memory_address] = this->registers[reg_x];
+    this->mmu[memory_address] = this->registers[reg_x];
 }
 
 void CPU::store_memory_immediate(uint16_t memory_address, uint8_t value) {
-    this->memory[memory_address] = value;
+    this->mmu[memory_address] = value;
 }
 
 const uint8_t *CPU::get_registers() const {
@@ -206,8 +205,8 @@ void CPU::call(uint16_t address) {
 }
 
 void CPU::push(uint16_t value) {
-    this->memory[--this->stack_pointer] = value & 0x00FF;
-    this->memory[--this->stack_pointer] = (value & 0xFF00) >> 8;
+    this->mmu[--this->stack_pointer] = value & 0x00FF;
+    this->mmu[--this->stack_pointer] = (value & 0xFF00) >> 8;
 }
 
 uint16_t CPU::peek() const {
@@ -215,8 +214,8 @@ uint16_t CPU::peek() const {
     if (this->stack_pointer >= NUM_MEMORY_BYTES)
         throw std::runtime_error("Stack pointer out of bounds");
 
-    uint16_t value = static_cast<uint16_t>(this->memory[this->stack_pointer]) << 8;
-    value += this->memory[this->stack_pointer + 1];
+    uint16_t value = static_cast<uint16_t>(this->mmu[this->stack_pointer]) << 8;
+    value += this->mmu[this->stack_pointer + 1];
     return value;
 
 }
@@ -301,7 +300,7 @@ bool CPU::is_cpu_active() const {
 }
 
 uint8_t CPU::get_byte_memory_indirect(uint8_t reg_x) {
-    return this->memory[get_16bit_register(reg_x)];
+    return this->mmu[get_16bit_register(reg_x)];
 }
 
 uint16_t CPU::get_word_memory_indirect(uint8_t reg_x) {
@@ -318,7 +317,6 @@ CPU::~CPU() {
     for (std::vector<Opcode *>::iterator it = opcodes.begin(); it != opcodes.end(); it++) {
         delete *it;
     }
-    delete[] memory;
     delete[] registers;
     delete arithmetic_unit;
     delete logic_unit;
