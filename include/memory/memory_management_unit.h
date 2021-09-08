@@ -32,7 +32,6 @@ public:
     uint8_t& operator[](std::size_t index);
     uint8_t& operator[](std::size_t index) const;
 
-
     explicit MemoryManagementUnit();
     ~MemoryManagementUnit();
 };
