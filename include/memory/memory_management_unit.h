@@ -41,6 +41,8 @@ public:
     void set_scroll_y(uint8_t value);
 
     uint8_t* get_tile_data_table() const;
+
+    uint8_t get_lcd_control() const;
     ~MemoryManagementUnit();
 };
 

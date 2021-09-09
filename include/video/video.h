@@ -41,6 +41,17 @@ public:
     uint8_t get_scroll_x() const;
     uint8_t get_scroll_y() const;
 
+
+    // LCD CONTROL REGISTER
+    bool is_background_on() const;
+    bool is_sprites_on() const;
+    uint8_t sprite_width() const; // possible values are 8 or 16
+    bool use_tile_map_0() const;
+    bool use_tile_set_0() const;
+    bool is_window_on() const;
+    bool use_window_tile_map_0() const;
+    bool is_display_on() const;
+
     ~Video();
 };
 
