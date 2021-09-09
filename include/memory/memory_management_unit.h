@@ -33,6 +33,12 @@ public:
     uint8_t& operator[](std::size_t index) const;
 
     explicit MemoryManagementUnit();
+
+    uint8_t get_scroll_x() const;
+    void set_scroll_x(uint8_t value);
+
+    uint8_t get_scroll_y() const;
+    void set_scroll_y(uint8_t value);
     ~MemoryManagementUnit();
 };
 

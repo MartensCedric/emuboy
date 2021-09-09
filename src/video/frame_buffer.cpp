@@ -4,7 +4,7 @@
 
 #include "video/frame_buffer.h"
 
-FrameBuffer::FrameBuffer(uint8_t width, uint8_t height) : width(width), height(height) {
+FrameBuffer::FrameBuffer(std::size_t width, std::size_t  height) : width(width), height(height) {
     size_t size = width * height;
     this->buffer = (Color::Pixel *) malloc(size * sizeof(Color::Pixel));
 }
