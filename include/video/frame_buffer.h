@@ -6,12 +6,12 @@
 #define EMUBOY_FRAME_BUFFER_H
 
 #include <cstdint>
-#include "color.h"
+#include "pixel.h"
 
 class FrameBuffer {
 private:
     uint8_t* memory_map = nullptr;
-    Color::Pixel *buffer;
+    Gameboy_Color::Pixel *buffer;
     const uint8_t width;
     const uint8_t height;
 
@@ -19,9 +19,9 @@ private:
 public:
     FrameBuffer(std::size_t width, std::size_t height);
 
-    void set_pixel(uint8_t x, uint8_t y, Color::Pixel pixel);
+    void set_pixel(uint8_t x, uint8_t y, Gameboy_Color::Pixel pixel);
 
-    Color::Pixel get_pixel(uint8_t x, uint8_t y);
+    Gameboy_Color::Pixel get_pixel(uint8_t x, uint8_t y);
 
     ~FrameBuffer();
 };

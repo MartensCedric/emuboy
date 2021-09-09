@@ -39,6 +39,8 @@ public:
 
     uint8_t get_scroll_y() const;
     void set_scroll_y(uint8_t value);
+
+    uint8_t* get_tile_data_table() const;
     ~MemoryManagementUnit();
 };
 

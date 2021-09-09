@@ -20,22 +20,20 @@ uint8_t Video::get_scroll_y() const {
 }
 
 void Video::step() {
-    clock++;
-
-    switch (mode) {
-        case HORIZONTAL_BLANK:
-            break;
-        case VERTICAL_BLANK:
-            break;
-        case SCANLINE_SPRITE:
-            break;
-        case SCANLINE_VIDEO_RAM:
-            break;
-        default:
-            break;
-    }
-
-
+//    clock++;
+//
+//    switch (mode) {
+//        case HORIZONTAL_BLANK:
+//            break;
+//        case VERTICAL_BLANK:
+//            break;
+//        case SCANLINE_SPRITE:
+//            break;
+//        case SCANLINE_VIDEO_RAM:
+//            break;
+//        default:
+//            break;
+//    }
 }
 
 Video::~Video()

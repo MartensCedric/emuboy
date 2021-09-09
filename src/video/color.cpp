@@ -1,21 +1,29 @@
 //
-// Created by cedric on 2021-07-17.
+// Created by cedric on 2021-09-09.
 //
 
+#include "video/color.h"
 
-#include <video/color.h>
-
-
-Color::Pixel::Pixel(uint8_t shade_value) {
-    set_shade_value(shade_value);
+Gameboy_Color::Color::Color(uint8_t red_value, uint8_t green_value, uint8_t blue_value) :
+        red_value(red_value),
+        green_value(green_value),
+        blue_value(blue_value) {
 }
 
-void Color::Pixel::set_shade_value(uint8_t shade_value) {
-    if (shade_value > COLOR_LIGHTEST)
-        throw std::runtime_error("Invalid color!");
-    this->shade_value = shade_value;
+
+uint8_t Gameboy_Color::Color::get_red_value() const {
+    return red_value;
 }
 
-uint8_t Color::Pixel::get_shade_value() const {
-    return this->shade_value;
+uint8_t Gameboy_Color::Color::get_green_value() const {
+    return green_value;
 }
+
+uint8_t Gameboy_Color::Color::get_blue_value() const {
+    return blue_value;
+}
+
+Gameboy_Color::Color::~Color() {
+
+}
+

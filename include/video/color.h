@@ -1,27 +1,26 @@
 //
-// Created by cedric on 2021-07-17.
+// Created by cedric on 2021-09-09.
 //
 
 #ifndef EMUBOY_COLOR_H
 #define EMUBOY_COLOR_H
 
-#include <stdexcept>
+#include <stdint.h>
 
-namespace Color {
-    const uint8_t COLOR_DARKEST = 0;
-    const uint8_t COLOR_DARK = 1;
-    const uint8_t COLOR_LIGHT = 2;
-    const uint8_t COLOR_LIGHTEST = 3;
-
-    class Pixel {
+namespace Gameboy_Color{
+    class Color
+    {
     private:
-        uint8_t shade_value;
+        const uint8_t red_value;
+        const uint8_t green_value;
+        const uint8_t blue_value;
+
     public:
-        Pixel(uint8_t shade_value);
-
-        void set_shade_value(uint8_t shade_value);
-
-        uint8_t get_shade_value() const;
+        Color(uint8_t red_value, uint8_t green_value, uint8_t blue_value);
+        uint8_t get_red_value() const;
+        uint8_t get_green_value() const;
+        uint8_t get_blue_value() const;
+        ~Color();
     };
 }
 
