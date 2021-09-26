@@ -181,4 +181,35 @@ BOOST_AUTO_TEST_SUITE(EightBitRotationShiftTest)
         BOOST_CHECK(cpu.get_registers()[REGISTER_L_INDEX] == 0xBF);
     }
 
+    BOOST_AUTO_TEST_CASE(validate0xCBC0) {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0xF0);
+        run_next_opcode(&cpu, {0xCB, 0xC0});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0xF1);
+    }
+
+
+    BOOST_AUTO_TEST_CASE(validate0xCBD0) {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x30);
+        run_next_opcode(&cpu, {0xCB, 0xD0});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x34);
+    }
+
+
+    BOOST_AUTO_TEST_CASE(validate0xCBE0) {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x24);
+        run_next_opcode(&cpu, {0xCB, 0xE0});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x34);
+    }
+
+
+    BOOST_AUTO_TEST_CASE(validate0xCBF0) {
+        CPU cpu;
+        cpu.load_register_immediate(REGISTER_B_INDEX, 0x37);
+        run_next_opcode(&cpu, {0xCB, 0xF0});
+        BOOST_CHECK(cpu.get_registers()[REGISTER_B_INDEX] == 0x77);
+    }
+
 BOOST_AUTO_TEST_SUITE_END()
